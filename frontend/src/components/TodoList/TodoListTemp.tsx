@@ -4,31 +4,28 @@ import AddTodo from "./components/AddTodo/AddTodo";
 import TodoListTitle from "./components/TodoListTitle/TodoListTitle";
 import {ITodo, ICookieOptions} from "../../common/types";
 
-interface IProps {
-}
-
-interface IState {
-    todos: ITodo[];
-}
-
 const TodoListExp: React.FC = () => {
 
     const [todos, setTodos] = useState<ITodo[]>([]);
 
     useEffect(() => {
+
         const fetchData = async () => {
             const response = await fetch("http://localhost:3001/todos/list");
             const responseJson = await response.json();
             setTodos(responseJson.data);
             updateCookies(responseJson.data);
-        }
+        };
+
         const cookies = getCookie('todoList');
-        if (typeof cookies === 'undefined' || cookies === null) {
+        console.log('TODOS: ', todos, cookies);
+
+        if (cookies === null) {
             fetchData();
         } else {
             setTodos(cookies);
         }
-    }, [todos]);
+    }, []);
 
     const getCookie = (name: string): ITodo[] | null => {
         const result = document.cookie.match(new RegExp(name + '=([^;]+)'));

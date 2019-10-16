@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 
 interface IProps {
     id?: number,
@@ -7,49 +7,32 @@ interface IProps {
     buttonText: string
 }
 
-interface IState {
-    term: string
-}
+const AddTodo: React.FC<IProps> = ({ content, id, addTodo, buttonText }) =>{
+    const [term, setTerm] = useState<string>(content || '');
 
-export default class AddTodo extends Component<IProps> {
-    state: IState;
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            term: this.props.content || '',
-        }
-    }
-
-    onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        if (event.target.value === null)
-        this.setState({
-            term : event.target.value
-        })
+    const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        if (event.target.value === null) return;
+        setTerm(event.target.value);
     };
 
-    onFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    const onFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        const { id, addTodo } = this.props;
-        const { term } = this.state;
         if (id) {
             addTodo(term, id);
         } else {
             addTodo(term);
         }
-        this.setState({
-            term: ''
-        })
+        setTerm('');
     };
 
-    render() {
-        const { buttonText } = this.props;
-        return (
-            <form className="add-todo" onSubmit={(e) => this.onFormSubmit(e)}>
-                <input className="add-todo-input" value={this.state.term} type="text" onChange={ e => this.onInputChange(e)}/>
-                <button>{ buttonText }</button>
-            </form>
-        )
-
-    }
+    return (
+        <form className="add-todo" onSubmit={(e) => onFormSubmit(e)}>
+            <input className="add-todo-input" value={term} type="text"
+                   onChange={e => onInputChange(e)}/>
+            <button>{buttonText}</button>
+        </form>
+    )
 };
+
+export default AddTodo;
 
