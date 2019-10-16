@@ -22,7 +22,7 @@ export default class TodoList extends Component<IProps> {
 
     async componentDidMount() {
         const cookies = this.getCookie('todoList');
-        if (typeof cookies === 'undefined') {
+        if (typeof cookies === 'undefined' || cookies === null) {
             const response = await fetch("http://localhost:3001/todos/list");
             const responseJson = await response.json();
             this.setState({
