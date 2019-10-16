@@ -4,7 +4,7 @@ export default class AddTodo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            term: '',
+            term: this.props.content,
         }
     }
 
@@ -15,12 +15,12 @@ export default class AddTodo extends Component {
     };
 
     onFormSubmit = (event) => {
-        const { id } = this.props;
+        const { id, addTodo } = this.props;
         event.preventDefault();
         if (id) {
-            this.props.addTodo(id, this.state.term);
+            addTodo(id, this.state.term);
         } else {
-            this.props.addTodo(this.state.term);
+            addTodo(this.state.term);
         }
         this.setState({
             term: ''

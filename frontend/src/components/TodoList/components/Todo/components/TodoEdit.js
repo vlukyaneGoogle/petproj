@@ -1,9 +1,15 @@
 import React from 'react';
 
-const TodoEdit = ({ editTodo}) => {
+const TodoEdit = ({ editTodo, enableButton}) => {
     return (
         <div className="todo-button-edit">
-            <button onClick={() => editTodo()}>Edit</button>
+            {enableButton ? (
+                <button onClick={() => editTodo()}>
+                    Edit
+                </button>
+            ) : (
+                <button>Edit</button>
+            )}
         </div>
     )
 };

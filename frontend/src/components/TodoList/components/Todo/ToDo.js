@@ -18,17 +18,18 @@ const Todo  = ({ todo, switchCompleted, deleteTodo, editTodo }) =>{
 
     return (
         <li
-            className={`todo-item ${todo.isCompleted ? 'completed' : ''}`}
+            className = {`todo-item ${todo.isCompleted ? 'completed' : ''}`}
         >
             <TodoContent
-                content={todo.content}
-                switchCompleted={handleSwitchIsCompleted}
+                content = {todo.content}
+                switchCompleted = {handleSwitchIsCompleted}
             />
             <TodoEdit
-                editTodo={handleEditTodo}
+                editTodo = {handleEditTodo}
+                enableButton = {!todo.isCompleted}
             />
             <TodoDelete
-                deleteTodo={handleDeleteTodo}
+                deleteTodo = {handleDeleteTodo}
             />
         </li>
     )

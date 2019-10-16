@@ -5,4 +5,11 @@
 .todo-item {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.todo-item .todo-content {
+    max-width: 160px;
+    width: 60%;
+    overflow-wrap: break-word;
 }
