@@ -1,9 +1,9 @@
 import React from 'react';
 
-const TodoDelete = ({ deleteTodo, id }) => {
+const TodoDelete = ({ deleteTodo }) => {
     return (
         <div className="todo-button-delete">
-            <button onClick={()=> deleteTodo(id)}>Delete</button>
+            <button onClick={()=> deleteTodo()}>Delete</button>
         </div>
     )
 };

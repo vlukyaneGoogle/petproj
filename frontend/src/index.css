@@ -14,4 +14,5 @@ code {
 
 @import url('components/TodoList/components/Todo/Todo.css');
 @import url('components/TodoList/components/AddTodo/AddTodo.css');
+@import url('components/TodoList/components/TodoListTitle/TodoListTitle.css');
 @import url('App.css');

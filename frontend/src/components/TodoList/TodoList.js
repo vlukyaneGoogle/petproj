@@ -41,16 +41,49 @@ export default class TodoList extends Component {
         })
     }
 
+    editTodo(id) {
+        const {todos} = this.state;
+        const todoForEdit = todos.map( todo => {
+            if (todo._id !== id) return todo;
+            return {
+                ...todo,
+                isEditing: !todo.isEditing
+            }
+        });
+        this.setState({
+            todos: todoForEdit
+        })
+
+    }
+
     addTodo(todoTextContent) {
         if (todoTextContent === '') return;
         const {todos} = this.state;
         const todo = {
             _id: new Date().valueOf(),
             content: todoTextContent,
-            isCompleted: false
+            isCompleted: false,
+            isEditing: false
         };
         this.setState({
             todos: [...todos, todo]
+        })
+    }
+
+
+    addEditedTodo (id, editedTodoTextContent) {
+        if (editedTodoTextContent === '') return;
+        const {todos} = this.state;
+        const todoForEdit = todos.map( todo => {
+            if (todo._id !== id) return todo;
+            return {
+                ...todo,
+                isEditing: !todo.isEditing,
+                content: editedTodoTextContent
+            }
+        });
+        this.setState({
+            todos: todoForEdit
         })
     }
 
@@ -59,16 +92,31 @@ export default class TodoList extends Component {
             <div className="list-group">
               <TodoListTitle />
               <AddTodo
-                    addTodo={this.addTodo.bind(this)}
+                    addTodo = {this.addTodo.bind(this)}
+                    buttonText = {'Add'}
                 />
-                {this.state.todos.map(todo => (
-                    <Todo
-                        key={todo._id}
-                        todo={todo}
-                        switchCompleted={this.switchCompleted.bind(this)}
-                        deleteTodo={this.deleteTodo.bind(this)}
-                    />
-                ))}
+                {this.state.todos.map(todo => {
+                    if (todo.isEditing) {
+                        return (
+                            <AddTodo
+                                key = {todo._id}
+                                id = {todo._id}
+                                addTodo = {this.addEditedTodo.bind(this)}
+                                buttonText = {'Edit'}
+                            />
+                        )
+                    } else {
+                        return (
+                            <Todo
+                                key={todo._id}
+                                todo={todo}
+                                switchCompleted={this.switchCompleted.bind(this)}
+                                deleteTodo={this.deleteTodo.bind(this)}
+                                editTodo={this.editTodo.bind(this)}
+                            />
+                        )
+                    }
+                })}
             </div>
         )
     }

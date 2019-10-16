@@ -1,8 +1,8 @@
 import React from 'react';
 
-const TodoContent = ({ content, id, switchCompleted }) => {
+const TodoContent = ({ content, switchCompleted }) => {
     return (
-        <div className="todo-content" onClick={() => switchCompleted(id)}>
+        <div className="todo-content" onClick={() => switchCompleted()}>
             {content}
         </div>
     )

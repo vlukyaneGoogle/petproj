@@ -1,11 +1,11 @@
 import React from 'react';
 
-const TodoEdit = () => {
+const TodoEdit = ({ editTodo}) => {
     return (
         <div className="todo-button-edit">
-            <button>Edit</button>
+            <button onClick={() => editTodo()}>Edit</button>
         </div>
     )
 };
 
-export default TodoEdit
+export default TodoEdit;
