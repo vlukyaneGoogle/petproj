@@ -2,9 +2,6 @@
 
 # dependencies
 /node_modules
-/frontend/node_modules
-
-/express-back/node_modules
 /.pnp
 .pnp.js
 

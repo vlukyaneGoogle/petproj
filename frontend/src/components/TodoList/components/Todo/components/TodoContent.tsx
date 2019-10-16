@@ -1,6 +1,11 @@
 import React from 'react';
 
-const TodoContent = ({ content, switchCompleted }) => {
+interface IProps {
+    content: string,
+    switchCompleted: () => void
+}
+
+const TodoContent: React.FC<IProps> = ({ content, switchCompleted }) => {
     return (
         <div className="todo-content" onClick={() => switchCompleted()}>
             {content}

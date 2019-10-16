@@ -1,7 +1,7 @@
 import React from 'react';
 import TodoList from "./components/TodoList/TodoList";
 
-const App = () => {
+const App: React.FC = () => {
   return (
       <div className="container">
         <TodoList/>

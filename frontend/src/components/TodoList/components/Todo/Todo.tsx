@@ -2,8 +2,16 @@ import React from 'react';
 import TodoEdit from "./components/TodoEdit";
 import TodoContent from "./components/TodoContent";
 import TodoDelete from "./components/TodoDelete";
+import { ITodo } from "../../../../common/types";
 
-const Todo  = ({ todo, switchCompleted, deleteTodo, editTodo }) =>{
+interface IProps {
+    todo: ITodo,
+    switchCompleted: (id: number) => void,
+    deleteTodo: (id: number) => void,
+    editTodo: (id: number) => void
+}
+
+const Todo: React.FC<IProps>  = ({ todo, switchCompleted, deleteTodo, editTodo }) =>{
     const handleEditTodo = () => {
         editTodo(todo._id)
     };

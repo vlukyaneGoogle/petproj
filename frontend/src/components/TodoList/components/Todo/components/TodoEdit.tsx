@@ -1,6 +1,11 @@
 import React from 'react';
 
-const TodoEdit = ({ editTodo, enableButton}) => {
+interface IProps {
+    editTodo: () => void,
+    enableButton: boolean
+}
+
+const TodoEdit: React.FC<IProps> = ({ editTodo, enableButton}) => {
     return (
         <div className="todo-button-edit">
             {enableButton ? (

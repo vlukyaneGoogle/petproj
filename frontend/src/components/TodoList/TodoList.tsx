@@ -1,24 +1,10 @@
 import React, {Component} from 'react';
-import Todo from "./components/Todo/ToDo";
+import Todo from "./components/Todo/Todo";
 import AddTodo from "./components/AddTodo/AddTodo";
-import TodoListTitle from "./components/TodoListTitle/TodoListTitie";
+import TodoListTitle from "./components/TodoListTitle/TodoListTitle";
+import { ITodo, ICookieOptions } from "../../common/types";
 
 interface IProps {
-}
-
-interface ICookieOptions {
-    [name: string]: any
-    // {    ???
-    //     path: string,
-    //     expires?: Date | string;
-    // }
-}
-
-interface ITodo {
-    _id: number,
-    content: string,
-    isCompleted: boolean,
-    isEditing: boolean
 }
 
 interface IState {
@@ -139,7 +125,7 @@ export default class TodoList extends Component<IProps> {
     }
 
 
-    addEditedTodo (id: number, editedTodoTextContent: string) {
+    addEditedTodo (editedTodoTextContent: string, id?: number) {
         if (editedTodoTextContent === '') return;
         const {todos} = this.state;
         const todoForEdit = todos.map( todo => {

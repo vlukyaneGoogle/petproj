@@ -1,6 +1,10 @@
 import React from 'react';
 
-const TodoDelete = ({ deleteTodo }) => {
+interface IProps {
+    deleteTodo: () => void;
+}
+
+const TodoDelete: React.FC<IProps> = ({ deleteTodo }) => {
     return (
         <div className="todo-button-delete">
             <button onClick={()=> deleteTodo()}>Delete</button>
