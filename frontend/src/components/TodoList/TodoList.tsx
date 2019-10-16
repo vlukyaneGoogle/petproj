@@ -1,50 +1,38 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import Todo from "./components/Todo/Todo";
 import AddTodo from "./components/AddTodo/AddTodo";
 import TodoListTitle from "./components/TodoListTitle/TodoListTitle";
-import { ITodo, ICookieOptions } from "../../common/types";
+import {ITodo, ICookieOptions} from "../../common/types";
 
-interface IProps {
-}
+const TodoListExp: React.FC = () => {
 
-interface IState {
-    todos: Array<ITodo>
-}
+    const [todos, setTodos] = useState<ITodo[]>([]);
 
-export default class TodoList extends Component<IProps> {
-    state: IState;
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            todos: [],
-        }
-    }
+    useEffect(() => {
 
-    async componentDidMount() {
-        const cookies = this.getCookie('todoList');
-        if (typeof cookies === 'undefined' || cookies === null) {
+        const fetchData = async () => {
             const response = await fetch("http://localhost:3001/todos/list");
             const responseJson = await response.json();
-            this.setState({
-                todos: responseJson.data
-            });
-            this.updateCookies(responseJson.data);
-        } else {
-            this.setState({
-                todos: cookies
-            });
-        }
-    }
+            setTodos(responseJson.data);
+            updateCookies(responseJson.data);
+        };
 
-    getCookie(name: string) {
+        const cookies = getCookie('todoList');
+
+        if (cookies === null) {
+            fetchData();
+        } else {
+            setTodos(cookies);
+        }
+    }, []);
+
+    const getCookie = (name: string): ITodo[] | null => {
         const result = document.cookie.match(new RegExp(name + '=([^;]+)'));
         if (!result) return null;
-        const parsedResult: Array<ITodo> = JSON.parse(result[1]);
-        return parsedResult;
-    }
+        return JSON.parse(result[1]);
+    };
 
-    setCookie(name: string, value: Array<ITodo>, options: ICookieOptions = {}) {
-
+    const setCookie = (name: string, value: ITodo[], options: ICookieOptions = {}) => {
         options = {
             path: '/',
             ...options
@@ -65,12 +53,10 @@ export default class TodoList extends Component<IProps> {
                 updatedCookie += "=" + optionValue;
             }
         }
-
         document.cookie = updatedCookie;
-    }
+    };
 
-    switchCompleted(id: number) {
-        const {todos} = this.state;
+    const switchCompleted = (id: number) => {
         const newTodos = todos.map((todo) => {
             if (todo._id !== id) return todo;
             return {
@@ -78,57 +64,44 @@ export default class TodoList extends Component<IProps> {
                 isCompleted: !todo.isCompleted
             }
         });
-        this.setState({
-            todos: newTodos
-        })
-        this.updateCookies(newTodos);
-    }
+        setTodos(newTodos);
+        updateCookies(newTodos);
+    };
 
-    deleteTodo(id: number) {
-        const {todos} = this.state;
-        const newTodos = todos.filter(todo=> todo._id !== id);
-        this.setState({
-            todos: newTodos
-        })
-        this.updateCookies(newTodos);
-    }
+    const deleteTodo = (id: number) => {
+        const newTodos = todos.filter(todo => todo._id !== id);
+        setTodos(newTodos);
+        updateCookies(newTodos);
+    };
 
-    editTodo(id: number) {
-        const {todos} = this.state;
-        const todoForEdit = todos.map( (todo: ITodo) => {
+    const editTodo = (id: number) => {
+        const todoForEdit = todos.map((todo: ITodo) => {
             if (todo._id !== id) return todo;
             return {
                 ...todo,
                 isEditing: !todo.isEditing
             }
         });
-        this.setState({
-            todos: todoForEdit
-        })
-        this.updateCookies(todoForEdit);
+        setTodos(todoForEdit);
+        updateCookies(todoForEdit);
+    };
 
-    }
-
-    addTodo(todoTextContent: string) {
+    const addTodo = (todoTextContent: string) => {
         if (todoTextContent === '') return;
-        const {todos} = this.state;
         const todo = {
             _id: new Date().valueOf(),
             content: todoTextContent,
             isCompleted: false,
             isEditing: false
         };
-        this.setState({
-            todos: [...todos, todo]
-        })
-        this.updateCookies([...todos, todo]);
-    }
+        setTodos([...todos, todo]);
+        updateCookies([...todos, todo]);
+    };
 
 
-    addEditedTodo (editedTodoTextContent: string, id?: number) {
+    const addEditedTodo = (editedTodoTextContent: string, id?: number) => {
         if (editedTodoTextContent === '') return;
-        const {todos} = this.state;
-        const todoForEdit = todos.map( todo => {
+        const todoForEdit: ITodo[] = todos.map( (todo: ITodo): ITodo => {
             if (todo._id !== id) return todo;
             return {
                 ...todo,
@@ -136,48 +109,46 @@ export default class TodoList extends Component<IProps> {
                 content: editedTodoTextContent
             }
         });
-        this.setState({
-            todos: todoForEdit
-        })
-        this.updateCookies(todoForEdit);
-    }
+        setTodos(todoForEdit);
+        updateCookies(todoForEdit);
+    };
 
-    updateCookies(cookiesValue: Array<ITodo>) {
-        this.setCookie('todoList', cookiesValue, {path: '/'});
-    }
+    const updateCookies = (cookiesValue: ITodo[]) => {
+        setCookie('todoList', cookiesValue, {path: '/'});
+    };
 
-    render() {
-        return (
-            <div className="list-group">
-              <TodoListTitle />
-              <AddTodo
-                    addTodo = {this.addTodo.bind(this)}
-                    buttonText = {'Add'}
-                />
-                {this.state.todos.map(todo => {
-                    if (todo.isEditing) {
-                        return (
-                            <AddTodo
-                                key = {todo._id}
-                                id = {todo._id}
-                                content = {todo.content}
-                                addTodo = {this.addEditedTodo.bind(this)}
-                                buttonText = {'Edit'}
-                            />
-                        )
-                    } else {
-                        return (
-                            <Todo
-                                key = {todo._id}
-                                todo = {todo}
-                                switchCompleted = {this.switchCompleted.bind(this)}
-                                deleteTodo = {this.deleteTodo.bind(this)}
-                                editTodo = {this.editTodo.bind(this)}
-                            />
-                        )
-                    }
-                })}
-            </div>
-        )
-    }
-}
+    return (
+        <div className="list-group">
+            <TodoListTitle/>
+            <AddTodo
+                addTodo={addTodo}
+                buttonText={'Add'}
+            />
+            {todos.map( (todo: ITodo) => {
+                if (todo.isEditing) {
+                    return (
+                        <AddTodo
+                            key={todo._id}
+                            id={todo._id}
+                            content={todo.content}
+                            addTodo={addEditedTodo}
+                            buttonText={'Edit'}
+                        />
+                    )
+                } else {
+                    return (
+                        <Todo
+                            key={todo._id}
+                            todo={todo}
+                            switchCompleted={switchCompleted}
+                            deleteTodo={deleteTodo}
+                            editTodo={editTodo}
+                        />
+                    )
+                }
+            })}
+        </div>
+    )
+};
+
+export default TodoListExp;
