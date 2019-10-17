@@ -6,9 +6,9 @@ import { ITodo } from "../../../../common/types";
 
 interface IProps {
     todo: ITodo,
-    switchCompleted: (id: number) => void,
-    deleteTodo: (id: number) => void,
-    editTodo: (id: number) => void
+    switchCompleted: (id: string) => void,
+    deleteTodo: (id: string) => void,
+    editTodo: (id: string) => void
 }
 
 const Todo: React.FC<IProps>  = ({ todo, switchCompleted, deleteTodo, editTodo }) =>{
