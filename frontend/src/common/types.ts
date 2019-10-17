@@ -7,7 +7,7 @@ export interface ICookieOptions {
 }
 
 export interface ITodo {
-    _id: number,
+    _id: string,
     content: string,
     isCompleted: boolean,
     isEditing: boolean

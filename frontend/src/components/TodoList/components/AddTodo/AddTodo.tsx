@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 interface IProps {
-    id?: number,
+    id?: string,
     content?: string,
-    addTodo: (term: string, id?: number) => void,
+    addTodo: (term: string, id?: string) => void,
     buttonText: string
 }
 

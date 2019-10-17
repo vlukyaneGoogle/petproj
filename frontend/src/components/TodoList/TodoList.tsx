@@ -11,70 +11,51 @@ const TodoListExp: React.FC = () => {
     useEffect(() => {
 
         const fetchData = async () => {
-            const response = await fetch("http://localhost:3001/todos/list");
-            const responseJson = await response.json();
-            setTodos(responseJson.data);
-            updateCookies(responseJson.data);
+            const allTodos = await fetch("http://localhost:3001/todos/");
+            const allTodosJson = await allTodos.json();
+            setTodos(allTodosJson.data);
         };
 
-        const cookies = getCookie('todoList');
-
-        if (cookies === null) {
-            fetchData();
-        } else {
-            setTodos(cookies);
-        }
+        fetchData();
     }, []);
 
-    const getCookie = (name: string): ITodo[] | null => {
-        const result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-        if (!result) return null;
-        return JSON.parse(result[1]);
-    };
-
-    const setCookie = (name: string, value: ITodo[], options: ICookieOptions = {}) => {
-        options = {
-            path: '/',
-            ...options
-        };
-
-        if (options.expires instanceof Date) {
-            if (options.expires && options.expires.toUTCString) {
-                options.expires = options.expires.toUTCString();
-            }
-        }
-
-        let updatedCookie = encodeURIComponent(name) + "=" + JSON.stringify(value);
-
-        for (let optionKey in options) {
-            updatedCookie += "; " + optionKey;
-            let optionValue = options[optionKey];
-            if (optionValue !== true) {
-                updatedCookie += "=" + optionValue;
-            }
-        }
-        document.cookie = updatedCookie;
-    };
-
-    const switchCompleted = (id: number) => {
+    const switchCompleted = async (id: string) => {
+        let swithedTodo;
         const newTodos = todos.map((todo) => {
-            if (todo._id !== id) return todo;
-            return {
+            if (todo._id !== id) {
+                return todo;
+            } else {
+               swithedTodo ={
                 ...todo,
-                isCompleted: !todo.isCompleted
+                    isCompleted: !todo.isCompleted
+                };
+               return swithedTodo;
             }
         });
+
+        await fetch(`http://localhost:3001/todos/update/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(swithedTodo),
+        });
+
         setTodos(newTodos);
-        updateCookies(newTodos);
     };
 
-    const deleteTodo = (id: number) => {
+    const deleteTodo = async (id: string) => {
+        const deletedTodoResponse = await fetch(`http://localhost:3001/todos/delete/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
         const newTodos = todos.filter(todo => todo._id !== id);
         setTodos(newTodos);
-        updateCookies(newTodos);
     };
 
-    const editTodo = (id: number) => {
+    const editTodo = (id: string) => {
         const todoForEdit = todos.map((todo: ITodo) => {
             if (todo._id !== id) return todo;
             return {
@@ -83,38 +64,60 @@ const TodoListExp: React.FC = () => {
             }
         });
         setTodos(todoForEdit);
-        updateCookies(todoForEdit);
     };
 
-    const addTodo = (todoTextContent: string) => {
+    const addTodo = async (todoTextContent: string) => {
         if (todoTextContent === '') return;
-        const todo = {
-            _id: new Date().valueOf(),
+        const todoToAdd = {
             content: todoTextContent,
             isCompleted: false,
             isEditing: false
         };
-        setTodos([...todos, todo]);
-        updateCookies([...todos, todo]);
+        const addedTodoResponse = await fetch("http://localhost:3001/todos/add", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(todoToAdd),
+        });
+
+        const parsedResponse = await addedTodoResponse.json();
+        const newTodo = {
+            _id: parsedResponse.result._id,
+            content: parsedResponse.result.content,
+            isCompleted: parsedResponse.result.isCompleted,
+            isEditing: parsedResponse.result.isEditing
+        };
+        setTodos([...todos, newTodo]);
     };
 
 
-    const addEditedTodo = (editedTodoTextContent: string, id?: number) => {
-        if (editedTodoTextContent === '') return;
-        const todoForEdit: ITodo[] = todos.map( (todo: ITodo): ITodo => {
-            if (todo._id !== id) return todo;
-            return {
-                ...todo,
-                isEditing: !todo.isEditing,
-                content: editedTodoTextContent
+    const addEditedTodo = async (editedTodoTextContent: string, id?: string) => {
+        if (editedTodoTextContent === '') {
+            return;
+        }
+        //????????
+        let editedTodo;
+        const editedTodoArray: ITodo[] = todos.map( (todo: ITodo): ITodo => {
+            if (todo._id !== id) {
+                return todo;
+            } else {
+                editedTodo = {
+                    ...todo,
+                    isEditing: !todo.isEditing,
+                    content: editedTodoTextContent
+                };
+                return editedTodo;
             }
         });
-        setTodos(todoForEdit);
-        updateCookies(todoForEdit);
-    };
-
-    const updateCookies = (cookiesValue: ITodo[]) => {
-        setCookie('todoList', cookiesValue, {path: '/'});
+        await fetch(`http://localhost:3001/todos/update/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(editedTodo),
+        });
+        setTodos(editedTodoArray);
     };
 
     return (
