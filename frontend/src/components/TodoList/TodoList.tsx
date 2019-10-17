@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Todo from "./components/Todo/Todo";
 import AddTodo from "./components/AddTodo/AddTodo";
 import TodoListTitle from "./components/TodoListTitle/TodoListTitle";
-import {ITodo, ICookieOptions} from "../../common/types";
+import { ITodo } from "../../common/types";
 
 const TodoListExp: React.FC = () => {
 
@@ -13,7 +13,7 @@ const TodoListExp: React.FC = () => {
         const fetchData = async () => {
             const allTodos = await fetch("http://localhost:3001/todos/");
             const allTodosJson = await allTodos.json();
-            setTodos(allTodosJson.data);
+            if (Array.isArray(allTodosJson.data)) setTodos(allTodosJson.data);
         };
 
         fetchData();
@@ -119,6 +119,8 @@ const TodoListExp: React.FC = () => {
         });
         setTodos(editedTodoArray);
     };
+
+    console.log('HOBA :', todos);
 
     return (
         <div className="list-group">
