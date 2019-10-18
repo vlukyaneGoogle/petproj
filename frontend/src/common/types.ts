@@ -1,11 +1,3 @@
-export interface ICookieOptions {
-    [name: string]: any
-    // {    ???
-    //     path: string,
-    //     expires?: Date | string;
-    // }
-}
-
 export interface ITodo {
     _id: string,
     content: string,
