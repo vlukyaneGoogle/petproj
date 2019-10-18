@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const utils = require('../utils/utils');
-const TodoModel = require('../models/Todo');
+const chooseDbService = require('../services/chooseDbService');
 const getAllTodos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allTodos = yield TodoModel.find();
+        const allTodos = yield chooseDbService.getAll();
         return utils.sendResponse(res, {
             data: allTodos
         }, 200);
@@ -26,8 +26,7 @@ const getAllTodos = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 const addNewTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let todo = new TodoModel(req.body);
-        const result = yield todo.save();
+        const result = yield chooseDbService.addNew(req.body);
         utils.sendResponse(res, {
             message: 'todo added successfully',
             result
@@ -42,10 +41,7 @@ const addNewTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 const deleteTodoById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const id = req.params.id;
-        yield TodoModel.deleteOne({
-            "_id": id
-        });
+        yield chooseDbService.deleteTodo(req.params.id);
         utils.sendResponse(res, {
             message: "Successfully delete todo"
         }, 200);
@@ -59,15 +55,7 @@ const deleteTodoById = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 const updateTodoById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const id = req.params.id;
-        console.log('UPD: ', id, req.body);
-        const todo = new TodoModel(req.body);
-        yield TodoModel.updateOne({
-            "_id": id
-        }, {
-            "content": todo.content,
-            "isCompleted": todo.isCompleted
-        });
+        yield chooseDbService.updateTodo(req.params.id, req.body);
         utils.sendResponse(res, {
             message: "Successfully udpate todo"
         }, 200);

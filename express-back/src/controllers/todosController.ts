@@ -1,9 +1,9 @@
 const utils = require('../utils/utils');
-const TodoModel = require('../models/Todo');
+const chooseDbService = require('../services/chooseDbService');
 
 const getAllTodos = async (req, res) => {
     try {
-        const allTodos = await TodoModel.find();
+        const allTodos = await chooseDbService.getAll();
         return utils.sendResponse(res, {
             data: allTodos
         }, 200);
@@ -17,8 +17,7 @@ const getAllTodos = async (req, res) => {
 
 const addNewTodo = async (req, res) => {
     try {
-        let todo = new TodoModel(req.body);
-        const result = await todo.save();
+        const result = await chooseDbService.addNew(req.body);
         utils.sendResponse(res,{
             message: 'todo added successfully',
             result
@@ -33,10 +32,7 @@ const addNewTodo = async (req, res) => {
 
 const deleteTodoById = async (req, res) => {
     try {
-        const id = req.params.id;
-        await TodoModel.deleteOne({
-            "_id" : id
-        });
+        await chooseDbService.deleteTodo(req.params.id);
         utils.sendResponse(res,{
             message: "Successfully delete todo"
         }, 200)
@@ -50,18 +46,7 @@ const deleteTodoById = async (req, res) => {
 
 const updateTodoById = async (req, res) => {
     try {
-        const id = req.params.id;
-        console.log('UPD: ', id, req.body);
-        const todo = new TodoModel(req.body);
-        await TodoModel.updateOne(
-            {
-                "_id": id
-            },
-            {
-                "content": todo.content,
-                "isCompleted": todo.isCompleted
-            }
-        );
+        await chooseDbService.updateTodo(req.params.id, req.body);
         utils.sendResponse(res,{
             message: "Successfully udpate todo"
         }, 200)
