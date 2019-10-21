@@ -1,12 +1,13 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const logger = require("morgan");
-const port = process.env.PORT || 3001;
-const todosRouter = require("./routes/todos");
-const connectToMongo = require("./models/mongo-models/index");
+import todosRouter from './routes/todosRouter';
+import connectToMongo from './models/mongo-models/index';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import express from 'express';
+import logger from 'morgan';
 
+const port = process.env.PORT || 3001;
 const app = express();
+
 connectToMongo();
 app.use(logger('dev'));
 app.use(cors());
@@ -17,4 +18,4 @@ app.listen(port, function() {
     console.log("Runnning on " + port);
 });
 
-module.exports = app;
+export default app;

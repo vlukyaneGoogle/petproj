@@ -1,6 +1,8 @@
 "use strict";
-const mongooseInModels = require('mongoose');
-const Schema = mongooseInModels.Schema;
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const mongoose_1 = tslib_1.__importDefault(require("mongoose"));
+const Schema = mongoose_1.default.Schema;
 const Todo = new Schema({
     content: {
         type: String
@@ -12,4 +14,4 @@ const Todo = new Schema({
         type: Boolean
     }
 });
-module.exports = mongooseInModels.model('Todo', Todo);
+exports.default = mongoose_1.default.model('Todo', Todo);

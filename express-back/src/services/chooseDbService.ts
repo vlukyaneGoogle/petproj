@@ -1,22 +1,16 @@
-const mongoTodoRepository = require('../repositories/mongo-repositories/mongoTodoRepository');
-const DB_ENV = 'mongo';
+import mongoTodoRepository from '../repositories/mongo-repositories/mongoTodoRepository';
+import sequelizeTodoRepository from '../repositories/sequelize-repositories/sequelizeTodoRepository';
+const DB_ENV = 'postgresql';
 
-const dbSwitcher = async () => {
-    switch (DB_ENV) {
-        case 'mongo':
-            await mongoDbConnection();
-            break;
-        default:
-            await mongoDbConnection();
-    }
-};
-
-const getAll = async () => {
+const getAllTodos = async () => {
     let response;
     switch (DB_ENV) {
-        case 'mongo':
-            console.log('WAS HERE: ');
-            response = await mongoTodoRepository.getAllTodosMongo();
+        // case 'mongo':
+        //     response = await mongoTodoRepository.getAllTodos();
+        //     break;
+
+        case 'postgresql':
+            response = await sequelizeTodoRepository.getAllTodos();
             break;
 
         default:
@@ -26,11 +20,15 @@ const getAll = async () => {
     return response;
 };
 
-const addNew = async (reqBody) => {
+const addNewTodo = async (reqBody) => {
     let response;
     switch (DB_ENV) {
-        case 'mongo':
-            response = await mongoTodoRepository.addNewTodoMongo(reqBody);
+        // case 'mongo':
+        //     response = await mongoTodoRepository.addNewTodo(reqBody);
+        //     break;
+
+        case 'postgresql':
+            response = await sequelizeTodoRepository.addNewTodo(reqBody);
             break;
 
         default:
@@ -42,8 +40,12 @@ const addNew = async (reqBody) => {
 
 const deleteTodo = async (id) => {
     switch (DB_ENV) {
-        case 'mongo':
-            await mongoTodoRepository.deleteTodoMongo(id);
+        // case 'mongo':
+        //     await mongoTodoRepository.deleteTodo(id);
+        //     break;
+
+        case 'postgresql':
+            await sequelizeTodoRepository.deleteTodo(id);
             break;
 
         default:
@@ -53,8 +55,12 @@ const deleteTodo = async (id) => {
 
 const updateTodo = async (id, reqBody) => {
     switch (DB_ENV) {
-        case 'mongo':
-            await mongoTodoRepository.updateTodoMongo(id, reqBody);
+        // case 'mongo':
+        //     await mongoTodoRepository.updateTodo(id, reqBody);
+        //     break;
+
+        case 'postgresql':
+            await sequelizeTodoRepository.updateTodo(id, reqBody);
             break;
 
         default:
@@ -72,11 +78,10 @@ const mongoDbConnection = () => {
     // })
 };
 
-module.exports = {
-    dbSwitcher,
+export default {
     mongoDbConnection,
-    getAll,
-    addNew,
+    getAllTodos,
+    addNewTodo,
     deleteTodo,
     updateTodo
 };

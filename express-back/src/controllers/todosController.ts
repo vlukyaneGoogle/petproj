@@ -1,9 +1,9 @@
-const utils = require('../utils/utils');
-const chooseDbService = require('../services/chooseDbService');
+import utils from '../utils/utils';
+import chooseDbService from '../services/chooseDbService';
 
 const getAllTodos = async (req, res) => {
     try {
-        const allTodos = await chooseDbService.getAll();
+        const allTodos = await chooseDbService.getAllTodos();
         return utils.sendResponse(res, {
             data: allTodos
         }, 200);
@@ -17,7 +17,7 @@ const getAllTodos = async (req, res) => {
 
 const addNewTodo = async (req, res) => {
     try {
-        const result = await chooseDbService.addNew(req.body);
+        const result = await chooseDbService.addNewTodo(req.body);
         utils.sendResponse(res,{
             message: 'todo added successfully',
             result
@@ -58,7 +58,7 @@ const updateTodoById = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     getAllTodos,
     addNewTodo,
     deleteTodoById,

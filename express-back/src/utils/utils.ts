@@ -1,4 +1,4 @@
-import {IResponse} from '../common/types';
+import { IResponse } from '../common/types';
 
 const sendResponse = (res, data, code = 200) => {
     let send_data = <IResponse>{};
@@ -17,6 +17,6 @@ const sendResponse = (res, data, code = 200) => {
     return res.send(send_data);
 };
 
-module.exports = {
+export default {
     sendResponse
 };
