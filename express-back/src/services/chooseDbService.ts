@@ -1,87 +1,20 @@
-import mongoTodoRepository from '../repositories/mongo-repositories/mongoTodoRepository';
-import sequelizeTodoRepository from '../repositories/sequelize-repositories/sequelizeTodoRepository';
-const DB_ENV = 'postgresql';
+import {MongoConnection} from '../connections/MongoConnection';
+import {PostgresConnection} from '../connections/PostgresConnection';
 
-const getAllTodos = async () => {
-    let response;
-    switch (DB_ENV) {
-        // case 'mongo':
-        //     response = await mongoTodoRepository.getAllTodos();
-        //     break;
+const dotenv = require('dotenv');
+dotenv.config();
+const DB_ENV = process.env.DATABASE;
 
-        case 'postgresql':
-            response = await sequelizeTodoRepository.getAllTodos();
-            break;
-
-        default:
-            await mongoDbConnection();
+const chooseDb = () => {
+    if (DB_ENV === 'mongo') {
+        return new MongoConnection();
     }
 
-    return response;
-};
-
-const addNewTodo = async (reqBody) => {
-    let response;
-    switch (DB_ENV) {
-        // case 'mongo':
-        //     response = await mongoTodoRepository.addNewTodo(reqBody);
-        //     break;
-
-        case 'postgresql':
-            response = await sequelizeTodoRepository.addNewTodo(reqBody);
-            break;
-
-        default:
-            await mongoDbConnection();
-    }
-
-    return response;
-};
-
-const deleteTodo = async (id) => {
-    switch (DB_ENV) {
-        // case 'mongo':
-        //     await mongoTodoRepository.deleteTodo(id);
-        //     break;
-
-        case 'postgresql':
-            await sequelizeTodoRepository.deleteTodo(id);
-            break;
-
-        default:
-            await mongoDbConnection();
+    if (DB_ENV === 'postgres') {
+        return new PostgresConnection()
     }
 };
 
-const updateTodo = async (id, reqBody) => {
-    switch (DB_ENV) {
-        // case 'mongo':
-        //     await mongoTodoRepository.updateTodo(id, reqBody);
-        //     break;
+const db: any = chooseDb();
 
-        case 'postgresql':
-            await sequelizeTodoRepository.updateTodo(id, reqBody);
-            break;
-
-        default:
-            await mongoDbConnection();
-    }
-};
-
-const mongoDbConnection = () => {
-    console.log('MONGO CONNECTED!');
-    // const mongoose = require('mongoose');
-    // mongoose.connect('mongodb://127.0.0.1:27017/todos', { useNewUrlParser: true });
-    // const connection = mongoose.connection;
-    // connection.once('open', function() {
-    //     console.log("MongoDB database connection established successfully");
-    // })
-};
-
-export default {
-    mongoDbConnection,
-    getAllTodos,
-    addNewTodo,
-    deleteTodo,
-    updateTodo
-};
+export default db;

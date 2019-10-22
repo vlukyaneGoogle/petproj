@@ -1,40 +1,30 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const Todo_1 = require("../../models/sequelize-models/Todo");
+const Todo = require('../../models/sequelize-models/Todo');
 exports.default = {
     getAllTodos() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                return yield Todo_1.Todo.findAll();
+                return yield Todo.findAll();
             }
             catch (error) {
                 return error;
             }
         });
     },
-    getById(req, res) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const id = Number.parseInt(req.params.id, 10);
-            try {
-                const item = yield Todo_1.Todo.findByPk(id);
-                return res.status(200).send({ item });
-            }
-            catch (error) {
-                return res.status(400).send(error);
-            }
-        });
-    },
     addNewTodo(reqBody) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log('I WAS HERE');
             try {
-                const aga = yield Todo_1.Todo.create(reqBody);
-                console.log('HE we go AGAIN', aga);
-                return aga;
+                const { content, isCompleted, isEditing } = reqBody;
+                return yield Todo.create({
+                    content,
+                    isCompleted,
+                    isEditing
+                });
             }
             catch (error) {
-                console.log('HE we go AGAIN(');
+                console.log('Here we go AGAIN(');
                 return error;
             }
         });
@@ -42,43 +32,28 @@ exports.default = {
     updateTodo(id, reqBody) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                const [numberOfAffectedRows, affectedRows] = yield Todo_1.Todo.update({
-                    title: reqBody.title
+                return yield Todo.update({
+                    content: reqBody.content,
+                    isCompleted: reqBody.isCompleted
                 }, {
                     where: { id },
-                    returning: true,
-                    plain: true
                 });
-                return { item: affectedRows };
             }
             catch (error) {
                 return { error };
             }
-        });
-    },
-    toggleCompleted(req, res) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const id = Number(req.params.id);
-            try {
-                const item = yield Todo_1.Todo.findByPk(id);
-                const updated = yield item.update({
-                    completed: !item.completed
-                });
-                return res.status(201).send(updated);
-            }
-            catch (error) { }
         });
     },
     deleteTodo(id) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                yield Todo_1.Todo.destroy({
+                yield Todo.destroy({
                     where: { id }
                 });
                 return { message: "Item deleted" };
             }
             catch (error) {
-                return { error };
+                return { message: error };
             }
         });
     }

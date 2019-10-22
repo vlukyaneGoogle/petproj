@@ -3,6 +3,8 @@ export interface IResponse {
     error: boolean
 }
 
-// export interface ISeqDb {
-//
-// }
+export interface ITodo {
+    content: string,
+    isCompleted: boolean,
+    isEditing: boolean
+}

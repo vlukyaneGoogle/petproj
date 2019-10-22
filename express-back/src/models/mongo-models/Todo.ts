@@ -13,4 +13,8 @@ const Todo = new Schema({
     }
 });
 
+Todo.set('toJSON', {
+    virtuals: true
+});
+
 export default mongoose.model('Todo', Todo);

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const utils_1 = tslib_1.__importDefault(require("../utils/utils"));
 const chooseDbService_1 = tslib_1.__importDefault(require("../services/chooseDbService"));
+chooseDbService_1.default.connect();
 const getAllTodos = (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
         const allTodos = yield chooseDbService_1.default.getAllTodos();

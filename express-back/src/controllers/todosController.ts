@@ -1,9 +1,11 @@
 import utils from '../utils/utils';
-import chooseDbService from '../services/chooseDbService';
+import db from '../services/chooseDbService';
+
+db.connect();
 
 const getAllTodos = async (req, res) => {
     try {
-        const allTodos = await chooseDbService.getAllTodos();
+        const allTodos = await db.getAllTodos();
         return utils.sendResponse(res, {
             data: allTodos
         }, 200);
@@ -17,7 +19,7 @@ const getAllTodos = async (req, res) => {
 
 const addNewTodo = async (req, res) => {
     try {
-        const result = await chooseDbService.addNewTodo(req.body);
+        const result = await db.addNewTodo(req.body);
         utils.sendResponse(res,{
             message: 'todo added successfully',
             result
@@ -32,7 +34,7 @@ const addNewTodo = async (req, res) => {
 
 const deleteTodoById = async (req, res) => {
     try {
-        await chooseDbService.deleteTodo(req.params.id);
+        await db.deleteTodo(req.params.id);
         utils.sendResponse(res,{
             message: "Successfully delete todo"
         }, 200)
@@ -46,7 +48,7 @@ const deleteTodoById = async (req, res) => {
 
 const updateTodoById = async (req, res) => {
     try {
-        await chooseDbService.updateTodo(req.params.id, req.body);
+        await db.updateTodo(req.params.id, req.body);
         utils.sendResponse(res,{
             message: "Successfully udpate todo"
         }, 200)

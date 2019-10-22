@@ -1,8 +1,16 @@
-export default (sequelize, DataTypes) => {
-    const Todo = sequelize.define('Todo', {
-        content: DataTypes.STRING,
-        isCompleted: DataTypes.BOOLEAN,
-        isEdited: DataTypes.BOOLEAN,
-    }, {});
-    return Todo;
-};
+import { DataTypes } from 'sequelize';
+import postgresDb from '../../providers/postgresProvider';
+
+const Todo = postgresDb.define('Todo', {
+    content: {
+        type: DataTypes.STRING
+    },
+    isCompleted: {
+        type: DataTypes.BOOLEAN
+    },
+    isEditing: {
+        type: DataTypes.BOOLEAN
+    },
+});
+
+module.exports = Todo;

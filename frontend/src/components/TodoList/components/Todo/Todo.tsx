@@ -13,15 +13,15 @@ interface IProps {
 
 const Todo: React.FC<IProps>  = ({ todo, switchCompleted, deleteTodo, editTodo }) =>{
     const handleEditTodo = () => {
-        editTodo(todo._id)
+        editTodo(todo.id)
     };
 
     const handleDeleteTodo = () => {
-        deleteTodo(todo._id);
+        deleteTodo(todo.id);
     };
 
     const handleSwitchIsCompleted = () => {
-        switchCompleted(todo._id)
+        switchCompleted(todo.id)
     };
 
     return (
