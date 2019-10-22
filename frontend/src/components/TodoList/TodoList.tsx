@@ -134,7 +134,7 @@ const TodoListExp: React.FC = () => {
                 if (todo.isEditing) {
                     return (
                         <AddTodo
-                            key={todo._id}
+                            key={todo.id}
                             id={todo.id}
                             content={todo.content.trim()}
                             addTodo={addEditedTodo}
@@ -144,7 +144,7 @@ const TodoListExp: React.FC = () => {
                 } else {
                     return (
                         <Todo
-                            key={todo._id}
+                            key={todo.id}
                             todo={todo}
                             switchCompleted={switchCompleted}
                             deleteTodo={deleteTodo}
