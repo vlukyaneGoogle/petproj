@@ -16,6 +16,6 @@ const sendResponse = (res, data, code = 200) => {
     res.statusCode = code;
     return res.send(send_data);
 };
-module.exports = {
+exports.default = {
     sendResponse
 };

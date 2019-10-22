@@ -1,23 +1,19 @@
 "use strict";
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const logger = require("morgan");
-const mongoose = require('mongoose');
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const todosRouter_1 = tslib_1.__importDefault(require("./routes/todosRouter"));
+const cors_1 = tslib_1.__importDefault(require("cors"));
+const body_parser_1 = tslib_1.__importDefault(require("body-parser"));
+const express_1 = tslib_1.__importDefault(require("express"));
+const morgan_1 = tslib_1.__importDefault(require("morgan"));
 const port = process.env.PORT || 3001;
-const todosRouter = require("./routes/todos");
-mongoose.connect('mongodb://127.0.0.1:27017/todos', { useNewUrlParser: true });
-const connection = mongoose.connection;
-connection.once('open', function () {
-    console.log("MongoDB database connection established successfully");
-});
-const app = express();
-app.use(logger('dev'));
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use("/todos", todosRouter);
+const app = express_1.default();
+app.use(morgan_1.default('dev'));
+app.use(cors_1.default());
+app.use(body_parser_1.default.urlencoded({ extended: true }));
+app.use(body_parser_1.default.json());
+app.use("/todos", todosRouter_1.default);
 app.listen(port, function () {
     console.log("Runnning on " + port);
 });
-module.exports = app;
+exports.default = app;

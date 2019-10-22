@@ -22,7 +22,7 @@ const TodoListExp: React.FC = () => {
     const switchCompleted = async (id: string) => {
         let swithedTodo;
         const newTodos = todos.map((todo) => {
-            if (todo._id !== id) {
+            if (todo.id !== id) {
                 return todo;
             } else {
                swithedTodo ={
@@ -51,13 +51,13 @@ const TodoListExp: React.FC = () => {
                 'Content-Type': 'application/json',
             },
         });
-        const newTodos = todos.filter(todo => todo._id !== id);
+        const newTodos = todos.filter(todo => todo.id !== id);
         setTodos(newTodos);
     };
 
     const editTodo = (id: string) => {
         const todoForEdit = todos.map((todo: ITodo) => {
-            if (todo._id !== id) return todo;
+            if (todo.id !== id) return todo;
             return {
                 ...todo,
                 isEditing: !todo.isEditing
@@ -83,7 +83,8 @@ const TodoListExp: React.FC = () => {
 
         const parsedResponse = await addedTodoResponse.json();
         const newTodo = {
-            _id: parsedResponse.result._id,
+            _id: parsedResponse.result.id,
+            id: parsedResponse.result.id,
             content: parsedResponse.result.content,
             isCompleted: parsedResponse.result.isCompleted,
             isEditing: parsedResponse.result.isEditing
@@ -99,7 +100,7 @@ const TodoListExp: React.FC = () => {
         //????????
         let editedTodo;
         const editedTodoArray: ITodo[] = todos.map( (todo: ITodo): ITodo => {
-            if (todo._id !== id) {
+            if (todo.id !== id) {
                 return todo;
             } else {
                 editedTodo = {
@@ -133,9 +134,9 @@ const TodoListExp: React.FC = () => {
                 if (todo.isEditing) {
                     return (
                         <AddTodo
-                            key={todo._id}
-                            id={todo._id}
-                            content={todo.content}
+                            key={todo.id}
+                            id={todo.id}
+                            content={todo.content.trim()}
                             addTodo={addEditedTodo}
                             buttonText={'Edit'}
                         />
@@ -143,7 +144,7 @@ const TodoListExp: React.FC = () => {
                 } else {
                     return (
                         <Todo
-                            key={todo._id}
+                            key={todo.id}
                             todo={todo}
                             switchCompleted={switchCompleted}
                             deleteTodo={deleteTodo}
