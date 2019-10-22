@@ -6,11 +6,13 @@ const dotenv = require('dotenv');
 dotenv.config();
 const DB_ENV = process.env.DATABASE;
 const chooseDb = () => {
-    if (DB_ENV === 'mongo') {
-        return new MongoConnection_1.MongoConnection();
-    }
-    if (DB_ENV === 'postgres') {
-        return new PostgresConnection_1.PostgresConnection();
+    switch (DB_ENV) {
+        case 'mongo':
+            return new MongoConnection_1.MongoConnection();
+        case 'postgres':
+            return new PostgresConnection_1.PostgresConnection();
+        default:
+            return new MongoConnection_1.MongoConnection();
     }
 };
 const db = chooseDb();

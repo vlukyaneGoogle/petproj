@@ -1,7 +1,12 @@
-import {ITodo} from '../common/types';
+import { ITodo } from '../common/types';
+import { Sequelize } from 'sequelize';
+import { Mongoose } from 'mongoose'
 
 export abstract class Connection {
+    dataBaseObj: Sequelize | Mongoose;
     constructor() {}
+
+    abstract getDb(): Sequelize | Mongoose;
 
     abstract async connect(): Promise<void>;
 

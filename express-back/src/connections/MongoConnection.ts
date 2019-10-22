@@ -1,16 +1,25 @@
 import {Connection, QueryResult} from './Connection';
 import {ITodo} from '../common/types';
 import mongoTodoRepository from '../repositories/mongo-repositories/mongoTodoRepository';
+import { Mongoose } from 'mongoose';
 
 export class MongoConnection extends Connection {
+    dataBaseObj: Mongoose;
+    constructor() {
+        super();
+        this.dataBaseObj = require('mongoose');
+        this.dataBaseObj.connect('mongodb://127.0.0.1:27017/todos', {useNewUrlParser: true});
+        const connection = this.dataBaseObj.connection;
+        connection.once('open', function() {
+            console.log('MongoDB database connection established successfully');
+        });
+    }
+
+    getDb(): Mongoose {
+        return this.dataBaseObj;
+    }
 
     async connect(): Promise<void> {
-        const mongoose = require('mongoose');
-        mongoose.connect('mongodb://127.0.0.1:27017/todos', { useNewUrlParser: true });
-        const connection = mongoose.connection;
-        connection.once('open', function() {
-            console.log("MongoDB database connection established successfully");
-        });
         return;
     }
 

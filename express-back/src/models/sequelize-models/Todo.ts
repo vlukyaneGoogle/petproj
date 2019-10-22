@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import db from '../../services/chooseDbService';
 import postgresDb from '../../providers/postgresProvider';
 
 const Todo = postgresDb.define('Todo', {
