@@ -2,11 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const utils_1 = tslib_1.__importDefault(require("../utils/utils"));
-const chooseDbService_1 = tslib_1.__importDefault(require("../services/chooseDbService"));
-chooseDbService_1.default.connect();
+const todos_1 = tslib_1.__importDefault(require("../services/todos"));
 const getAllTodos = (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allTodos = yield chooseDbService_1.default.getAllTodos();
+        const allTodos = yield todos_1.default.getAllTodos();
         return utils_1.default.sendResponse(res, {
             data: allTodos
         }, 200);
@@ -20,7 +19,7 @@ const getAllTodos = (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, func
 });
 const addNewTodo = (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield chooseDbService_1.default.addNewTodo(req.body);
+        const result = yield todos_1.default.addNewTodo(req.body);
         utils_1.default.sendResponse(res, {
             message: 'todo added successfully',
             result
@@ -35,7 +34,7 @@ const addNewTodo = (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, funct
 });
 const deleteTodoById = (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield chooseDbService_1.default.deleteTodo(req.params.id);
+        yield todos_1.default.deleteTodoById(req.params.id);
         utils_1.default.sendResponse(res, {
             message: "Successfully delete todo"
         }, 200);
@@ -49,7 +48,7 @@ const deleteTodoById = (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, f
 });
 const updateTodoById = (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield chooseDbService_1.default.updateTodo(req.params.id, req.body);
+        yield todos_1.default.updateTodoById(req.params.id, req.body);
         utils_1.default.sendResponse(res, {
             message: "Successfully udpate todo"
         }, 200);

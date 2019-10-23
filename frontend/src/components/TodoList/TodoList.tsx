@@ -69,9 +69,7 @@ const TodoListExp: React.FC = () => {
     const addTodo = async (todoTextContent: string) => {
         if (todoTextContent === '') return;
         const todoToAdd = {
-            content: todoTextContent,
-            isCompleted: false,
-            isEditing: false
+            content: todoTextContent
         };
         const addedTodoResponse = await fetch("http://localhost:3001/todos/add", {
             method: 'POST',
