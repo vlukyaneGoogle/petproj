@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Connection {
+class Provider {
     constructor() { }
 }
-exports.Connection = Connection;
+exports.Provider = Provider;

@@ -2,15 +2,15 @@ import { ITodo } from '../common/types';
 import { Sequelize } from 'sequelize';
 import { Mongoose } from 'mongoose'
 
-export abstract class Connection {
+export abstract class Provider {
     dataBaseObj: Sequelize | Mongoose;
     constructor() {}
 
     abstract getDb(): Sequelize | Mongoose;
 
-    abstract async connect(): Promise<void>;
+    abstract connect(): void | Sequelize;
 
-    abstract isConnected(): boolean;
+    abstract async isConnected(): Promise<void>;
 
     abstract async close(force?: boolean): Promise<void>;
 
@@ -18,9 +18,9 @@ export abstract class Connection {
 
     abstract async addNewTodo(todo: ITodo): Promise<ITodo>;
 
-    abstract async updateTodo(id: number, todo: ITodo): Promise<void>;
+    abstract async updateTodoById(id: number, todo: ITodo): Promise<void>;
 
-    abstract async deleteTodo(id: number): Promise<QueryResult>;
+    abstract async deleteTodoById(id: number): Promise<QueryResult>;
 
 }
 

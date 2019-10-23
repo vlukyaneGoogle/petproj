@@ -6,8 +6,7 @@ import logger from 'morgan';
 
 const port = process.env.PORT || 3001;
 const app = express();
-import db from './services/chooseDbService';
-console.log('MY DB: ', db.getDb());
+
 app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import todosController from '../controllers/todosController';
+import todosController from '../controllers/todos';
 // @ts-ignore ????
 const router = new Router();
 
