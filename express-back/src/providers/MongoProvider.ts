@@ -1,6 +1,6 @@
 import {Provider, QueryResult} from './Provider';
 import {ITodo} from '../common/types';
-import mongoDb from '../repository/mongoDb';
+import mongoDb from '../repository/mongoRepo';
 import { Mongoose } from 'mongoose';
 
 export class MongoProvider extends Provider {
@@ -8,6 +8,7 @@ export class MongoProvider extends Provider {
     constructor() {
         super();
         this.connect();
+        console.log('CLASS');
     }
 
     getDb(): Mongoose {

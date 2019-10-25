@@ -1,5 +1,5 @@
 import utils from '../utils/utils';
-import todosService from '../services/todos';
+import todosService from '../services/TodoService';
 
 const getAllTodos = async (req, res) => {
     try {

@@ -5,7 +5,7 @@ const PostgresProvider_1 = require("../providers/PostgresProvider");
 const dotenv = require('dotenv');
 dotenv.config();
 const DB_ENV = process.env.DATABASE;
-const chooseDb = () => {
+const chooseProvider = () => {
     switch (DB_ENV) {
         case 'mongo':
             return new MongoProvider_1.MongoProvider();
@@ -15,5 +15,5 @@ const chooseDb = () => {
             return new MongoProvider_1.MongoProvider();
     }
 };
-const dbRepo = chooseDb();
-exports.default = dbRepo;
+const dbProvider = chooseProvider();
+exports.default = dbProvider;

@@ -1,14 +1,17 @@
 import { ITodo } from '../common/types';
 import { QueryResult } from '../providers/Provider';
-import dbRepo from '../repository/DB';
+import dbProvider from '../repository/DB';
+
+import appContext from '../index'
 
 const checkConnection = async () => {
-    await dbRepo.isConnected();
+    console.log('opop');
+    await dbProvider.isConnected();
 };
 checkConnection();
 
 const getAllTodos = async (): Promise<ITodo[]> => {
-    return await dbRepo.getAllTodos();
+    return await dbProvider.getAllTodos();
 };
 
 const addNewTodo = async (reqBody): Promise<ITodo> => {
@@ -18,11 +21,11 @@ const addNewTodo = async (reqBody): Promise<ITodo> => {
         isCompleted: false,
         isEditing: false
     };
-    return await dbRepo.addNewTodo(todo);
+    return await dbProvider.addNewTodo(todo);
 };
 
 const deleteTodoById = async (id: number): Promise<QueryResult> => {
-    return await dbRepo.deleteTodoById(id);
+    return await dbProvider.deleteTodoById(id);
 };
 
 const updateTodoById = async (id: number, reqBody) => {
@@ -31,7 +34,7 @@ const updateTodoById = async (id: number, reqBody) => {
         isCompleted: reqBody.isCompleted,
         isEditing: reqBody.isEditing
     };
-    return await dbRepo.updateTodoById(id, todo)
+    return await dbProvider.updateTodoById(id, todo)
 };
 
 export default {
