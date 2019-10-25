@@ -1,17 +1,9 @@
 import { ITodo } from '../common/types';
 import { QueryResult } from '../providers/Provider';
-import dbProvider from '../repository/DB';
-
-import appContext from '../index'
-
-const checkConnection = async () => {
-    console.log('opop');
-    await dbProvider.isConnected();
-};
-checkConnection();
+import DIcontainer from '../index';
 
 const getAllTodos = async (): Promise<ITodo[]> => {
-    return await dbProvider.getAllTodos();
+    return await DIcontainer.database.getAllTodos();
 };
 
 const addNewTodo = async (reqBody): Promise<ITodo> => {
@@ -21,11 +13,11 @@ const addNewTodo = async (reqBody): Promise<ITodo> => {
         isCompleted: false,
         isEditing: false
     };
-    return await dbProvider.addNewTodo(todo);
+    return await DIcontainer.database.addNewTodo(todo);
 };
 
 const deleteTodoById = async (id: number): Promise<QueryResult> => {
-    return await dbProvider.deleteTodoById(id);
+    return await DIcontainer.database.deleteTodoById(id);
 };
 
 const updateTodoById = async (id: number, reqBody) => {
@@ -34,7 +26,7 @@ const updateTodoById = async (id: number, reqBody) => {
         isCompleted: reqBody.isCompleted,
         isEditing: reqBody.isEditing
     };
-    return await dbProvider.updateTodoById(id, todo)
+    return await DIcontainer.database.updateTodoById(id, todo)
 };
 
 export default {

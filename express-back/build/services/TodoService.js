@@ -1,14 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const DB_1 = tslib_1.__importDefault(require("../repository/DB"));
-const checkConnection = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    console.log('opop');
-    yield DB_1.default.isConnected();
-});
-checkConnection();
+const index_1 = tslib_1.__importDefault(require("../index"));
 const getAllTodos = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield DB_1.default.getAllTodos();
+    return yield index_1.default.database.getAllTodos();
 });
 const addNewTodo = (reqBody) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const { content } = reqBody;
@@ -17,10 +12,10 @@ const addNewTodo = (reqBody) => tslib_1.__awaiter(void 0, void 0, void 0, functi
         isCompleted: false,
         isEditing: false
     };
-    return yield DB_1.default.addNewTodo(todo);
+    return yield index_1.default.database.addNewTodo(todo);
 });
 const deleteTodoById = (id) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield DB_1.default.deleteTodoById(id);
+    return yield index_1.default.database.deleteTodoById(id);
 });
 const updateTodoById = (id, reqBody) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const todo = {
@@ -28,7 +23,7 @@ const updateTodoById = (id, reqBody) => tslib_1.__awaiter(void 0, void 0, void 0
         isCompleted: reqBody.isCompleted,
         isEditing: reqBody.isEditing
     };
-    return yield DB_1.default.updateTodoById(id, todo);
+    return yield index_1.default.database.updateTodoById(id, todo);
 });
 exports.default = {
     getAllTodos,

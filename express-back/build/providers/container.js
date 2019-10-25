@@ -4,5 +4,6 @@ const Container_1 = require("../container/Container");
 module.exports = function () {
     let container = new Container_1.Container();
     require('./dbProvider')(container);
+    require('./appProvider')(container);
     return container;
 };
