@@ -1,19 +1,19 @@
-export class Container {
+module.exports = class Container {
     //????
-    declare: any;
+    declares: any;
 
     constructor(){
-        this.declare = {};
+        this.declares = {};
     }
 
-    service(name, cb){
+    declare(name, cb){
         Object.defineProperty(this, name, {
             get: () => {
-                if(!this.declare.hasOwnProperty(name)){
-                    this.declare[name] = cb(this);
+                if(!this.declares.hasOwnProperty(name)){
+                    this.declares[name] = cb(this);
                 }
 
-                return this.declare[name];
+                return this.declares[name];
             },
             configurable: true,
             enumerable: true
@@ -21,4 +21,4 @@ export class Container {
 
         return this;
     }
-}
+};

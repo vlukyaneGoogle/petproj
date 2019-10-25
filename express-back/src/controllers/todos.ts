@@ -1,4 +1,4 @@
-import utils from '../utils/utils';
+const utils = require('../utils/utils');
 import todosService from '../services/TodoService';
 
 const getAllTodos = async (req, res) => {

@@ -1,21 +1,19 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Container {
+module.exports = class Container {
     constructor() {
-        this.declare = {};
+        this.declares = {};
     }
-    service(name, cb) {
+    declare(name, cb) {
         Object.defineProperty(this, name, {
             get: () => {
-                if (!this.declare.hasOwnProperty(name)) {
-                    this.declare[name] = cb(this);
+                if (!this.declares.hasOwnProperty(name)) {
+                    this.declares[name] = cb(this);
                 }
-                return this.declare[name];
+                return this.declares[name];
             },
             configurable: true,
             enumerable: true
         });
         return this;
     }
-}
-exports.Container = Container;
+};

@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const index_1 = tslib_1.__importDefault(require("../index"));
+const DIcontainer = require('../index');
 const getAllTodos = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield index_1.default.database.getAllTodos();
+    return yield DIcontainer.database.getAllTodos();
 });
 const addNewTodo = (reqBody) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const { content } = reqBody;
@@ -12,10 +12,10 @@ const addNewTodo = (reqBody) => tslib_1.__awaiter(void 0, void 0, void 0, functi
         isCompleted: false,
         isEditing: false
     };
-    return yield index_1.default.database.addNewTodo(todo);
+    return yield DIcontainer.database.addNewTodo(todo);
 });
 const deleteTodoById = (id) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield index_1.default.database.deleteTodoById(id);
+    return yield DIcontainer.database.deleteTodoById(id);
 });
 const updateTodoById = (id, reqBody) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const todo = {
@@ -23,7 +23,7 @@ const updateTodoById = (id, reqBody) => tslib_1.__awaiter(void 0, void 0, void 0
         isCompleted: reqBody.isCompleted,
         isEditing: reqBody.isEditing
     };
-    return yield index_1.default.database.updateTodoById(id, todo);
+    return yield DIcontainer.database.updateTodoById(id, todo);
 });
 exports.default = {
     getAllTodos,

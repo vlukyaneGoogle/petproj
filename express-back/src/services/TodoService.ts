@@ -1,6 +1,7 @@
 import { ITodo } from '../common/types';
-import { QueryResult } from '../providers/Provider';
-import DIcontainer from '../index';
+import { QueryResult } from '../common/types';
+
+const DIcontainer = require('../index');
 
 const getAllTodos = async (): Promise<ITodo[]> => {
     return await DIcontainer.database.getAllTodos();
