@@ -1,5 +1,5 @@
 import {IContainer} from './common/types';
-let createContainer = require('./container/providers/container');
+const createContainer = require('./container/providers/container');
 
 const connect = async () => {
     return await createContainer();
