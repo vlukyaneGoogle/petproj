@@ -40,3 +40,10 @@ export interface IService {
     updateTodoById(id: number, todo: ITodo): Promise<void>;
 }
 
+export interface IController {
+    getAllTodos(req: any, res: any): Promise<ITodo[]>;
+    addNewTodo(req: any, res: any): Promise<ITodo>;
+    deleteTodoById(req: any, res: any): Promise<QueryResult>;
+    updateTodoById(req: any, res: any): Promise<void>;
+}
+

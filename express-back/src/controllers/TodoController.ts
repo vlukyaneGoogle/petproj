@@ -1,14 +1,17 @@
 import {Service} from '../common/Service';
+import {Controller} from '../common/Controller';
+import {ITodo, QueryResult} from '../common/types';
 
 const utils = require('../utils/utils');
 
-module.exports = class TodoController {
+module.exports = class TodoController extends Controller{
     todoService: Service;
     constructor(todoService: Service) {
+        super(todoService);
         this.todoService = todoService;
     }
 
-    getAllTodos = async (req, res) => {
+    getAllTodos = async (req, res): Promise<ITodo[]> => {
         try {
             const allTodos = await this.todoService.getAllTodos();
             return utils.sendResponse(res, {
@@ -22,43 +25,44 @@ module.exports = class TodoController {
         }
     };
 
-    addNewTodo = async (req, res) => {
+    addNewTodo = async (req, res): Promise<ITodo> => {
         try {
             const result = await this.todoService.addNewTodo(req.body);
-            utils.sendResponse(res,{
+            return utils.sendResponse(res,{
                 message: 'todo added successfully',
                 result
             }, 200);
         } catch (err) {
-            utils.sendResponse(res,{
+            return utils.sendResponse(res,{
                 message: "Some error occured while adding new todo",
                 err
             }, 400);
         }
+
     };
 
-    deleteTodoById = async (req, res) => {
+    deleteTodoById = async (req: any, res: any): Promise<QueryResult> => {
         try {
             await this.todoService.deleteTodoById(req.params.id);
-            utils.sendResponse(res,{
+            return utils.sendResponse(res,{
                 message: "Successfully delete todo"
             }, 200)
         } catch (err) {
-            utils.sendResponse(res,{
+            return utils.sendResponse(res,{
                 message: "Some error occured while deleting todo item",
                 err
             }, 400);
         }
     };
 
-    updateTodoById = async (req, res) => {
+    updateTodoById = async (req: any, res: any): Promise<void> => {
         try {
             await this.todoService.updateTodoById(req.params.id, req.body);
-            utils.sendResponse(res,{
+            return utils.sendResponse(res,{
                 message: "Successfully udpate todo"
             }, 200)
         } catch (err) {
-            utils.sendResponse(res,{
+            return utils.sendResponse(res,{
                 message: "Some error occured while updating todo item",
                 err
             }, 400)
