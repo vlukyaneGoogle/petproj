@@ -11,12 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const Container = require('../Container');
 const dotenv = require('dotenv');
 dotenv.config();
+const DB_ENV = process.env.DATABASE;
 module.exports = function () {
     return __awaiter(this, void 0, void 0, function* () {
         let container = new Container();
-        yield require('./dbInstanceProvider')(container);
-        yield require('./modelProvider')(container);
+        yield require('./dbInstanceProvider')(container, DB_ENV);
+        yield require('./modelProvider')(container, DB_ENV);
         yield require('./dbProvider')(container);
+        yield require('./serviceProvider')(container);
+        yield require('./controllerProvider')(container);
+        yield require('./routeProvider')(container);
         yield require('./appProvider')(container);
         return container;
     });

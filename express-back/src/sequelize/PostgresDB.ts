@@ -3,8 +3,6 @@ import { DB } from '../common/DB';
 import { ITodo } from '../common/types';
 import { Sequelize } from 'sequelize';
 
-const DIcontainer = require('../index');
-const connectPsql = require('./postgresConnection');
 const SequelizeRepo = require('./SequlizeRepo');
 
 module.exports = class PostgresDB extends DB {
@@ -25,11 +23,10 @@ module.exports = class PostgresDB extends DB {
         this.dataRepository =  new SequelizeRepo(todoModel);
     }
 
-    async connect(): Promise<any> {
-        return await connectPsql();
-    }
+    connect = async (): Promise<any> => {
+    };
 
-    async isConnected(): Promise<void> {
+    isConnected = async (): Promise<void> => {
         await this.dataBaseObj
             .authenticate()
             .then(() => {
@@ -38,26 +35,25 @@ module.exports = class PostgresDB extends DB {
             .catch(err => {
                 console.error('Unable to connect to the database:', err);
             });
-    }
+    };
 
-    async close(force?: boolean): Promise<void> {
+    close = async (force?: boolean): Promise<void> =>{
         return undefined;
-    }
+    };
 
-    async getAllTodos(): Promise<ITodo[]>  {
+    getAllTodos = async (): Promise<ITodo[]> => {
             return await this.dataRepository.getAllTodos();
-    }
+    };
 
-    async addNewTodo(todo: ITodo): Promise<ITodo> {
+    addNewTodo = async (todo: ITodo): Promise<ITodo> => {
         return await this.dataRepository.addNewTodo(todo);
-    }
+    };
 
-    async deleteTodoById(id: number): Promise<QueryResult> {
+    deleteTodoById = async (id: number): Promise<QueryResult> =>{
         return await this.dataRepository.deleteTodoById(id);
-    }
+    };
 
-    async updateTodoById(id: number, todo: ITodo): Promise<void> {
+    updateTodoById = async (id: number, todo: ITodo): Promise<void> =>{
         return await this.dataRepository.updateTodoById(id, todo);
     }
-
-}
+};

@@ -1,15 +1,13 @@
 const utils = require('../utils/utils');
-const TodoService = require('../services/Todo-Service');
 
 module.exports = class TodoController {
-    todoService: any;
-    constructor() {
-        this.todoService = new TodoService();
+    todoService: any; // TODO interface
+    constructor(todoService) {
+        this.todoService = todoService;
     }
 
-    async getAllTodos(req, res) {
+    getAllTodos = async (req, res) => {
         try {
-            console.log('IM IN')
             const allTodos = await this.todoService.getAllTodos();
             return utils.sendResponse(res, {
                 data: allTodos
@@ -22,7 +20,7 @@ module.exports = class TodoController {
         }
     };
 
-    async addNewTodo(req, res) {
+    addNewTodo = async (req, res) => {
         try {
             const result = await this.todoService.addNewTodo(req.body);
             utils.sendResponse(res,{
@@ -37,7 +35,7 @@ module.exports = class TodoController {
         }
     };
 
-    async deleteTodoById(req, res) {
+    deleteTodoById = async (req, res) => {
         try {
             await this.todoService.deleteTodoById(req.params.id);
             utils.sendResponse(res,{
@@ -51,7 +49,7 @@ module.exports = class TodoController {
         }
     };
 
-    async updateTodoById(req, res) {
+    updateTodoById = async (req, res) => {
         try {
             await this.todoService.updateTodoById(req.params.id, req.body);
             utils.sendResponse(res,{
@@ -64,4 +62,4 @@ module.exports = class TodoController {
             }, 400)
         }
     };
-}
+};

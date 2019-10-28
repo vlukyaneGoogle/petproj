@@ -1,6 +1,7 @@
 import {DataTypes} from 'sequelize';
 
-module.exports = async function(c){
+module.exports = async function(c, DB_ENV){
+    if (DB_ENV === 'mongo') return;
     const TodoModel = c.databaseInstance.define('Todo', {
         content: {
             type: DataTypes.STRING
@@ -12,5 +13,5 @@ module.exports = async function(c){
             type: DataTypes.BOOLEAN
         },
     });
-    c.declare('todoModel',  c => TodoModel)
+    c.declare('todoModel',  c => TodoModel);
 };

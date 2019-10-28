@@ -9,15 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const utils = require('../utils/utils');
-const TodoService = require('../services/Todo-Service');
 module.exports = class TodoController {
-    constructor() {
-        this.todoService = new TodoService();
-    }
-    getAllTodos(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+    constructor(todoService) {
+        this.getAllTodos = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            console.log('MINE: ', this);
             try {
-                console.log('IM IN');
                 const allTodos = yield this.todoService.getAllTodos();
                 return utils.sendResponse(res, {
                     data: allTodos
@@ -30,10 +26,7 @@ module.exports = class TodoController {
                 }, 400);
             }
         });
-    }
-    ;
-    addNewTodo(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.addNewTodo = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield this.todoService.addNewTodo(req.body);
                 utils.sendResponse(res, {
@@ -48,10 +41,7 @@ module.exports = class TodoController {
                 }, 400);
             }
         });
-    }
-    ;
-    deleteTodoById(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.deleteTodoById = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.todoService.deleteTodoById(req.params.id);
                 utils.sendResponse(res, {
@@ -65,10 +55,7 @@ module.exports = class TodoController {
                 }, 400);
             }
         });
-    }
-    ;
-    updateTodoById(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.updateTodoById = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.todoService.updateTodoById(req.params.id, req.body);
                 utils.sendResponse(res, {
@@ -82,6 +69,6 @@ module.exports = class TodoController {
                 }, 400);
             }
         });
+        this.todoService = todoService;
     }
-    ;
 };

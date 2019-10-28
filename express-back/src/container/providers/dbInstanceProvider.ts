@@ -1,5 +1,4 @@
-const DB_ENV = process.env.DATABASE;
-module.exports = async function(c){
+module.exports = async function(c, DB_ENV){
     if (DB_ENV === 'mongo') {
         const databaseProvider = await require('../../mongo/mongoConnection')();
         c.declare('databaseInstance',  c => databaseProvider);

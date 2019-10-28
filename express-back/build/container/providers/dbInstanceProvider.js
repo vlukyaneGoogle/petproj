@@ -8,8 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const DB_ENV = process.env.DATABASE;
-module.exports = function (c) {
+module.exports = function (c, DB_ENV) {
     return __awaiter(this, void 0, void 0, function* () {
         if (DB_ENV === 'mongo') {
             const databaseProvider = yield require('../../mongo/mongoConnection')();

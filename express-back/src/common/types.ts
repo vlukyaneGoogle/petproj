@@ -1,5 +1,5 @@
 import {DB} from './DB';
-import {Express} from 'express';
+import {Express, Router} from 'express';
 import {Sequelize} from 'sequelize';
 
 export interface IResponse {
@@ -18,6 +18,7 @@ export interface IContainer {
     database: DB,
     databaseInstance: Sequelize,
     App: Express;
+    todoRouter: Router
 }
 
 export interface QueryResult {

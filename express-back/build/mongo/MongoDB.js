@@ -2,20 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const DB_1 = require("../common/DB");
-const DIcontainer = require('../index');
 const MongoRepo = require('./MongoRepo');
-const connectMongo = require('./mongoConnection');
 module.exports = class MongoDB extends DB_1.DB {
-    constructor() {
+    constructor(databaseInstance) {
         super();
-        this.connect();
+        this.dataBaseObj = databaseInstance;
         this.dataRepository = new MongoRepo();
     }
     getDb() {
         return this.dataBaseObj;
     }
     connect() {
-        this.dataBaseObj = DIcontainer.databaseInstance;
     }
     isConnected() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {

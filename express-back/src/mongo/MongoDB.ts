@@ -1,18 +1,16 @@
-import {IRepo, QueryResult, T} from '../common/types';
+import { QueryResult } from '../common/types';
 import { DB } from '../common/DB';
-import {ITodo} from '../common/types';
+import { ITodo } from '../common/types';
 import { Mongoose } from 'mongoose';
 
-const DIcontainer = require('../index');
 const MongoRepo = require('./MongoRepo');
-const connectMongo = require('./mongoConnection');
 
 module.exports = class MongoDB extends DB {
     dataBaseObj: Mongoose;
     dataRepository: any;
-    constructor() {
+    constructor(databaseInstance) {
         super();
-        this.connect();
+        this.dataBaseObj = databaseInstance;
         this.dataRepository = new MongoRepo();
     }
 
@@ -21,7 +19,6 @@ module.exports = class MongoDB extends DB {
     }
 
     connect(): void {
-        this.dataBaseObj = DIcontainer.databaseInstance;
     }
 
     async isConnected(): Promise<void> {
@@ -50,4 +47,4 @@ module.exports = class MongoDB extends DB {
     async updateTodoById(id: number, todo: ITodo): Promise<void> {
         return await this.dataRepository.updateTodoById(id, todo);
     }
-}
+};

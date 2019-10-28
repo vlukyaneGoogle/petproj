@@ -1,38 +1,37 @@
-import { ITodo } from '../common/types';
-import { QueryResult } from '../common/types';
+import {ITodo, QueryResult} from '../common/types';
+import {DB} from '../common/DB';
 
-const DIcontainer = require('../index');
+module.exports = class TodoService {
+    database: DB;
+    constructor(database) {
+        this.database = database;
+    }
 
-const getAllTodos = async (): Promise<ITodo[]> => {
-    return await DIcontainer.database.getAllTodos();
-};
-
-const addNewTodo = async (reqBody): Promise<ITodo> => {
-    const { content } = reqBody;
-    const todo: ITodo = {
-        content,
-        isCompleted: false,
-        isEditing: false
+    getAllTodos = async (): Promise<ITodo[]> => {
+        console.log('IM IN IN ');
+        return await this.database.getAllTodos();
     };
-    return await DIcontainer.database.addNewTodo(todo);
-};
 
-const deleteTodoById = async (id: number): Promise<QueryResult> => {
-    return await DIcontainer.database.deleteTodoById(id);
-};
-
-const updateTodoById = async (id: number, reqBody) => {
-    const todo: ITodo = {
-        content: reqBody.content,
-        isCompleted: reqBody.isCompleted,
-        isEditing: reqBody.isEditing
+    addNewTodo = async (reqBody): Promise<ITodo> => {
+        const { content } = reqBody;
+        const todo: ITodo = {
+            content,
+            isCompleted: false,
+            isEditing: false
+        };
+        return await this.database.addNewTodo(todo);
     };
-    return await DIcontainer.database.updateTodoById(id, todo)
-};
 
-export default {
-    getAllTodos,
-    addNewTodo,
-    deleteTodoById,
-    updateTodoById,
-}
+    deleteTodoById = async (id: number): Promise<QueryResult> =>{
+        return await this.database.deleteTodoById(id);
+    };
+
+    updateTodoById = async (id: number, reqBody) =>{
+        const todo: ITodo = {
+            content: reqBody.content,
+            isCompleted: reqBody.isCompleted,
+            isEditing: reqBody.isEditing
+        };
+        return await this.database.updateTodoById(id, todo)
+    };
+};

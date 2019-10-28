@@ -1,7 +1,4 @@
-import todosRouter from './routes/todos';
 import {IContainer} from './common/types';
-
-const port = process.env.PORT || 3001;
 
 let createContainer = require('./container/providers/container');
 let isContainerCreated: boolean = false;
@@ -10,14 +7,17 @@ let DIcontainer: IContainer;
 const connect = async () => {
     if (isContainerCreated) return DIcontainer;
     isContainerCreated = true;
-    DIcontainer = await createContainer();
-    const app = DIcontainer.App;
-    app.use("/todos", todosRouter);
-    app.listen(port, function() {
-        console.log("Runnning on " + port);
-    });
-    DIcontainer.database.isConnected();
-    return DIcontainer;
+    return await createContainer();
 };
 
-module.exports = connect();
+const getAsync = async () => {
+    return await connect();
+};
+
+
+module.exports = getAsync().then(container => {
+    DIcontainer = container;
+    DIcontainer.database.isConnected();
+    console.log('DI IS READY: ');
+    return container;
+});

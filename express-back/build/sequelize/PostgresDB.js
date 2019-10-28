@@ -2,28 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const DB_1 = require("../common/DB");
-const DIcontainer = require('../index');
-const connectPsql = require('./postgresConnection');
 const SequelizeRepo = require('./SequlizeRepo');
 module.exports = class PostgresDB extends DB_1.DB {
     constructor(databaseInstance, todoModel) {
         super();
-        this.createRepo(todoModel);
-        this.dataBaseObj = databaseInstance;
-    }
-    getDb() {
-        return this.dataBaseObj;
-    }
-    createRepo(todoModel) {
-        this.dataRepository = new SequelizeRepo(todoModel);
-    }
-    connect() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield connectPsql();
+        this.connect = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
         });
-    }
-    isConnected() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        this.isConnected = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield this.dataBaseObj
                 .authenticate()
                 .then(() => {
@@ -33,30 +18,28 @@ module.exports = class PostgresDB extends DB_1.DB {
                 console.error('Unable to connect to the database:', err);
             });
         });
-    }
-    close(force) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        this.close = (force) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             return undefined;
         });
-    }
-    getAllTodos() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        this.getAllTodos = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield this.dataRepository.getAllTodos();
         });
-    }
-    addNewTodo(todo) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        this.addNewTodo = (todo) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield this.dataRepository.addNewTodo(todo);
         });
-    }
-    deleteTodoById(id) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        this.deleteTodoById = (id) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield this.dataRepository.deleteTodoById(id);
         });
-    }
-    updateTodoById(id, todo) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        this.updateTodoById = (id, todo) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield this.dataRepository.updateTodoById(id, todo);
         });
+        this.createRepo(todoModel);
+        this.dataBaseObj = databaseInstance;
+    }
+    getDb() {
+        return this.dataBaseObj;
+    }
+    createRepo(todoModel) {
+        this.dataRepository = new SequelizeRepo(todoModel);
     }
 };
