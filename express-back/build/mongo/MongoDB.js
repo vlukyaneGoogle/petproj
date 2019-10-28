@@ -5,7 +5,7 @@ const DB_1 = require("../common/DB");
 const MongoRepo = require('./MongoRepo');
 module.exports = class MongoDB extends DB_1.DB {
     constructor(databaseInstance) {
-        super();
+        super(databaseInstance);
         this.dataBaseObj = databaseInstance;
         this.dataRepository = new MongoRepo();
     }

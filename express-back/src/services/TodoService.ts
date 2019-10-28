@@ -1,14 +1,15 @@
 import {ITodo, QueryResult} from '../common/types';
 import {DB} from '../common/DB';
+import {Service} from '../common/Service';
 
-module.exports = class TodoService {
+module.exports = class TodoService extends Service {
     database: DB;
     constructor(database) {
+        super(database);
         this.database = database;
     }
 
     getAllTodos = async (): Promise<ITodo[]> => {
-        console.log('IM IN IN ');
         return await this.database.getAllTodos();
     };
 

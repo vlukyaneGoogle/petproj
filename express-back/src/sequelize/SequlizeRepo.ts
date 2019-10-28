@@ -2,6 +2,7 @@ import {Repo} from '../common/Repo';
 import {ITodo, QueryResult} from '../common/types';
 
 module.exports = class SequelizeRepo extends Repo {
+    // ?????
     Todo: any;
     constructor(todoModel) {
         super();

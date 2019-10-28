@@ -1,6 +1,7 @@
 import {DB} from './DB';
 import {Express, Router} from 'express';
 import {Sequelize} from 'sequelize';
+import {Service} from './Service';
 
 export interface IResponse {
     success: boolean,
@@ -14,7 +15,7 @@ export interface ITodo {
 }
 
 export interface IContainer {
-    services: any;
+    todoService: Service;
     database: DB,
     databaseInstance: Sequelize,
     App: Express;
@@ -32,6 +33,10 @@ export interface IRepo {
     updateTodoById(id: number, todo: ITodo): Promise<void>;
 }
 
-export interface T {
-    any;
+export interface IService {
+    getAllTodos(): Promise<ITodo[]>;
+    addNewTodo(todo: ITodo): Promise<ITodo>;
+    deleteTodoById(id: number): Promise<QueryResult>;
+    updateTodoById(id: number, todo: ITodo): Promise<void>;
 }
+

@@ -1,4 +1,4 @@
-import {IRepo, ITodo, T} from './types';
+import { IRepo, ITodo } from './types';
 import { Sequelize } from 'sequelize';
 import { Mongoose } from 'mongoose'
 import { QueryResult } from './types';
@@ -6,8 +6,10 @@ import {Repo} from './Repo';
 
 export abstract class DB {
     dataBaseObj: Sequelize | Mongoose;
-    dataRepository: any;
-    constructor() {}
+    dataRepository: Repo;
+    constructor(repo: Repo) {
+        this.dataRepository = repo;
+    }
 
     abstract getDb(): Sequelize | Mongoose;
 

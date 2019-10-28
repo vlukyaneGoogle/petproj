@@ -5,7 +5,7 @@ const DB_1 = require("../common/DB");
 const SequelizeRepo = require('./SequlizeRepo');
 module.exports = class PostgresDB extends DB_1.DB {
     constructor(databaseInstance, todoModel) {
-        super();
+        super(databaseInstance);
         this.connect = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
         });
         this.isConnected = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -33,13 +33,10 @@ module.exports = class PostgresDB extends DB_1.DB {
         this.updateTodoById = (id, todo) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield this.dataRepository.updateTodoById(id, todo);
         });
-        this.createRepo(todoModel);
+        this.dataRepository = new SequelizeRepo(todoModel);
         this.dataBaseObj = databaseInstance;
     }
     getDb() {
         return this.dataBaseObj;
-    }
-    createRepo(todoModel) {
-        this.dataRepository = new SequelizeRepo(todoModel);
     }
 };

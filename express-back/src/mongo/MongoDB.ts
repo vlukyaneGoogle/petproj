@@ -2,14 +2,15 @@ import { QueryResult } from '../common/types';
 import { DB } from '../common/DB';
 import { ITodo } from '../common/types';
 import { Mongoose } from 'mongoose';
+import {Repo} from '../common/Repo';
 
 const MongoRepo = require('./MongoRepo');
 
 module.exports = class MongoDB extends DB {
     dataBaseObj: Mongoose;
-    dataRepository: any;
+    dataRepository: Repo;
     constructor(databaseInstance) {
-        super();
+        super(databaseInstance);
         this.dataBaseObj = databaseInstance;
         this.dataRepository = new MongoRepo();
     }

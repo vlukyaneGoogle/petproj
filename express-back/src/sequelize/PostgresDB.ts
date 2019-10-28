@@ -2,25 +2,21 @@ import { QueryResult } from '../common/types';
 import { DB } from '../common/DB';
 import { ITodo } from '../common/types';
 import { Sequelize } from 'sequelize';
+import {Repo} from '../common/Repo';
 
 const SequelizeRepo = require('./SequlizeRepo');
 
 module.exports = class PostgresDB extends DB {
-    dataBaseObj: any;
-    dataRepository: any;
+    dataBaseObj: Sequelize;
+    dataRepository: Repo;
     constructor(databaseInstance, todoModel) {
-        super();
-        this.createRepo(todoModel);
-
+        super(databaseInstance);
+        this.dataRepository =  new SequelizeRepo(todoModel);
         this.dataBaseObj = databaseInstance;
     }
 
     getDb (): Sequelize {
         return this.dataBaseObj
-    }
-
-    createRepo(todoModel) {
-        this.dataRepository =  new SequelizeRepo(todoModel);
     }
 
     connect = async (): Promise<any> => {

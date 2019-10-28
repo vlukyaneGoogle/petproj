@@ -1,8 +1,10 @@
+import {Service} from '../common/Service';
+
 const utils = require('../utils/utils');
 
 module.exports = class TodoController {
-    todoService: any; // TODO interface
-    constructor(todoService) {
+    todoService: Service;
+    constructor(todoService: Service) {
         this.todoService = todoService;
     }
 

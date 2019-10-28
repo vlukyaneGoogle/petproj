@@ -1,18 +1,10 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const utils = require('../utils/utils');
 module.exports = class TodoController {
     constructor(todoService) {
-        this.getAllTodos = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            console.log('MINE: ', this);
+        this.getAllTodos = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 const allTodos = yield this.todoService.getAllTodos();
                 return utils.sendResponse(res, {
@@ -26,7 +18,7 @@ module.exports = class TodoController {
                 }, 400);
             }
         });
-        this.addNewTodo = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.addNewTodo = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield this.todoService.addNewTodo(req.body);
                 utils.sendResponse(res, {
@@ -41,7 +33,7 @@ module.exports = class TodoController {
                 }, 400);
             }
         });
-        this.deleteTodoById = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.deleteTodoById = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.todoService.deleteTodoById(req.params.id);
                 utils.sendResponse(res, {
@@ -55,7 +47,7 @@ module.exports = class TodoController {
                 }, 400);
             }
         });
-        this.updateTodoById = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.updateTodoById = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.todoService.updateTodoById(req.params.id, req.body);
                 utils.sendResponse(res, {
