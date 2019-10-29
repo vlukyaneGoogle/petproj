@@ -49,7 +49,7 @@ class MongoRepo {
                 return err;
             }
         });
-        this.db = db;
+        this.db = db.db;
     }
 }
 exports.MongoRepo = MongoRepo;

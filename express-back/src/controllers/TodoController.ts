@@ -2,15 +2,21 @@ import {Service} from '../services/Service';
 import {Controller} from './Controller';
 import {ITodo, QueryResult} from '../repo/types';
 import {TodoService} from '../services/TodoService';
+import {Express, Router} from 'express';
 
 const utils = require('../utils/utils');
 
 export class TodoController extends Controller {
     todoService: Service;
+    router: Router;
+    app: Express;
 
-    constructor(todoService: TodoService) {
+    constructor(todoService: TodoService, app: Express) {
         super(todoService);
+        this.router = Router();
+        this.app = app;
         this.todoService = todoService;
+        this.initRoutes();
     }
 
     getAllTodos = async (req, res): Promise<ITodo[]> => {
@@ -70,4 +76,15 @@ export class TodoController extends Controller {
             }, 400)
         }
     };
-};
+
+    initRoutes() {
+        this.router.get('/', this.getAllTodos);
+        this.router.post('/add', this.addNewTodo);
+        this.router.delete('/delete/:id', this.deleteTodoById);
+        this.router.put('/update/:id', this.updateTodoById);
+    }
+
+    getRoutes() {
+        return this.router;
+    }
+}

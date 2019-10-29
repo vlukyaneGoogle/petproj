@@ -3,13 +3,13 @@ import Todo from './models/Todo';
 import {QueryResult} from '../types';
 import {Repo} from '../Repo';
 import {DB} from '../Repo';
+import {Mongoose} from 'mongoose';
+
 
 export class MongoRepo implements Repo {
-
-    db: DB;
-
+    db: Mongoose;
     constructor (db: DB) {
-        this.db = db
+        this.db = db.db
     }
 
     getAllTodos = async (): Promise<ITodo[]> => {

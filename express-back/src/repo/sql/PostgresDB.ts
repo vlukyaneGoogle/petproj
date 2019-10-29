@@ -1,10 +1,8 @@
 import { DB } from '../Repo';
 import {DataTypes, Sequelize} from 'sequelize';
 
-export class PostgresDB implements DB {
-    Todo: any;
-
-    init () {
+export class PostgresDB {
+    static init (): DB {
         const psql = new Sequelize('TodosDatabase', 'vlukyane', '', {
             host: 'localhost',
             dialect: 'postgres',
@@ -21,7 +19,7 @@ export class PostgresDB implements DB {
                 console.error('Unable to connect to the database:', err);
             });
 
-        this.Todo = psql.define('Todo',{
+        const Todo = psql.define('Todo',{
             content: {
                 type: DataTypes.STRING
             },
@@ -32,6 +30,9 @@ export class PostgresDB implements DB {
                 type: DataTypes.BOOLEAN
             },
         });
-        return this;
+        return {
+            db: psql,
+            Todo
+        }
     }
 }

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 class PostgresDB {
-    init() {
+    static init() {
         const psql = new sequelize_1.Sequelize('TodosDatabase', 'vlukyane', '', {
             host: 'localhost',
             dialect: 'postgres',
@@ -17,7 +17,7 @@ class PostgresDB {
             .catch(err => {
             console.error('Unable to connect to the database:', err);
         });
-        this.Todo = psql.define('Todo', {
+        const Todo = psql.define('Todo', {
             content: {
                 type: sequelize_1.DataTypes.STRING
             },
@@ -28,7 +28,10 @@ class PostgresDB {
                 type: sequelize_1.DataTypes.BOOLEAN
             },
         });
-        return this;
+        return {
+            db: psql,
+            Todo
+        };
     }
 }
 exports.PostgresDB = PostgresDB;

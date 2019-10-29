@@ -1,42 +1,27 @@
 import {App} from './App';
 import {MongoDB} from './repo/mongo/MongoDB';
-import {DB, Repo} from './repo/Repo';
-import {MongoRepo} from './repo/mongo/MongoRepo';
-import dotenv from "dotenv";
+import {DB} from './repo/Repo';
 import {PostgresDB} from './repo/sql/PostgresDB';
-import {SequelizeRepo} from './repo/sql/SequlizeRepo';
+import dotenv from "dotenv";
 dotenv.config();
 
 
-const DBTypes = {
+export const DBTypes = {
     MONGO: 'mongo',
     POSTGRE: 'postgres',
 };
 
-
 function getDb(type): DB {
     switch (type) {
-        case DBTypes.MONGO: return (new MongoDB()).init();
-        case DBTypes.POSTGRE: return (new PostgresDB()).init();
-        default:  return (new MongoDB()).init();
+        case DBTypes.MONGO: return MongoDB.init();
+        case DBTypes.POSTGRE: return PostgresDB.init();
+        default:  return MongoDB.init();
     }
 }
 
-
-function getRepo(type): Repo {
-    switch (type) {
-        case DBTypes.MONGO: return new MongoRepo(getDb(type));
-        case DBTypes.POSTGRE: return new SequelizeRepo(getDb(type));
-        default:  return new MongoRepo(getDb(type));
-    }
-}
-
-const repo = getRepo(process.env.DATABASE);
-const app = App.init(repo);
-
-module.exports = {
-    app
-};
+const dbType = process.env.DATABASE ? process.env.DATABASE : DBTypes.MONGO;
+const db: DB = getDb(dbType);
+App.init(db, dbType);
 
 
 

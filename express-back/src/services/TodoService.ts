@@ -34,4 +34,4 @@ export class TodoService implements IService {
         };
         return await this.repo.updateTodoById(id, todo)
     };
-};
+}

@@ -3,20 +3,18 @@ import {QueryResult} from './types';
 
 export interface Repo {
 
-    getAllTodos(): Promise<ITodo[]>;
+    getAllTodos() :Promise<ITodo[]>;
 
-    addNewTodo(todo: ITodo): Promise<ITodo>;
+    addNewTodo(todo :ITodo) :Promise<ITodo>;
 
-    deleteTodoById(id: number): Promise<QueryResult>;
+    deleteTodoById(id :number) :Promise<QueryResult>;
 
-    updateTodoById(id: number, todo: ITodo): Promise<void>;
+    updateTodoById(id :number, todo :ITodo) :Promise<void>;
 
 }
 
 export interface DB {
-    Todo: any;
-
-    init(): DB;
-
+    db :any;
+    Todo ?:any;
 }
 

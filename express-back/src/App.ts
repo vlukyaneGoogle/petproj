@@ -1,18 +1,16 @@
-import { Router } from 'express';
-
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const express = require ('express');
 const logger = require('morgan');
 const port = process.env.PORT || 3001;
-
-import {Repo} from './repo/Repo';
+import {DB} from './repo/Repo';
 import {TodoController} from './controllers/TodoController';
 import {TodoService} from './services/TodoService';
+import {RepoFactory} from './repo/RepoFactory';
 
 export class App {
 
-    static init(repo: Repo) {
+    static init(db: DB, dbType: string) {
         const app = express();
 
         app.use(logger('dev'));
@@ -20,16 +18,11 @@ export class App {
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
 
+        const repo = RepoFactory.create(db, dbType);
         const todoService = new TodoService(repo);
-        const todoController = new TodoController(todoService);
+        const router = new TodoController(todoService, app).getRoutes();
 
-        const router = Router();
-        router.get('/', todoController.getAllTodos);
-        router.post('/add', todoController.addNewTodo);
-        router.delete('/delete/:id', todoController.deleteTodoById);
-        router.put('/update/:id', todoController.updateTodoById);
         app.use("/todos", router);
-
         app.listen(port, function() {
             console.log("Runnning on " + port);
         })

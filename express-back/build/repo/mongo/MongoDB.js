@@ -2,12 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require('mongoose');
 class MongoDB {
-    init() {
+    static init() {
         mongoose.connect('mongodb://127.0.0.1:27017/todos', { useNewUrlParser: true });
         mongoose.connection.once('open', function () {
             console.log('Connection to mongoDB has been established successfully');
         });
-        return this;
+        return {
+            db: mongoose
+        };
     }
 }
 exports.MongoDB = MongoDB;
