@@ -1,4 +1,4 @@
-import { IResponse } from '../common/types';
+import { IResponse } from '../repo/types';
 
 const sendResponse = (res, data, code = 200) => {
     let send_data = <IResponse>{};

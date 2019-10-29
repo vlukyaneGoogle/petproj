@@ -1,12 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const Service_1 = require("../common/Service");
-module.exports = class TodoService extends Service_1.Service {
-    constructor(database) {
-        super(database);
+class TodoService {
+    constructor(repo) {
         this.getAllTodos = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.database.getAllTodos();
+            return yield this.repo.getAllTodos();
         });
         this.addNewTodo = (reqBody) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { content } = reqBody;
@@ -15,10 +13,10 @@ module.exports = class TodoService extends Service_1.Service {
                 isCompleted: false,
                 isEditing: false
             };
-            return yield this.database.addNewTodo(todo);
+            return yield this.repo.addNewTodo(todo);
         });
         this.deleteTodoById = (id) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.database.deleteTodoById(id);
+            return yield this.repo.deleteTodoById(id);
         });
         this.updateTodoById = (id, reqBody) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const todo = {
@@ -26,8 +24,10 @@ module.exports = class TodoService extends Service_1.Service {
                 isCompleted: reqBody.isCompleted,
                 isEditing: reqBody.isEditing
             };
-            return yield this.database.updateTodoById(id, todo);
+            return yield this.repo.updateTodoById(id, todo);
         });
-        this.database = database;
+        this.repo = repo;
     }
-};
+}
+exports.TodoService = TodoService;
+;

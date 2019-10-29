@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const Controller_1 = require("../common/Controller");
+const Controller_1 = require("./Controller");
 const utils = require('../utils/utils');
-module.exports = class TodoController extends Controller_1.Controller {
+class TodoController extends Controller_1.Controller {
     constructor(todoService) {
         super(todoService);
         this.getAllTodos = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -65,4 +65,6 @@ module.exports = class TodoController extends Controller_1.Controller {
         });
         this.todoService = todoService;
     }
-};
+}
+exports.TodoController = TodoController;
+;

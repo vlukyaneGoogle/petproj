@@ -1,12 +1,14 @@
-import {Service} from '../common/Service';
-import {Controller} from '../common/Controller';
-import {ITodo, QueryResult} from '../common/types';
+import {Service} from '../services/Service';
+import {Controller} from './Controller';
+import {ITodo, QueryResult} from '../repo/types';
+import {TodoService} from '../services/TodoService';
 
 const utils = require('../utils/utils');
 
-module.exports = class TodoController extends Controller{
+export class TodoController extends Controller {
     todoService: Service;
-    constructor(todoService: Service) {
+
+    constructor(todoService: TodoService) {
         super(todoService);
         this.todoService = todoService;
     }

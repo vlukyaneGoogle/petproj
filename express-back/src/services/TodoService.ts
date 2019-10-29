@@ -1,16 +1,15 @@
-import {ITodo, QueryResult} from '../common/types';
-import {DB} from '../common/DB';
-import {Service} from '../common/Service';
+import {IService, ITodo, QueryResult} from '../repo/types';
+import {Repo} from '../repo/Repo';
 
-module.exports = class TodoService extends Service {
-    database: DB;
-    constructor(database) {
-        super(database);
-        this.database = database;
+export class TodoService implements IService {
+    repo: Repo;
+
+    constructor(repo: Repo) {
+        this.repo = repo;
     }
 
     getAllTodos = async (): Promise<ITodo[]> => {
-        return await this.database.getAllTodos();
+        return await this.repo.getAllTodos();
     };
 
     addNewTodo = async (reqBody): Promise<ITodo> => {
@@ -20,11 +19,11 @@ module.exports = class TodoService extends Service {
             isCompleted: false,
             isEditing: false
         };
-        return await this.database.addNewTodo(todo);
+        return await this.repo.addNewTodo(todo);
     };
 
     deleteTodoById = async (id: number): Promise<QueryResult> =>{
-        return await this.database.deleteTodoById(id);
+        return await this.repo.deleteTodoById(id);
     };
 
     updateTodoById = async (id: number, reqBody) =>{
@@ -33,6 +32,6 @@ module.exports = class TodoService extends Service {
             isCompleted: reqBody.isCompleted,
             isEditing: reqBody.isEditing
         };
-        return await this.database.updateTodoById(id, todo)
+        return await this.repo.updateTodoById(id, todo)
     };
 };

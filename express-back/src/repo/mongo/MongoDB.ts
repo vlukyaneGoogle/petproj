@@ -1,0 +1,18 @@
+import { DB } from '../Repo';
+const mongoose = require('mongoose');
+
+export class MongoDB implements DB {
+
+    Todo:any;
+
+    init () {
+
+        mongoose.connect('mongodb://127.0.0.1:27017/todos', {useNewUrlParser: true});
+        mongoose.connection.once('open', function() {
+            console.log('Connection to mongoDB has been established successfully');
+        });
+        return this;
+    }
+
+}
+
