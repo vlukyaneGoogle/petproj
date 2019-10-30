@@ -4,8 +4,8 @@ import {MongoRepo} from './mongo/MongoRepo';
 import {SequelizeRepo} from './sql/SequlizeRepo';
 
 export class RepoFactory {
-    static create(db: DB, dbType: string) {
-        switch (dbType) {
+    static create(db: DB) {
+        switch (db.type) {
             case DBTypes.MONGO:
                 return new MongoRepo(db);
             case DBTypes.POSTGRE:

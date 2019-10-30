@@ -9,16 +9,16 @@ const TodoController_1 = require("./controllers/TodoController");
 const TodoService_1 = require("./services/TodoService");
 const RepoFactory_1 = require("./repo/RepoFactory");
 class App {
-    static init(db, dbType) {
+    static init(db) {
         const app = express();
         app.use(logger('dev'));
         app.use(cors());
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
-        const repo = RepoFactory_1.RepoFactory.create(db, dbType);
+        const repo = RepoFactory_1.RepoFactory.create(db);
         const todoService = new TodoService_1.TodoService(repo);
-        const router = new TodoController_1.TodoController(todoService, app).getRoutes();
-        app.use("/todos", router);
+        const todoController = new TodoController_1.TodoController(todoService, app);
+        app.use("/todos", todoController.getRoutes());
         app.listen(port, function () {
             console.log("Runnning on " + port);
         });

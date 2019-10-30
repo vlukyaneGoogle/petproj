@@ -6,17 +6,23 @@ import {Express, Router} from 'express';
 
 const utils = require('../utils/utils');
 
-export class TodoController extends Controller {
+export class TodoController implements Controller {
     todoService: Service;
     router: Router;
     app: Express;
 
-    constructor(todoService: TodoService, app: Express) {
-        super(todoService);
+    constructor(todoService: TodoService, app: Express)  {
         this.router = Router();
         this.app = app;
         this.todoService = todoService;
         this.initRoutes();
+    }
+
+    private initRoutes() {
+        this.router.get('/', this.getAllTodos);
+        this.router.post('/add', this.addNewTodo);
+        this.router.delete('/delete/:id', this.deleteTodoById);
+        this.router.put('/update/:id', this.updateTodoById);
     }
 
     getAllTodos = async (req, res): Promise<ITodo[]> => {
@@ -77,14 +83,6 @@ export class TodoController extends Controller {
         }
     };
 
-    initRoutes() {
-        this.router.get('/', this.getAllTodos);
-        this.router.post('/add', this.addNewTodo);
-        this.router.delete('/delete/:id', this.deleteTodoById);
-        this.router.put('/update/:id', this.updateTodoById);
-    }
+    getRoutes = () => this.router
 
-    getRoutes() {
-        return this.router;
-    }
 }

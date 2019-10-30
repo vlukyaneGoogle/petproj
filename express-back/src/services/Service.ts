@@ -1,13 +1,13 @@
-import {IService, ITodo} from '../repo/types';
+import {ITodo} from '../repo/types';
 import {QueryResult} from '../repo/types';
 
-export abstract class Service implements IService {
-    abstract async getAllTodos(): Promise<ITodo[]>;
+export interface Service {
+    getAllTodos(): Promise<ITodo[]>;
 
-    abstract async addNewTodo(todo: ITodo): Promise<ITodo>;
+    addNewTodo(todo: ITodo): Promise<ITodo>;
 
-    abstract async deleteTodoById(id: number): Promise<QueryResult>;
+    deleteTodoById(id: number): Promise<QueryResult>;
 
-    abstract async updateTodoById(id: number, todo: ITodo): Promise<void>;
+    updateTodoById(id: number, todo: ITodo): Promise<void>;
 
 }

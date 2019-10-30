@@ -10,7 +10,7 @@ import {RepoFactory} from './repo/RepoFactory';
 
 export class App {
 
-    static init(db: DB, dbType: string) {
+    static init(db: DB) {
         const app = express();
 
         app.use(logger('dev'));
@@ -18,11 +18,11 @@ export class App {
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
 
-        const repo = RepoFactory.create(db, dbType);
+        const repo = RepoFactory.create(db);
         const todoService = new TodoService(repo);
-        const router = new TodoController(todoService, app).getRoutes();
+        const todoController = new TodoController(todoService, app);
 
-        app.use("/todos", router);
+        app.use("/todos", todoController.getRoutes());
         app.listen(port, function() {
             console.log("Runnning on " + port);
         })

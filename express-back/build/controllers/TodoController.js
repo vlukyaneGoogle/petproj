@@ -1,12 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const Controller_1 = require("./Controller");
 const express_1 = require("express");
 const utils = require('../utils/utils');
-class TodoController extends Controller_1.Controller {
+class TodoController {
     constructor(todoService, app) {
-        super(todoService);
         this.getAllTodos = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 const allTodos = yield this.todoService.getAllTodos();
@@ -64,6 +62,7 @@ class TodoController extends Controller_1.Controller {
                 }, 400);
             }
         });
+        this.getRoutes = () => this.router;
         this.router = express_1.Router();
         this.app = app;
         this.todoService = todoService;
@@ -74,9 +73,6 @@ class TodoController extends Controller_1.Controller {
         this.router.post('/add', this.addNewTodo);
         this.router.delete('/delete/:id', this.deleteTodoById);
         this.router.put('/update/:id', this.updateTodoById);
-    }
-    getRoutes() {
-        return this.router;
     }
 }
 exports.TodoController = TodoController;

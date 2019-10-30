@@ -1,7 +1,8 @@
-import {IService, ITodo, QueryResult} from '../repo/types';
+import {ITodo, QueryResult} from '../repo/types';
 import {Repo} from '../repo/Repo';
+import {Service} from './Service';
 
-export class TodoService implements IService {
+export class TodoService implements Service {
     repo: Repo;
 
     constructor(repo: Repo) {

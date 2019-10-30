@@ -32,6 +32,7 @@ export class PostgresDB {
         });
         return {
             db: psql,
+            type: 'postgres',
             Todo
         }
     }

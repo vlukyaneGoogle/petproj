@@ -6,12 +6,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 
-export const DBTypes = {
-    MONGO: 'mongo',
-    POSTGRE: 'postgres',
-};
+export enum DBTypes {
+    MONGO = 'mongo',
+    POSTGRE = 'postgres',
+}
 
-function getDb(type): DB {
+function getDb(type: DBTypes): DB {
     switch (type) {
         case DBTypes.MONGO: return MongoDB.init();
         case DBTypes.POSTGRE: return PostgresDB.init();
@@ -19,9 +19,10 @@ function getDb(type): DB {
     }
 }
 
-const dbType = process.env.DATABASE ? process.env.DATABASE : DBTypes.MONGO;
+const dbType: DBTypes = process.env.DATABASE ? process.env.DATABASE as DBTypes: DBTypes.MONGO;
 const db: DB = getDb(dbType);
-App.init(db, dbType);
+
+App.init(db);
 
 
 

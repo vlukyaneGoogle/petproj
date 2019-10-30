@@ -8,7 +8,8 @@ class MongoDB {
             console.log('Connection to mongoDB has been established successfully');
         });
         return {
-            db: mongoose
+            db: mongoose,
+            type: 'mongo'
         };
     }
 }

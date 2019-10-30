@@ -16,5 +16,6 @@ export interface Repo {
 export interface DB {
     db :any;
     Todo ?:any;
+    type :string
 }
 
