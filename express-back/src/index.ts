@@ -1,19 +1,28 @@
-import todosRouter from './routes/todosRouter';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import express from 'express';
-import logger from 'morgan';
+import {App} from './App';
+import {MongoDB} from './repo/mongo/MongoDB';
+import {DB} from './repo/Repo';
+import {PostgresDB} from './repo/sql/PostgresDB';
+import dotenv from "dotenv";
+dotenv.config();
 
-const port = process.env.PORT || 3001;
-const app = express();
 
-app.use(logger('dev'));
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use("/todos", todosRouter);
-app.listen(port, function() {
-    console.log("Runnning on " + port);
-});
+export enum DBTypes {
+    MONGO = 'mongo',
+    POSTGRE = 'postgres',
+}
 
-export default app;
+function getDb(type: DBTypes): DB {
+    switch (type) {
+        case DBTypes.MONGO: return MongoDB.init();
+        case DBTypes.POSTGRE: return PostgresDB.init();
+        default:  return MongoDB.init();
+    }
+}
+
+const dbType: DBTypes = process.env.DATABASE ? process.env.DATABASE as DBTypes: DBTypes.MONGO;
+const db: DB = getDb(dbType);
+
+App.init(db);
+
+
+
