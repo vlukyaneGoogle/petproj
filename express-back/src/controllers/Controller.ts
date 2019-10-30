@@ -1,7 +1,5 @@
 import {ITodo} from '../repo/types';
 import {QueryResult} from '../repo/types';
-import {Router} from 'express';
-
 
 export interface Controller {
     getAllTodos(req: any, res: any): Promise<ITodo[]>;
