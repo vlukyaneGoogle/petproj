@@ -3,18 +3,15 @@ import Todo from "./components/Todo/Todo";
 import AddTodo from "./components/AddTodo/AddTodo";
 import TodoListTitle from "./components/TodoListTitle/TodoListTitle";
 import {ITodo} from "../../common/types";
+
 const io = require('socket.io-client');
+const socket = io.connect('http://localhost:3001/');
 
 const TodoList: React.FC = () => {
 
     const [todos, setTodos] = useState<ITodo[]>([]);
     const [userName, setUserName] = useState<string>('');
-    const socket = io('http://localhost:3003');
-
     useEffect(() => {
-
-        console.log('getting all todos');
-
         const fetchData = async () => {
             console.log('getting all todos from fetch');
             const allTodos = await fetch("http://localhost:3001/todos/");
@@ -26,32 +23,11 @@ const TodoList: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        const newUser = prompt('Hi! Whats your name?') || 'guest';
-        setUserName(newUser);
-        console.log('NEW USER: ', newUser);
-        socket.emit('new-user', newUser);
-
-        return () => {
-            socket.emit('disconnect',  userName);
-        }
-
-    },[]);
-
-    useEffect(() => {
-
-        console.log('checking new todos');
-
-        socket.on('new-todo', (newTodo: ITodo)  => {
-            console.log('MY TODOS ON EFFECT: ', todos, ' AND: ', newTodo);
-            setTodos([...todos, newTodo]);
-        })
+       socket.on('todoToAdd', (todo: ITodo) => {
+           setTodos([...todos, todo]);
+       })
     }, [todos]);
 
-    useEffect(() => {
-        socket.on('user-connected', (newUser: string)  => {
-            console.log('NEW USER HAS COME: ', newUser);
-        })
-    }, [userName]);
 
     const switchCompleted = async (id: string) => {
         let swithedTodo;
@@ -121,8 +97,8 @@ const TodoList: React.FC = () => {
             isCompleted: parsedResponse.result.isCompleted,
             isEditing: parsedResponse.result.isEditing
         };
-        socket.emit('add-todo', newTodo);
         setTodos([...todos, newTodo]);
+        socket.emit('newTodo', newTodo);
     };
 
 
