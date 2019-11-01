@@ -1,15 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const TodoController_1 = require("./todos/controllers/TodoController");
+const TodoService_1 = require("./todos/services/TodoService");
+const RepoFactory_1 = require("./todos/repo/RepoFactory");
 const SocketServer_1 = require("./websocket/SocketServer");
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const express = require('express');
-const socket = require('socket.io');
 const logger = require('morgan');
 const port = process.env.PORT || 3001;
-const TodoController_1 = require("./todos/controllers/TodoController");
-const TodoService_1 = require("./todos/services/TodoService");
-const RepoFactory_1 = require("./todos/repo/RepoFactory");
 class App {
     static init(db) {
         const app = express();
@@ -24,7 +23,7 @@ class App {
         const server = app.listen(port, function () {
             console.log("Runnning on " + port);
         });
-        const ioServer = SocketServer_1.SocketServer.init(server);
+        SocketServer_1.SocketServer.init(server);
     }
 }
 exports.App = App;
