@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../index");
+const index_1 = require("../../index");
 const MongoRepo_1 = require("./mongo/MongoRepo");
 const SequlizeRepo_1 = require("./sql/SequlizeRepo");
 class RepoFactory {

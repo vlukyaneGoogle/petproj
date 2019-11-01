@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
 interface IProps {
-    id?: string,
-    content?: string,
-    addTodo: (term: string, id?: string) => void,
+    id: string,
+    content: string,
+    updateTodo: (term: string, id: string) => void,
     buttonText: string
 }
 
-const AddTodo: React.FC<IProps> = ({ content, id, addTodo, buttonText }) =>{
+const EditTodo: React.FC<IProps> = ({ content, id, updateTodo, buttonText }) =>{
     const [term, setTerm] = useState<string>(content || '');
 
     const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -17,11 +17,7 @@ const AddTodo: React.FC<IProps> = ({ content, id, addTodo, buttonText }) =>{
 
     const onFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        if (id) {
-            addTodo(term, id);
-        } else {
-            addTodo(term);
-        }
+        updateTodo(term, id);
         setTerm('');
     };
 
@@ -34,5 +30,5 @@ const AddTodo: React.FC<IProps> = ({ content, id, addTodo, buttonText }) =>{
     )
 };
 
-export default AddTodo;
+export default EditTodo;
 

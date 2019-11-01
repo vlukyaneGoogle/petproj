@@ -1,7 +1,7 @@
 import {App} from './App';
-import {MongoDB} from './repo/mongo/MongoDB';
-import {DB} from './repo/Repo';
-import {PostgresDB} from './repo/sql/PostgresDB';
+import {MongoDB} from './todos/repo/mongo/MongoDB';
+import {DB} from './todos/repo/Repo';
+import {PostgresDB} from './todos/repo/sql/PostgresDB';
 import dotenv from "dotenv";
 dotenv.config();
 

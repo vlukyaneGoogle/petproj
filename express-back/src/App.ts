@@ -1,13 +1,15 @@
+import {SocketServer} from './websocket/SocketServer';
+
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const express = require ('express');
 const socket = require('socket.io');
 const logger = require('morgan');
 const port = process.env.PORT || 3001;
-import {DB} from './repo/Repo';
-import {TodoController} from './controllers/TodoController';
-import {TodoService} from './services/TodoService';
-import {RepoFactory} from './repo/RepoFactory';
+import {DB} from './todos/repo/Repo';
+import {TodoController} from './todos/controllers/TodoController';
+import {TodoService} from './todos/services/TodoService';
+import {RepoFactory} from './todos/repo/RepoFactory';
 
 export class App {
 
@@ -28,16 +30,7 @@ export class App {
             console.log("Runnning on " + port);
         });
 
-        const io = socket(server);
-        console.log(io);
-        console.log(server);
-        io.on('connection', (socket) => {
-            socket.on('newTodo', todo => {
-                console.log('NEW TODO: ', todo);
-                socket.broadcast.emit('todoToAdd', todo);
-            });
-            console.log('NEW CONNECTOR: ');
-        });
+        const ioServer = SocketServer.init(server);
 
     }
 }

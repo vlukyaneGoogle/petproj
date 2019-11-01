@@ -1,5 +1,5 @@
 import {DB} from './Repo';
-import {DBTypes} from '../index';
+import {DBTypes} from '../../index';
 import {MongoRepo} from './mongo/MongoRepo';
 import {SequelizeRepo} from './sql/SequlizeRepo';
 

@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const App_1 = require("./App");
-const MongoDB_1 = require("./repo/mongo/MongoDB");
-const PostgresDB_1 = require("./repo/sql/PostgresDB");
+const MongoDB_1 = require("./todos/repo/mongo/MongoDB");
+const PostgresDB_1 = require("./todos/repo/sql/PostgresDB");
 const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
 dotenv_1.default.config();
 var DBTypes;

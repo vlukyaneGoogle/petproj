@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-const DIcontainer = require('../../../index');
+const DIcontainer = require('../../../../index');
 
 console.log('taktka');
 const Todo = DIcontainer.databaseInstance.define('Todo', {
