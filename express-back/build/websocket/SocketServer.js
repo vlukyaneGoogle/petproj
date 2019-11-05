@@ -6,7 +6,7 @@ class SocketServer {
     static init(server) {
         const io = socket(server);
         io.on('connection', (socket) => {
-            socket.on('newTodo', (todo) => SocketService_1.SocketService.newTodo(socket, todo));
+            socket.on('addTodo', (todo) => SocketService_1.SocketService.addTodo(socket, todo));
             socket.on('deleteTodo', (id) => SocketService_1.SocketService.deleteTodo(socket, id));
             socket.on('switchTodo', (id) => SocketService_1.SocketService.switchTodo(socket, id));
             socket.on('updateTodo', (data) => {

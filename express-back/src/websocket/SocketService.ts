@@ -1,6 +1,6 @@
 export class SocketService {
-    static newTodo(socket, todo) {
-        socket.broadcast.emit('todoToAdd', todo);
+    static addTodo(socket, todo) {
+        socket.broadcast.emit('addTodo', todo);
     }
 
     static deleteTodo(socket, id) {
@@ -12,7 +12,6 @@ export class SocketService {
     }
 
     static updateTodoById(socket, content, id) {
-        console.log(' TRYING UPDATE TODO: ');
         socket.broadcast.emit('updateTodoById', { content, id })
     }
 }

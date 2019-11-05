@@ -1,74 +1,44 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {ITodo} from '../../../common/types';
 import {socket, UpdateTodoData} from '../TodoList';
+import {SocketService} from '../../../service/SocketService';
 
-export const useTodosEffects = (todos: ITodo[], setTodos: any) => {
+export const useTodosEffects = () => {
+
+    const [todos, setTodos] = useState<ITodo[]>([]);
+
     useEffect(() => {
         const fetchData = async () => {
             const allTodos = await fetch("http://localhost:3001/todos/");
             const allTodosJson = await allTodos.json();
             if (Array.isArray(allTodosJson.data)) setTodos(allTodosJson.data);
         };
-
         fetchData();
     }, []);
 
     useEffect(() => {
-        socket.on('deleteTodoById', (id: string) => {
-            setTodos(todos.filter(todo => todo.id !== id))
-        });
-        return () => {
-            socket.off('deleteTodoById');
-        }
+        socket.on('deleteTodoById', (id: string) =>  SocketService.deleteTodoById(id, todos, setTodos));
+        return () => socket.off('deleteTodoById');
     }, [todos]);
 
     useEffect(() => {
-        socket.on('todoToAdd', (todo: ITodo) => {
-            setTodos([...todos, todo]);
-        });
-        return () => {
-            socket.off('todoToAdd');
-        }
+        socket.on('addTodo', (todo: ITodo) => SocketService.addTodo(todo, todos, setTodos));
+        return () => socket.off('todoToAdd');
     }, [todos]);
 
     useEffect(() => {
-        socket.on('switchTodoById', (id: string) => {
-            const newTodos = todos.map((todo) => {
-                if (todo.id !== id) {
-                    return todo;
-                } else {
-                    return {
-                        ...todo,
-                        isCompleted: !todo.isCompleted
-                    }
-                }
-            });
-            setTodos(newTodos);
-        });
-
-        return () => {
-            socket.off('switchTodoById');
-        }
+        socket.on('switchTodoById', (id: string) => SocketService.switchTodoById(id, todos, setTodos));
+        return () => socket.off('switchTodoById');
     },[todos]);
 
     useEffect(() => {
-        socket.on('updateTodoById', (data: UpdateTodoData) => {
-            const { content, id } = data;
-            const newTodos: ITodo[] = todos.map( (todo: ITodo): ITodo => {
-                if (todo.id !== id) {
-                    return todo;
-                } else {
-                    return {
-                        ...todo,
-                        content
-                    };
-                }
-            });
-
-            setTodos(newTodos);
-        });
-        return () => {
-            socket.off('updateTodoById');
-        }
+        socket.on('updateTodoById', (data: UpdateTodoData) => SocketService.updateTodoById(data, todos, setTodos));
+        return () => socket.off('updateTodoById');
     }, [todos]);
+
+
+    return {
+        todos,
+        setTodos
+    }
 };

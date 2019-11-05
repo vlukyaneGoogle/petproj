@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Todo from "./components/Todo/Todo";
 import AddTodo from "./components/AddTodo/AddTodo";
 import TodoListTitle from "./components/TodoListTitle/TodoListTitle";
@@ -6,9 +6,9 @@ import {ITodo} from "../../common/types";
 import {TodoService} from '../../service/TodoService';
 import EditTodo from './components/EditTodo/EditTodo';
 import {useTodosEffects} from './components/useTodosEffects';
+import {SocketService} from '../../service/SocketService';
 
-const io = require('socket.io-client');
-export const socket = io.connect('http://localhost:3001/');
+export const socket = SocketService.init();
 
 export interface UpdateTodoData {
     content: string,
@@ -16,8 +16,7 @@ export interface UpdateTodoData {
 }
 
 const TodoList: React.FC = () => {
-    const [todos, setTodos] = useState<ITodo[]>([]);
-    useTodosEffects(todos, setTodos);
+    const {todos, setTodos} = useTodosEffects();
 
     const switchTodo = async (id: string) => {
         socket.emit('switchTodo', id);
@@ -40,7 +39,7 @@ const TodoList: React.FC = () => {
         if (content === '') return;
         const newTodo = await TodoService.addTodo(content);
         setTodos([...todos, newTodo]);
-        socket.emit('newTodo', newTodo);
+        socket.emit('addTodo', newTodo);
     };
 
     const updateTodo = async (content: string, id: string) => {
@@ -52,7 +51,7 @@ const TodoList: React.FC = () => {
         setTodos(newTodos);
     };
 
-    console.log('HOBA :', todos);
+    console.log('My todos :', todos);
 
     return (
         <div className="list-group">

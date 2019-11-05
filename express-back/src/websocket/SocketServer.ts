@@ -13,7 +13,7 @@ export class SocketServer {
     static init(server: Express) {
         const io = socket(server);
         io.on('connection', (socket) => {
-            socket.on('newTodo', (todo :ITodo) => SocketService.newTodo(socket, todo));
+            socket.on('addTodo', (todo :ITodo) => SocketService.addTodo(socket, todo));
             socket.on('deleteTodo', (id: string) => SocketService.deleteTodo(socket, id));
             socket.on('switchTodo', (id: string) => SocketService.switchTodo(socket, id));
             socket.on('updateTodo', (data: UpdateTodoData) => {
