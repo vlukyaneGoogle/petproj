@@ -2,20 +2,9 @@ import {ITodo} from '../common/types';
 
 export class TodoService{
 
-    static async switchTodo(id: string, todos: ITodo[]): Promise<ITodo[]> {
-        let switchedTodo;
-        const newTodos: ITodo[] = todos.map((todo) => {
-            if (todo.id !== id) {
-                return todo;
-            } else {
-                switchedTodo ={
-                    ...todo,
-                    isCompleted: !todo.isCompleted
-                };
-                return switchedTodo;
-            }
-        });
-
+    static async switchTodo(id: string, todos: ITodo[]): Promise<void> {
+        const switchedTodo: ITodo = todos.filter((todo) => todo.id === id)[0];
+        switchedTodo.isCompleted = !switchedTodo.isCompleted;
         await fetch(`http://localhost:3001/todos/update/${id}`, {
             method: 'PUT',
             headers: {
@@ -23,40 +12,28 @@ export class TodoService{
             },
             body: JSON.stringify(switchedTodo),
         });
-
-        return newTodos;
     }
 
-    static async addTodo(content: string): Promise<ITodo> {
+    static async addTodo(content: string): Promise<void> {
         const todoToAdd = {
             content: content
         };
-        const addedTodoResponse = await fetch("http://localhost:3001/todos/add", {
+        await fetch("http://localhost:3001/todos/add", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(todoToAdd),
         });
-
-        const parsedResponse = await addedTodoResponse.json();
-        return {
-            _id: parsedResponse.result.id,
-            id: parsedResponse.result.id,
-            content: parsedResponse.result.content,
-            isCompleted: parsedResponse.result.isCompleted,
-            isEditing: parsedResponse.result.isEditing
-        };
     }
 
-    static async deleteTodo(id: string, todos: ITodo[]): Promise<ITodo[]> {
+    static async deleteTodo(id: string, todos: ITodo[]): Promise<void> {
         await fetch(`http://localhost:3001/todos/delete/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        return todos.filter(todo => todo.id !== id);
     }
 
     static editTodo(id: string, todos: ITodo[]): ITodo[] {
@@ -69,20 +46,10 @@ export class TodoService{
         });
     }
 
-    static async updateTodo(content: string, id: string, todos: ITodo[]): Promise<ITodo[]> {
-        let editedTodo;
-        const newTodos: ITodo[] = todos.map( (todo: ITodo): ITodo => {
-            if (todo.id !== id) {
-                return todo;
-            } else {
-                editedTodo = {
-                    ...todo,
-                    isEditing: !todo.isEditing,
-                    content
-                };
-                return editedTodo;
-            }
-        });
+    static async updateTodo(content: string, id: string, todos: ITodo[]): Promise<void> {
+        const editedTodo: ITodo = todos.filter((todo) => todo.id === id)[0];
+        editedTodo.isEditing = !editedTodo.isEditing;
+        editedTodo.content = content;
         await fetch(`http://localhost:3001/todos/update/${id}`, {
             method: 'PUT',
             headers: {
@@ -90,7 +57,6 @@ export class TodoService{
             },
             body: JSON.stringify(editedTodo),
         });
-        return newTodos;
     }
 
 

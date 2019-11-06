@@ -31,7 +31,7 @@ export class MongoRepo implements Repo {
         }
     };
 
-    deleteTodoById = async (id: number): Promise<QueryResult> => {
+    deleteTodoById = async (id: string): Promise<QueryResult> => {
         try {
             return await Todo.deleteOne({
                 "_id" : id
@@ -42,7 +42,7 @@ export class MongoRepo implements Repo {
         }
     };
 
-    updateTodoById = async (id: number, editedTodo: ITodo): Promise<void> => {
+    updateTodoById = async (id: string, editedTodo: ITodo): Promise<void> => {
         try {
             const updatedTodo = new Todo(editedTodo);
             await Todo.updateOne(

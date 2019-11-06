@@ -23,19 +23,13 @@ export const useTodosEffects = () => {
 
     useEffect(() => {
         socket.on('addTodo', (todo: ITodo) => SocketService.addTodo(todo, todos, setTodos));
-        return () => socket.off('todoToAdd');
+        return () => socket.off('addTodo');
     }, [todos]);
-
-    useEffect(() => {
-        socket.on('switchTodoById', (id: string) => SocketService.switchTodoById(id, todos, setTodos));
-        return () => socket.off('switchTodoById');
-    },[todos]);
 
     useEffect(() => {
         socket.on('updateTodoById', (data: UpdateTodoData) => SocketService.updateTodoById(data, todos, setTodos));
         return () => socket.off('updateTodoById');
     }, [todos]);
-
 
     return {
         todos,

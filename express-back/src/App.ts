@@ -26,11 +26,9 @@ export class App {
         const todoController = new TodoController(todoService, app);
 
         app.use("/todos", todoController.getRoutes());
-        const server = app.listen(port, function() {
+
+        return app.listen(port, function() {
             console.log("Runnning on " + port);
         });
-
-        SocketServer.init(server);
-
     }
 }

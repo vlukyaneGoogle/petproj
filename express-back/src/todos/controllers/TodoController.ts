@@ -3,6 +3,8 @@ import {Controller} from './Controller';
 import {ITodo, QueryResult} from '../repo/types';
 import {TodoService} from '../services/TodoService';
 import {Express, Router} from 'express';
+import {wssClients} from '../../index';
+import {SocketService} from '../../websocket/SocketService';
 
 const utils = require('../utils/utils');
 
@@ -41,10 +43,12 @@ export class TodoController implements Controller {
 
     addNewTodo = async (req, res): Promise<ITodo> => {
         try {
-            const result = await this.todoService.addNewTodo(req.body);
+            const newTodo = await this.todoService.addNewTodo(req.body);
+            SocketService.addTodo(newTodo);
+
             return utils.sendResponse(res,{
                 message: 'todo added successfully',
-                result
+                newTodo
             }, 200);
         } catch (err) {
             return utils.sendResponse(res,{
@@ -57,7 +61,11 @@ export class TodoController implements Controller {
 
     deleteTodoById = async (req: any, res: any): Promise<QueryResult> => {
         try {
-            await this.todoService.deleteTodoById(req.params.id);
+            const id: string = req.params.id;
+
+            await this.todoService.deleteTodoById(id);
+            SocketService.deleteTodo(id);
+
             return utils.sendResponse(res,{
                 message: "Successfully delete todo"
             }, 200)
@@ -71,7 +79,11 @@ export class TodoController implements Controller {
 
     updateTodoById = async (req: any, res: any): Promise<void> => {
         try {
-            await this.todoService.updateTodoById(req.params.id, req.body);
+            const id: string = req.params.id;
+
+            const updatedTodo = await this.todoService.updateTodoById(id, req.body);
+            SocketService.updateTodoById(id, updatedTodo);
+
             return utils.sendResponse(res,{
                 message: "Successfully udpate todo"
             }, 200)

@@ -24,7 +24,8 @@ class TodoService {
                 isCompleted: reqBody.isCompleted,
                 isEditing: reqBody.isEditing
             };
-            return yield this.repo.updateTodoById(id, todo);
+            console.log('UPDATE TODO: ', yield this.repo.updateTodoById(id, todo));
+            return todo;
         });
         this.repo = repo;
     }

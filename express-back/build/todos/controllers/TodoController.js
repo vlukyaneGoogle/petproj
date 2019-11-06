@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const express_1 = require("express");
+const SocketService_1 = require("../../websocket/SocketService");
 const utils = require('../utils/utils');
 class TodoController {
     constructor(todoService, app) {
@@ -21,10 +22,11 @@ class TodoController {
         });
         this.addNewTodo = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.todoService.addNewTodo(req.body);
+                const newTodo = yield this.todoService.addNewTodo(req.body);
+                SocketService_1.SocketService.addTodo(newTodo);
                 return utils.sendResponse(res, {
                     message: 'todo added successfully',
-                    result
+                    newTodo
                 }, 200);
             }
             catch (err) {
@@ -36,7 +38,9 @@ class TodoController {
         });
         this.deleteTodoById = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.todoService.deleteTodoById(req.params.id);
+                const id = req.params.id;
+                yield this.todoService.deleteTodoById(id);
+                SocketService_1.SocketService.deleteTodo(id);
                 return utils.sendResponse(res, {
                     message: "Successfully delete todo"
                 }, 200);
@@ -50,7 +54,9 @@ class TodoController {
         });
         this.updateTodoById = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.todoService.updateTodoById(req.params.id, req.body);
+                const id = req.params.id;
+                const updatedTodo = yield this.todoService.updateTodoById(id, req.body);
+                SocketService_1.SocketService.updateTodoById(id, updatedTodo);
                 return utils.sendResponse(res, {
                     message: "Successfully udpate todo"
                 }, 200);

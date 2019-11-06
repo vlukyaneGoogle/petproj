@@ -7,9 +7,9 @@ export interface Repo {
 
     addNewTodo(todo :ITodo) :Promise<ITodo>;
 
-    deleteTodoById(id :number) :Promise<QueryResult>;
+    deleteTodoById(id :string) :Promise<QueryResult>;
 
-    updateTodoById(id :number, todo :ITodo) :Promise<void>;
+    updateTodoById(id :string, todo :ITodo) :Promise<void>;
 
 }
 

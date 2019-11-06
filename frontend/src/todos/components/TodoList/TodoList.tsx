@@ -11,7 +11,7 @@ import {SocketService} from '../../service/SocketService';
 export const socket = SocketService.init();
 
 export interface UpdateTodoData {
-    content: string,
+    updatedTodo: ITodo,
     id: string
 }
 
@@ -19,15 +19,11 @@ const TodoList: React.FC = () => {
     const {todos, setTodos} = useTodosEffects();
 
     const switchTodo = async (id: string) => {
-        socket.emit('switchTodo', id);
-        const newTodos: ITodo[]  = await TodoService.switchTodo(id, todos);
-        setTodos(newTodos);
+        await TodoService.switchTodo(id, todos);
     };
 
     const deleteTodo = async (id: string) => {
-        socket.emit('deleteTodo', id);
-        const newTodos = await TodoService.deleteTodo(id, todos);
-        setTodos(newTodos);
+        await TodoService.deleteTodo(id, todos);
     };
 
     const editTodo = (id: string) => {
@@ -37,18 +33,14 @@ const TodoList: React.FC = () => {
 
     const addTodo = async (content: string) => {
         if (content === '') return;
-        const newTodo = await TodoService.addTodo(content);
-        setTodos([...todos, newTodo]);
-        socket.emit('addTodo', newTodo);
+        await TodoService.addTodo(content);
     };
 
     const updateTodo = async (content: string, id: string) => {
         if (content === '') {
             return;
         }
-        socket.emit('updateTodo', {content, id});
-        const newTodos = await TodoService.updateTodo(content, id, todos);
-        setTodos(newTodos);
+        await TodoService.updateTodo(content, id, todos);
     };
 
     console.log('My todos :', todos);

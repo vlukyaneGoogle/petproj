@@ -23,16 +23,17 @@ export class TodoService implements Service {
         return await this.repo.addNewTodo(todo);
     };
 
-    deleteTodoById = async (id: number): Promise<QueryResult> =>{
+    deleteTodoById = async (id: string): Promise<QueryResult> =>{
         return await this.repo.deleteTodoById(id);
     };
 
-    updateTodoById = async (id: number, reqBody) =>{
+    updateTodoById = async (id: string, reqBody) =>{
         const todo: ITodo = {
             content: reqBody.content,
             isCompleted: reqBody.isCompleted,
             isEditing: reqBody.isEditing
         };
-        return await this.repo.updateTodoById(id, todo)
+        console.log('UPDATE TODO: ', await this.repo.updateTodoById(id, todo));
+        return todo;
     };
 }

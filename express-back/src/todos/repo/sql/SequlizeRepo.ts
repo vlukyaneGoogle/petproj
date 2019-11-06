@@ -25,7 +25,7 @@ export class SequelizeRepo implements Repo {
         }
     };
 
-    updateTodoById = async (id: number, todo: ITodo): Promise<void> => {
+    updateTodoById = async (id: string, todo: ITodo): Promise<void> => {
         try {
             return await this.db.Todo.update(
                 {
@@ -41,7 +41,7 @@ export class SequelizeRepo implements Repo {
         }
     };
 
-    deleteTodoById = async (id: number): Promise<QueryResult> => {
+    deleteTodoById = async (id: string): Promise<QueryResult> => {
         try {
             await this.db.Todo.destroy({
                 where: { id }

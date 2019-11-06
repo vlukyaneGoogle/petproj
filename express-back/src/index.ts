@@ -3,6 +3,8 @@ import {MongoDB} from './todos/repo/mongo/MongoDB';
 import {DB} from './todos/repo/Repo';
 import {PostgresDB} from './todos/repo/sql/PostgresDB';
 import dotenv from "dotenv";
+import {Express} from 'express';
+import {SocketServer} from './websocket/SocketServer';
 dotenv.config();
 
 
@@ -22,7 +24,9 @@ function getDb(type: DBTypes): DB {
 const dbType: DBTypes = process.env.DATABASE ? process.env.DATABASE as DBTypes: DBTypes.MONGO;
 const db: DB = getDb(dbType);
 
-App.init(db);
+const server: Express = App.init(db);
+export const wssClients = SocketServer.init(server);
+
 
 
 

@@ -1,17 +1,20 @@
+import {wssClients} from '../index'
+import {ITodo} from '../todos/repo/types';
 export class SocketService {
-    static addTodo(socket, todo) {
-        socket.broadcast.emit('addTodo', todo);
+    static addTodo(todo) {
+        Object.keys(wssClients).forEach( (socketId: string) => {
+            wssClients[socketId].emit('addTodo', todo )
+        });}
+
+    static deleteTodo(id: string) {
+        Object.keys(wssClients).forEach( (socketId: string) => {
+            wssClients[socketId].emit('deleteTodoById', id )
+        });
     }
 
-    static deleteTodo(socket, id) {
-        socket.broadcast.emit('deleteTodoById', id);
-    }
-
-    static switchTodo(socket, id) {
-        socket.broadcast.emit('switchTodoById', id);
-    }
-
-    static updateTodoById(socket, content, id) {
-        socket.broadcast.emit('updateTodoById', { content, id })
+    static updateTodoById(id: string, updatedTodo: ITodo) {
+        Object.keys(wssClients).forEach( (socketId: string) => {
+            wssClients[socketId].emit('updateTodoById', { id, updatedTodo })
+        });
     }
 }
