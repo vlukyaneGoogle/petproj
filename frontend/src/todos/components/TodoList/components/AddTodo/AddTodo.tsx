@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {TextField, Button} from '@material-ui/core';
+import {TextField, Tooltip, Fab} from '@material-ui/core';
 import {Add} from '@material-ui/icons';
 
 interface IProps {
@@ -26,7 +26,11 @@ const AddTodo: React.FC<IProps> = ({ content, addTodo }) =>{
         <form className="add-todo" onSubmit={(e) => onFormSubmit(e)}>
             <TextField className="add-todo-input" value={term} type="text"
                    onChange={e => onInputChange(e)}/>
-            <Button type='submit' color='primary'><Add/></Button>
+            <Tooltip title="Add" aria-label="add">
+                <Fab type="submit" color="primary" >
+                    <Add />
+                </Fab>
+            </Tooltip>
         </form>
     )
 };
