@@ -1,4 +1,6 @@
 import React from 'react';
+import {Button} from '@material-ui/core';
+import {Edit} from '@material-ui/icons';
 
 interface IProps {
     editTodo: () => void,
@@ -9,11 +11,11 @@ const TodoEdit: React.FC<IProps> = ({ editTodo, enableButton}) => {
     return (
         <div className="todo-button-edit">
             {enableButton ? (
-                <button onClick={() => editTodo()}>
-                    Edit
-                </button>
+                <Button onClick={() => editTodo()}>
+                    <Edit/>
+                </Button>
             ) : (
-                <button>Edit</button>
+                <Button><Edit/></Button>
             )}
         </div>
     )

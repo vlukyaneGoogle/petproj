@@ -3,7 +3,6 @@ import {Controller} from './Controller';
 import {ITodo, QueryResult} from '../repo/types';
 import {TodoService} from '../services/TodoService';
 import {Express, Router} from 'express';
-import {wssClients} from '../../index';
 import {SocketService} from '../../websocket/SocketService';
 
 const utils = require('../utils/utils');

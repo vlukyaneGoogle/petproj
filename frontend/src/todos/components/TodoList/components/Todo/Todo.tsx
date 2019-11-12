@@ -3,6 +3,7 @@ import TodoEdit from "./components/TodoEdit";
 import TodoContent from "./components/TodoContent";
 import TodoDelete from "./components/TodoDelete";
 import { ITodo } from "../../../../common/types";
+import {ListItem} from '@material-ui/core';
 
 interface IProps {
     todo: ITodo,
@@ -25,11 +26,12 @@ const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo }) =>{
     };
 
     return (
-        <li
-            className = {`todo-item ${todo.isCompleted ? 'completed' : ''}`}
+        <ListItem
+            className = {`todo-item`}
         >
             <TodoContent
                 content = {todo.content}
+                isCompleted = {todo.isCompleted}
                 switchCompleted = {handleSwitchIsCompleted}
             />
             <TodoEdit
@@ -39,7 +41,7 @@ const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo }) =>{
             <TodoDelete
                 deleteTodo = {handleDeleteTodo}
             />
-        </li>
+        </ListItem>
     )
 };
 

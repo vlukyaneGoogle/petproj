@@ -1,11 +1,15 @@
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import {Box} from '@material-ui/core';
 
 const TodoListTitle = () => {
-  return (
-      <h1 className="todo-list-title">
-        Todo List
-      </h1>
-  )
+    return (
+        <Typography component="h1" align='center'>
+            <Box fontSize={40}>
+                Todo List
+            </Box>
+        </Typography>
+    )
 };
 
 export default TodoListTitle;

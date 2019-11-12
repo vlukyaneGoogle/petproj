@@ -1,4 +1,6 @@
 import React from 'react';
+import {Button} from '@material-ui/core';
+import { Delete } from '@material-ui/icons'
 
 interface IProps {
     deleteTodo: () => void;
@@ -7,7 +9,7 @@ interface IProps {
 const TodoDelete: React.FC<IProps> = ({ deleteTodo }) => {
     return (
         <div className="todo-button-delete">
-            <button onClick={()=> deleteTodo()}>Delete</button>
+            <Button onClick={()=> deleteTodo()}><Delete/></Button>
         </div>
     )
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Button, TextField} from '@material-ui/core';
 
 interface IProps {
     id: string,
@@ -10,12 +11,12 @@ interface IProps {
 const EditTodo: React.FC<IProps> = ({ content, id, updateTodo, buttonText }) =>{
     const [term, setTerm] = useState<string>(content || '');
 
-    const onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const onInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         if (event.target.value === null) return;
         setTerm(event.target.value);
     };
 
-    const onFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    const onFormSubmit = (event: React.FormEvent<HTMLFormElement  | HTMLButtonElement>): void => {
         event.preventDefault();
         updateTodo(term, id);
         setTerm('');
@@ -23,9 +24,9 @@ const EditTodo: React.FC<IProps> = ({ content, id, updateTodo, buttonText }) =>{
 
     return (
         <form className="add-todo" onSubmit={(e) => onFormSubmit(e)}>
-            <input className="add-todo-input" value={term} type="text"
+            <TextField className="add-todo-input" value={term} type="text"
                    onChange={e => onInputChange(e)}/>
-            <button>{buttonText}</button>
+            <Button type='submit' >{buttonText}</Button>
         </form>
     )
 };

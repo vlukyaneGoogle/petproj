@@ -7,6 +7,7 @@ import {TodoService} from '../../service/TodoService';
 import EditTodo from './components/EditTodo/EditTodo';
 import {useTodosEffects} from './components/useTodosEffects';
 import {SocketService} from '../../service/SocketService';
+import {List} from '@material-ui/core'
 
 export const socket = SocketService.init();
 
@@ -46,11 +47,10 @@ const TodoList: React.FC = () => {
     console.log('My todos :', todos);
 
     return (
-        <div className="list-group">
+        <List className="list-group">
             <TodoListTitle/>
             <AddTodo
                 addTodo={addTodo}
-                buttonText={'Add'}
             />
             {todos.map( (todo: ITodo) => {
                 if (todo.isEditing) {
@@ -60,7 +60,7 @@ const TodoList: React.FC = () => {
                             id={todo.id}
                             content={todo.content.trim()}
                             updateTodo={updateTodo}
-                            buttonText={'Edit'}
+                            buttonText={'Save'}
                         />
                     )
                 } else {
@@ -75,7 +75,7 @@ const TodoList: React.FC = () => {
                     )
                 }
             })}
-        </div>
+        </List>
     )
 };
 
