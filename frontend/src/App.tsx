@@ -1,12 +1,17 @@
 import React from 'react';
-import TodoList from "./components/TodoList/TodoList";
-import TodoListExp from "./components/TodoList/TodoList";
+import TodoList from "./todos/components/TodoList/TodoList";
+import Paper from '@material-ui/core/Paper';
+import { ThemeProvider } from '@material-ui/styles';
+import {theme} from './theme';
 
 const App: React.FC = () => {
+
   return (
-      <div className="container">
-        <TodoListExp/>
-      </div>
+      <ThemeProvider theme={theme}>
+          <Paper className="container">
+              <TodoList/>
+          </Paper>
+      </ThemeProvider>
   )
 };
 

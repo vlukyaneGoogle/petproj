@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const App_1 = require("./App");
-const MongoDB_1 = require("./repo/mongo/MongoDB");
-const PostgresDB_1 = require("./repo/sql/PostgresDB");
+const MongoDB_1 = require("./todos/repo/mongo/MongoDB");
+const PostgresDB_1 = require("./todos/repo/sql/PostgresDB");
 const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
+const SocketServer_1 = require("./websocket/SocketServer");
 dotenv_1.default.config();
 var DBTypes;
 (function (DBTypes) {
@@ -20,4 +21,5 @@ function getDb(type) {
 }
 const dbType = process.env.DATABASE ? process.env.DATABASE : DBTypes.MONGO;
 const db = getDb(dbType);
-App_1.App.init(db);
+const server = App_1.App.init(db);
+exports.wssClients = SocketServer_1.SocketServer.init(server);

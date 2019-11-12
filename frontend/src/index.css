@@ -1,6 +1,6 @@
-@import url('components/TodoList/components/TodoListTitle/TodoListTitle.css');
-@import url('components/TodoList/components/Todo/Todo.css');
-@import url('components/TodoList/components/AddTodo/AddTodo.css');
+@import url('todos/components/TodoList/components/TodoListTitle/TodoListTitle.css');
+@import url('todos/components/TodoList/components/Todo/Todo.css');
+@import url('todos/components/TodoList/components/AddTodo/AddTodo.css');
 @import url('App.css');
 
 body {
@@ -10,6 +10,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgba(128, 128, 128, 0.72);
 }
 
 code {
