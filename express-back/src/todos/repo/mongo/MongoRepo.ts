@@ -21,6 +21,17 @@ export class MongoRepo implements Repo {
         }
     };
 
+    getTodoById = async (id: string): Promise<ITodo> => {
+        try {
+            return await Todo.findOne({
+                "_id": id
+            });
+        } catch (err) {
+            console.log('ERR IN REPO: ', err);
+            return err;
+        }
+    };
+
     addNewTodo = async (todo: ITodo): Promise<ITodo> => {
         try {
             let newTodo = new Todo(todo);
