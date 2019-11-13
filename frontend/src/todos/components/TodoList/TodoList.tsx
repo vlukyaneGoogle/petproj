@@ -1,10 +1,9 @@
 import React from 'react';
-import Todo from "./components/Todo/Todo";
-import AddTodo from "./components/AddTodo/AddTodo";
+import {Todo} from "./components/Todo/Todo";
+import {AddTodo} from "./components/AddTodo/AddTodo";
 import TodoListTitle from "./components/TodoListTitle/TodoListTitle";
 import {ITodo} from "../../common/types";
 import {TodoService} from '../../service/TodoService';
-import EditTodo from './components/EditTodo/EditTodo';
 import {useTodosEffects} from './components/useTodosEffects';
 import {SocketService} from '../../service/SocketService';
 import {List} from '@material-ui/core'
@@ -37,7 +36,7 @@ const TodoList: React.FC = () => {
         await TodoService.addTodo(content);
     };
 
-    const updateTodo = async (content: string, id: string) => {
+    const updateTodo = async (id: string, content: string) => {
         if (content === '') {
             return;
         }
@@ -53,27 +52,16 @@ const TodoList: React.FC = () => {
                 addTodo={addTodo}
             />
             {todos.map( (todo: ITodo) => {
-                if (todo.isEditing) {
-                    return (
-                        <EditTodo
-                            key={todo.id}
-                            id={todo.id}
-                            content={todo.content.trim()}
-                            updateTodo={updateTodo}
-                            buttonText={'Save'}
-                        />
-                    )
-                } else {
-                    return (
-                        <Todo
-                            key={todo.id}
-                            todo={todo}
-                            switchTodo={switchTodo}
-                            deleteTodo={deleteTodo}
-                            editTodo={editTodo}
-                        />
-                    )
-                }
+                return (
+                    <Todo
+                        key={todo.id}
+                        todo={todo}
+                        switchTodo={switchTodo}
+                        deleteTodo={deleteTodo}
+                        updateTodo={updateTodo}
+                        editTodo={editTodo}
+                    />
+                )
             })}
         </List>
     )

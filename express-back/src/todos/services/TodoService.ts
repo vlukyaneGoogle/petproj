@@ -13,6 +13,10 @@ export class TodoService implements Service {
         return await this.repo.getAllTodos();
     };
 
+    getTodoById = async (id: string): Promise<ITodo> => {
+        return await this.repo.getTodoById(id);
+    };
+
     addNewTodo = async (reqBody): Promise<ITodo> => {
         const { content } = reqBody;
         const todo: ITodo = {
@@ -33,7 +37,7 @@ export class TodoService implements Service {
             isCompleted: reqBody.isCompleted,
             isEditing: reqBody.isEditing
         };
-        console.log('UPDATE TODO: ', await this.repo.updateTodoById(id, todo));
+        await this.repo.updateTodoById(id, todo);
         return todo;
     };
 }

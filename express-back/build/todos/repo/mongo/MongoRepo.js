@@ -13,6 +13,17 @@ class MongoRepo {
                 return err;
             }
         });
+        this.getTodoById = (id) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield Todo_1.default.findOne({
+                    "_id": id
+                });
+            }
+            catch (err) {
+                console.log('ERR IN REPO: ', err);
+                return err;
+            }
+        });
         this.addNewTodo = (todo) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 let newTodo = new Todo_1.default(todo);

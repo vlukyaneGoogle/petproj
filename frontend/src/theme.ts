@@ -4,7 +4,7 @@ export const theme = createMuiTheme({
     overrides: {
         MuiList: {
             root: {
-                width: 400,
+                width: 500,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center'

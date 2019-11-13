@@ -11,6 +11,16 @@ class SequelizeRepo {
                 return err;
             }
         });
+        this.getTodoById = (id) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.db.Todo.findOne({
+                    where: { id }
+                });
+            }
+            catch (err) {
+                return err;
+            }
+        });
         this.addNewTodo = (todo) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 return yield this.db.Todo.create(todo);

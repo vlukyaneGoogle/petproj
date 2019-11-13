@@ -24,6 +24,7 @@ export class TodoController implements Controller {
         this.router.post('/add', this.addNewTodo);
         this.router.delete('/delete/:id', this.deleteTodoById);
         this.router.put('/update/:id', this.updateTodoById);
+        this.router.get('/:id', this.getTodoById)
     }
 
     getAllTodos = async (req, res): Promise<ITodo[]> => {
@@ -38,6 +39,20 @@ export class TodoController implements Controller {
                 err
             }, 400);
         }
+    };
+
+    getTodoById = async (req, res): Promise<ITodo> => {
+        try {
+          const todo = await this.todoService.getTodoById(req.params.id);
+          return utils.sendResponse(res, {
+              data: todo
+          }, 200);
+      } catch (err) {
+          return utils.sendResponse(res, {
+              message: 'Error occurred while getting todo by id.',
+              err
+          }, 400);
+      }
     };
 
     addNewTodo = async (req, res): Promise<ITodo> => {
