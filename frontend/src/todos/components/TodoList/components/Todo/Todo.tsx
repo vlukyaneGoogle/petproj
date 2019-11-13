@@ -16,7 +16,7 @@ interface IProps {
 
 export const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo, updateTodo }) =>{
     const handleEditTodo = () => {
-        editTodo(todo.id)
+        editTodo(todo.id);
     };
 
     const handleDeleteTodo = () => {
