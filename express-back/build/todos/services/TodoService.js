@@ -6,6 +6,9 @@ class TodoService {
         this.getAllTodos = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield this.repo.getAllTodos();
         });
+        this.getTodoById = (id) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.getTodoById(id);
+        });
         this.addNewTodo = (reqBody) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { content } = reqBody;
             const todo = {
@@ -24,7 +27,7 @@ class TodoService {
                 isCompleted: reqBody.isCompleted,
                 isEditing: reqBody.isEditing
             };
-            console.log('UPDATE TODO: ', yield this.repo.updateTodoById(id, todo));
+            yield this.repo.updateTodoById(id, todo);
             return todo;
         });
         this.repo = repo;

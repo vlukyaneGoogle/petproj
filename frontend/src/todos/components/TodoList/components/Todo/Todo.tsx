@@ -1,18 +1,20 @@
-import React from 'react';
-import TodoEdit from "./components/TodoEdit";
+import React, { Suspense } from 'react';
 import TodoContent from "./components/TodoContent";
 import TodoDelete from "./components/TodoDelete";
 import { ITodo } from "../../../../common/types";
-import {ListItem} from '@material-ui/core';
+import {Button, Checkbox, ListItem} from '@material-ui/core';
+import {Link} from 'react-router-dom';
+import {Info} from '@material-ui/icons';
 
 interface IProps {
     todo: ITodo,
     switchTodo: (id: string) => void,
     deleteTodo: (id: string) => void,
-    editTodo: (id: string) => void
+    editTodo: (id: string) => void,
+    updateTodo: (id: string, content: string) => Promise<void>
 }
 
-const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo }) =>{
+export const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo, updateTodo }) =>{
     const handleEditTodo = () => {
         editTodo(todo.id)
     };
@@ -25,19 +27,34 @@ const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo }) =>{
         switchTodo(todo.id)
     };
 
+    const handleUpdateTodo = (content: string) => {
+        updateTodo(todo.id, content);
+    };
+
+
+
     return (
-        <ListItem
-            className = {`todo-item`}
-        >
+        <ListItem className = {`todo-item`}>
+            <Checkbox
+                checked={todo.isCompleted}
+                onChange={handleSwitchIsCompleted}
+                color="primary"
+                inputProps={{
+                    'aria-label': 'secondary checkbox',
+                }}
+            />
             <TodoContent
-                content = {todo.content}
-                isCompleted = {todo.isCompleted}
-                switchCompleted = {handleSwitchIsCompleted}
+                content={todo.content}
+                isCompleted={todo.isCompleted}
+                isEditing={todo.isEditing}
+                editTodo={handleEditTodo}
+                updateTodo={handleUpdateTodo}
             />
-            <TodoEdit
-                editTodo = {handleEditTodo}
-                enableButton = {!todo.isCompleted}
-            />
+            <Link to={`/todo/${todo.id}`}>
+                <Button>
+                    <Info/>
+                </Button>
+            </Link>
             <TodoDelete
                 deleteTodo = {handleDeleteTodo}
             />
@@ -45,4 +62,3 @@ const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo }) =>{
     )
 };
 
-export default Todo;

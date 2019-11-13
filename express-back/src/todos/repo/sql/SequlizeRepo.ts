@@ -17,6 +17,16 @@ export class SequelizeRepo implements Repo {
         }
     };
 
+    getTodoById = async (id: string): Promise<ITodo> => {
+        try {
+            return await this.db.Todo.findOne({
+                where: { id }
+            });
+        } catch (err) {
+            return err;
+        }
+    };
+
     addNewTodo = async (todo: ITodo): Promise<ITodo> => {
         try {
             return await this.db.Todo.create(todo);

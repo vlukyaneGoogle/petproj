@@ -15,7 +15,9 @@ const TodoEdit: React.FC<IProps> = ({ editTodo, enableButton}) => {
                     <Edit/>
                 </Button>
             ) : (
-                <Button><Edit/></Button>
+                <Button>
+                    <Edit color={'disabled'}/>
+                </Button>
             )}
         </div>
     )

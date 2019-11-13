@@ -20,6 +20,20 @@ class TodoController {
                 }, 400);
             }
         });
+        this.getTodoById = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            try {
+                const todo = yield this.todoService.getTodoById(req.params.id);
+                return utils.sendResponse(res, {
+                    data: todo
+                }, 200);
+            }
+            catch (err) {
+                return utils.sendResponse(res, {
+                    message: 'Error occurred while getting todo by id.',
+                    err
+                }, 400);
+            }
+        });
         this.addNewTodo = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 const newTodo = yield this.todoService.addNewTodo(req.body);
@@ -79,6 +93,7 @@ class TodoController {
         this.router.post('/add', this.addNewTodo);
         this.router.delete('/delete/:id', this.deleteTodoById);
         this.router.put('/update/:id', this.updateTodoById);
+        this.router.get('/:id', this.getTodoById);
     }
 }
 exports.TodoController = TodoController;

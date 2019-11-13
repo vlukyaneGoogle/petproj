@@ -8,7 +8,7 @@ interface IProps {
     addTodo: (term: string) => void,
 }
 
-const AddTodo: React.FC<IProps> = ({ content, addTodo }) =>{
+export const AddTodo: React.FC<IProps> = ({ content, addTodo }) =>{
     const [term, setTerm] = useState<string>(content || '');
 
     const onInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -35,5 +35,4 @@ const AddTodo: React.FC<IProps> = ({ content, addTodo }) =>{
     )
 };
 
-export default AddTodo;
 
