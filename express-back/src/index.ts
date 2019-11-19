@@ -13,7 +13,7 @@ export enum DBTypes {
     POSTGRE = 'postgres',
 }
 
-function getDb(type: DBTypes): DB {
+export function getDb(type: DBTypes): DB {
     switch (type) {
         case DBTypes.MONGO: return MongoDB.init();
         case DBTypes.POSTGRE: return PostgresDB.init();

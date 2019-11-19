@@ -2,10 +2,10 @@ import {DB, Repo} from '../Repo';
 import {ITodo, QueryResult} from '../types';
 
 export class SequelizeRepo implements Repo {
-
     db: DB;
-
+    name: string;
     constructor (db: DB) {
+        this.name = 'postgres';
         this.db = db;
     }
 

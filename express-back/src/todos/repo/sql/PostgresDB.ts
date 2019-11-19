@@ -36,4 +36,8 @@ export class PostgresDB {
             Todo
         }
     }
+
+    static getName(): string {
+        return 'POSTGRES';
+    }
 }

@@ -53,6 +53,7 @@ class SequelizeRepo {
                 return err;
             }
         });
+        this.name = 'postgres';
         this.db = db;
     }
 }

@@ -5,10 +5,11 @@ import {Repo} from '../Repo';
 import {DB} from '../Repo';
 import {Mongoose} from 'mongoose';
 
-
 export class MongoRepo implements Repo {
     db: Mongoose;
+    name: string;
     constructor (db: DB) {
+        this.name = 'mongo';
         this.db = db.db
     }
 
@@ -16,7 +17,7 @@ export class MongoRepo implements Repo {
         try {
             return await Todo.find();
         } catch (err) {
-            console.log('ERR IN REPO: ', err);
+            // console.log('ERR IN REPO: ', err);
             return err;
         }
     };
@@ -27,7 +28,7 @@ export class MongoRepo implements Repo {
                 "_id": id
             });
         } catch (err) {
-            console.log('ERR IN REPO: ', err);
+            // console.log('ERR IN REPO: ', err);
             return err;
         }
     };
@@ -37,7 +38,7 @@ export class MongoRepo implements Repo {
             let newTodo = new Todo(todo);
             return await newTodo.save();
         } catch (err) {
-            console.log('Error occurred while adding new todo in repo.', err);
+            // console.log('Error occurred while adding new todo in repo.', err);
             return err;
         }
     };
@@ -48,7 +49,7 @@ export class MongoRepo implements Repo {
                 "_id" : id
             });
         } catch (err) {
-            console.log('Error occurred while deleting todo in repo', err);
+            // console.log('Error occurred while deleting todo in repo', err);
             return err;
         }
     };
@@ -56,7 +57,7 @@ export class MongoRepo implements Repo {
     updateTodoById = async (id: string, editedTodo: ITodo): Promise<void> => {
         try {
             const updatedTodo = new Todo(editedTodo);
-            await Todo.updateOne(
+            return await Todo.updateOne(
                 {
                     "_id": id
                 },
@@ -66,7 +67,7 @@ export class MongoRepo implements Repo {
                 }
             );
         } catch (err) {
-            console.log('Error occurred while updating todo in repo', err);
+            // console.log('Error occurred while updating todo in repo', err);
             return err;
         }
     };
