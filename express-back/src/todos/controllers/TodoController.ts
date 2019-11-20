@@ -109,6 +109,6 @@ export class TodoController implements Controller {
         }
     };
 
-    getRoutes = () => this.router
+    getRoutes = () => this.router;
 
 }

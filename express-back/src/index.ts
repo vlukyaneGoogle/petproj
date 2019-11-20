@@ -24,7 +24,7 @@ export function getDb(type: DBTypes): DB {
 const dbType: DBTypes = process.env.DATABASE ? process.env.DATABASE as DBTypes: DBTypes.MONGO;
 const db: DB = getDb(dbType);
 
-const server: Express = App.init(db);
+export const server: Express = App.init(db);
 export const wssClients = SocketServer.init(server);
 
 
