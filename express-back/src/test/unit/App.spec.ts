@@ -2,6 +2,7 @@ import {RepoFactory} from '../../todos/repo/RepoFactory';
 import {DBTypes, getDb} from '../../index';
 import {TodoService} from '../../todos/services/TodoService';
 import {TodoController} from '../../todos/controllers/TodoController';
+import {SocketService} from '../../websocket/SocketService';
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
@@ -342,6 +343,109 @@ describe('Repo Testing: ', () => {
                     expect(todo.content).to.include('Add front');
                     expect(todo._id).to.include('5da83a00b05378592f4d62e3');
 
+                    done();
+                })
+                .catch(err => {
+                    done(err);
+                })
+        });
+
+        it('Should return new todo and code 200', done => {
+
+            const reqWithTodo = Object.assign(req);
+            reqWithTodo.body = {
+                _id: '5da83a00b05378592f4d62e3',
+                content: 'Add front',
+                isCompleted: true,
+                isEditing: false,
+                __v: 0
+            };
+
+            const controllerStub = sinon.stub(todoController.todoService, 'addNewTodo');
+            controllerStub.returns(Promise.resolve(reqWithTodo.body));
+            const socketStubAddTodo = sinon.stub(SocketService, 'addTodo');
+            todoController.addNewTodo(reqWithTodo, res)
+               .then(res => {
+                   const statusCode = res.statusCode;
+                   const { success, error, newTodo } = res._getData();
+                   expect(statusCode).to.be.equal(200);
+                   expect(success).to.be.true;
+                   expect(error).to.be.false;
+                   expect(newTodo).to.have.property('_id');
+                   expect(newTodo).to.have.property('content');
+                   expect(newTodo).to.have.property('isCompleted');
+                   expect(newTodo).to.have.property('isEditing');
+                   expect(newTodo.content).to.include('Add front');
+                   expect(newTodo._id).to.include('5da83a00b05378592f4d62e3');
+                   done();
+               })
+               .catch(err => {
+                   done(err);
+               })
+        });
+
+        it('Should delete todo by id and send code 200', done => {
+            const reqWithId = Object.assign(req);
+            reqWithId.params.id = '5da83a00b05378592f4d62e3';
+
+            const serviceStub = sinon.stub(todoController.todoService, 'deleteTodoById');
+            const socketStub = sinon.stub(SocketService, 'deleteTodo');
+            todoController.deleteTodoById(reqWithId, res)
+                .then(res => {
+                    const statusCode = res.statusCode;
+                    const { success, error, message } = res._getData();
+                    expect(statusCode).to.be.equal(200);
+                    expect(success).to.be.true;
+                    expect(error).to.be.false;
+                    expect(message).to.include('Successfully delete todo');
+                    done();
+                })
+                .catch(err => {
+                    done(err);
+                })
+        });
+
+        it('Should update todo by id and send code 200', done => {
+            const reqWithId = Object.assign(req);
+            reqWithId.params.id = '5da83a00b05378592f4d62e3';
+
+            const serviceStub = sinon.stub(todoController.todoService, 'updateTodoById');
+            const socketStub = sinon.stub(SocketService, 'updateTodoById');
+
+            todoController.updateTodoById(reqWithId, res)
+                .then(res => {
+                    const statusCode = res.statusCode;
+                    const { success, error, message } = res._getData();
+                    expect(statusCode).to.be.equal(200);
+                    expect(success).to.be.true;
+                    expect(error).to.be.false;
+                    expect(message).to.include('Successfully update todo');
+                    done();
+                })
+                .catch(err => {
+                    done(err);
+                });
+            socketStub.restore();
+            serviceStub.restore();
+        });
+
+        it('Should return error when updating todo by id and send code 400', done => {
+            const reqWithId = Object.assign(req);
+            reqWithId.params.id = '5da83a00b05378592f4d62e3';
+
+            const serviceStub = sinon.stub(todoController.todoService, 'updateTodoById');
+            const socketStub = sinon.stub(SocketService, 'updateTodoById');
+
+            serviceStub.returns(Promise.reject({error: 'Some error'}));
+            todoController.updateTodoById(reqWithId, res)
+                .then(res => {
+
+                    const statusCode = res.statusCode;
+                    const { success, error, message } = res._getData();
+                    expect(statusCode).to.be.equal(400);
+                    expect(success).to.be.false;
+                    expect(error).to.be.true;
+                    expect(message).to.include('Some error occured while updating todo item');
                     done();
                 })
                 .catch(err => {

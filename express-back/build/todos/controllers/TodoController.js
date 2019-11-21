@@ -72,7 +72,7 @@ class TodoController {
                 const updatedTodo = yield this.todoService.updateTodoById(id, req.body);
                 SocketService_1.SocketService.updateTodoById(id, updatedTodo);
                 return utils.sendResponse(res, {
-                    message: "Successfully udpate todo"
+                    message: "Successfully update todo"
                 }, 200);
             }
             catch (err) {

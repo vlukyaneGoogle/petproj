@@ -99,7 +99,7 @@ export class TodoController implements Controller {
             SocketService.updateTodoById(id, updatedTodo);
 
             return utils.sendResponse(res,{
-                message: "Successfully udpate todo"
+                message: "Successfully update todo"
             }, 200)
         } catch (err) {
             return utils.sendResponse(res,{
