@@ -12,6 +12,16 @@ class MongoRepo {
                 return err;
             }
         });
+        this.getBatchOfTodos = (continuationToken) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield Todo_1.default.find({
+                    '_id': { $gt: continuationToken }
+                }).limit(10);
+            }
+            catch (err) {
+                return err;
+            }
+        });
         this.getTodoById = (id) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 return yield Todo_1.default.findOne({

@@ -11,7 +11,6 @@ const TodoInfo: React.FC = (props: any) => {
        const fetchTodo = async () => {
            const rawTodo = await fetch(`http://localhost:3001/todos/${todoId}`);
            const todoInfo = await rawTodo.json();
-           console.log('I±M HERE: ', todoInfo);
            setTodo(todoInfo.data);
        };
        fetchTodo();

@@ -6,6 +6,9 @@ class TodoService {
         this.getAllTodos = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield this.repo.getAllTodos();
         });
+        this.getBatchOfTodos = (continuationToken) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.getBatchOfTodos(continuationToken);
+        });
         this.getTodoById = (id) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield this.repo.getTodoById(id);
         });

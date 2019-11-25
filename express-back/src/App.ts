@@ -19,11 +19,11 @@ export class App {
         app.use(bodyParser.urlencoded({extended: true}));
         app.use(bodyParser.json());
 
-        // const repo = RepoFactory.create(db);
-        // const todoService = new TodoService(repo);
-        // const todoController = new TodoController(todoService, app);
-        //
-        // app.use("/todos", todoController.getRoutes());
+        const repo = RepoFactory.create(db);
+        const todoService = new TodoService(repo);
+        const todoController = new TodoController(todoService, app);
+
+        app.use("/todos", todoController.getRoutes());
 
         return app.listen(port, function() {
             console.log("Runnning on " + port);

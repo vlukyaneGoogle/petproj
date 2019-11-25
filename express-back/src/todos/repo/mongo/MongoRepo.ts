@@ -22,6 +22,17 @@ export class MongoRepo implements Repo {
         }
     };
 
+    getBatchOfTodos = async (continuationToken: string): Promise<ITodo[]> => {
+        try {
+            return await Todo.find({
+                '_id' : {$gt: continuationToken}
+            }).limit(10);
+        }
+        catch (err) {
+            return err;
+        }
+    };
+
     getTodoById = async (id: string): Promise<ITodo> => {
         try {
             return await Todo.findOne({

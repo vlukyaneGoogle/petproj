@@ -20,6 +20,22 @@ class TodoController {
                 }, 400);
             }
         });
+        this.getBatchOfTodos = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log('OPA ', req.params);
+                const continuationToken = req.params.token;
+                const batchOfTodos = yield this.todoService.getBatchOfTodos(continuationToken);
+                return utils.sendResponse(res, {
+                    data: batchOfTodos
+                }, 200);
+            }
+            catch (err) {
+                return utils.sendResponse(res, {
+                    message: 'Error occurred while getting all todos.',
+                    err
+                }, 400);
+            }
+        });
         this.getTodoById = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 const todo = yield this.todoService.getTodoById(req.params.id);
@@ -90,6 +106,7 @@ class TodoController {
     }
     initRoutes() {
         this.router.get('/', this.getAllTodos);
+        this.router.get('/:token', this.getBatchOfTodos);
         this.router.post('/add', this.addNewTodo);
         this.router.delete('/delete/:id', this.deleteTodoById);
         this.router.put('/update/:id', this.updateTodoById);

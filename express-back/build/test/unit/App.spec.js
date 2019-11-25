@@ -324,7 +324,7 @@ describe('Repo Testing: ', () => {
             todoController.addNewTodo(reqWithTodo, res)
                 .then(res => {
                 const statusCode = res.statusCode;
-                const { success, error, message, newTodo } = res._getData();
+                const { success, error, newTodo } = res._getData();
                 expect(statusCode).to.be.equal(200);
                 expect(success).to.be.true;
                 expect(error).to.be.false;

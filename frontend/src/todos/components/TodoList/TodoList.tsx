@@ -7,6 +7,7 @@ import {TodoService} from '../../service/TodoService';
 import {useTodosEffects} from './components/useTodosEffects';
 import {SocketService} from '../../service/SocketService';
 import {List} from '@material-ui/core'
+import {useInfiniteScroll} from './components/useInfiniteScroll';
 
 export const socket = SocketService.init();
 
@@ -17,6 +18,24 @@ export interface UpdateTodoData {
 
 const TodoList: React.FC = () => {
     const {todos, setTodos} = useTodosEffects();
+
+    const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreTodos);
+
+    async function fetchMoreTodos() {
+        console.log('My time is come');
+        const token = todos.length > 0
+            ? todos[todos.length - 1]._id
+            : '5ddb999110f4793d1523abff';
+        if (todos.length > 0) {
+
+        }
+        const allTodos = await fetch(`http://localhost:3001/todos/${token}`);
+        const allTodosJson = await allTodos.json();
+        console.log('UPDAteD TODOS: ', allTodosJson.data);
+        if (Array.isArray(allTodosJson.data)) setTodos([...todos, ...allTodosJson.data]);
+        // @ts-ignore
+        setIsFetching(false);
+    }
 
     const switchTodo = async (id: string) => {
         await TodoService.switchTodo(id, todos);
