@@ -9,8 +9,7 @@ export const useTodosEffects = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = '5ddb999110f4793d1523abff';
-            const allTodos = await fetch(`http://localhost:3001/todos/${token}`);
+            const allTodos = await fetch(`http://localhost:3001/todos/`);
             const allTodosJson = await allTodos.json();
             if (Array.isArray(allTodosJson.data)) setTodos(allTodosJson.data);
         };

@@ -30,11 +30,10 @@ const TodoContent: React.FC<IProps> = ({ content, isCompleted, isEditing, editTo
     return (!isEditing
         ?
         <>
-            <ListItemText
-                className={`todo-content ${isCompleted ? 'completed' : ''}`}
-                primary={content}
-                onClick={() => handleEdit() }
-            />
+            <div className={`todo-content ${isCompleted ? 'completed' : ''}`} onClick={() => handleEdit() }>
+                {content}
+            </div>
+
             <TodoEdit
                 editTodo = {editTodo}
                 enableButton = {!isCompleted}

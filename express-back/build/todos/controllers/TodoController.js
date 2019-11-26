@@ -106,7 +106,7 @@ class TodoController {
     }
     initRoutes() {
         this.router.get('/', this.getAllTodos);
-        this.router.get('/:token', this.getBatchOfTodos);
+        this.router.get('/scroll/:token', this.getBatchOfTodos);
         this.router.post('/add', this.addNewTodo);
         this.router.delete('/delete/:id', this.deleteTodoById);
         this.router.put('/update/:id', this.updateTodoById);

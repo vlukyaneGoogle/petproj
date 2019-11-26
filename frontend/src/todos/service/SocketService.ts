@@ -13,7 +13,7 @@ export class SocketService {
     }
 
     static addTodo(todo: ITodo, todos: ITodo[], setTodos: any) {
-        setTodos([...todos, todo]);
+        setTodos([todo, ...todos]);
     }
 
     static updateTodoById(data: UpdateTodoData, todos: ITodo[], setTodos: any) {

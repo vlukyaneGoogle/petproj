@@ -15,7 +15,7 @@ export class MongoRepo implements Repo {
 
     getAllTodos = async (): Promise<ITodo[]> => {
         try {
-            return await Todo.find();
+            return await Todo.find().limit(50);
         } catch (err) {
             // console.log('ERR IN REPO: ', err);
             return err;
@@ -26,7 +26,7 @@ export class MongoRepo implements Repo {
         try {
             return await Todo.find({
                 '_id' : {$gt: continuationToken}
-            }).limit(10);
+            }).limit(50);
         }
         catch (err) {
             return err;

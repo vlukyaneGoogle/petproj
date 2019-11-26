@@ -6,7 +6,7 @@ class MongoRepo {
     constructor(db) {
         this.getAllTodos = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                return yield Todo_1.default.find();
+                return yield Todo_1.default.find().limit(50);
             }
             catch (err) {
                 return err;
@@ -16,7 +16,7 @@ class MongoRepo {
             try {
                 return yield Todo_1.default.find({
                     '_id': { $gt: continuationToken }
-                }).limit(10);
+                }).limit(50);
             }
             catch (err) {
                 return err;
