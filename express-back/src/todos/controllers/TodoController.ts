@@ -21,6 +21,7 @@ export class TodoController implements Controller {
 
     private initRoutes() {
         this.router.get('/', this.getAllTodos);
+        this.router.get('/scroll/:token', this.getBatchOfTodos);
         this.router.post('/add', this.addNewTodo);
         this.router.delete('/delete/:id', this.deleteTodoById);
         this.router.put('/update/:id', this.updateTodoById);
@@ -39,6 +40,23 @@ export class TodoController implements Controller {
                 err
             }, 400);
         }
+    };
+
+    getBatchOfTodos = async (req: any, res: any): Promise<ITodo[]> => {
+      try{
+          console.log('OPA ', req.params);
+          const continuationToken = req.params.token;
+          const batchOfTodos = await this.todoService.getBatchOfTodos(continuationToken);
+          return utils.sendResponse(res, {
+              data: batchOfTodos
+          }, 200);
+      }
+      catch (err) {
+          return utils.sendResponse(res, {
+              message: 'Error occurred while getting all todos.',
+              err
+          }, 400);
+      }
     };
 
     getTodoById = async (req, res): Promise<ITodo> => {
@@ -99,7 +117,7 @@ export class TodoController implements Controller {
             SocketService.updateTodoById(id, updatedTodo);
 
             return utils.sendResponse(res,{
-                message: "Successfully udpate todo"
+                message: "Successfully update todo"
             }, 200)
         } catch (err) {
             return utils.sendResponse(res,{
@@ -109,6 +127,6 @@ export class TodoController implements Controller {
         }
     };
 
-    getRoutes = () => this.router
+    getRoutes = () => this.router;
 
 }

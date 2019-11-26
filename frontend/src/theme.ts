@@ -22,7 +22,7 @@ export const theme = createMuiTheme({
         },
         MuiListItemText: {
             primary: {
-                cursor: 'pointer'
+                cursor: 'pointer',
             }
         },
         MuiFab: {

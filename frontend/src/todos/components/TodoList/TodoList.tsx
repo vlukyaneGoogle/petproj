@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Todo} from "./components/Todo/Todo";
 import {AddTodo} from "./components/AddTodo/AddTodo";
 import TodoListTitle from "./components/TodoListTitle/TodoListTitle";
@@ -6,7 +6,7 @@ import {ITodo} from "../../common/types";
 import {TodoService} from '../../service/TodoService';
 import {useTodosEffects} from './components/useTodosEffects';
 import {SocketService} from '../../service/SocketService';
-import {List} from '@material-ui/core'
+import {List as VirtualizedList} from 'react-virtualized';
 
 export const socket = SocketService.init();
 
@@ -17,6 +17,7 @@ export interface UpdateTodoData {
 
 const TodoList: React.FC = () => {
     const {todos, setTodos} = useTodosEffects();
+    const [isFetching, setIsFetching] = useState(false);
 
     const switchTodo = async (id: string) => {
         await TodoService.switchTodo(id, todos);
@@ -43,27 +44,63 @@ const TodoList: React.FC = () => {
         await TodoService.updateTodo(content, id, todos);
     };
 
-    console.log('My todos :', todos);
+    // @ts-ignore
+    const listRenderer = ({key, index, style}) =>
+    {
+        const todo = todos[index];
+        return (<div style={style} key={key}>
+                <Todo
+                    key={todo.id}
+                    todo={todo}
+                    switchTodo={switchTodo}
+                    deleteTodo={deleteTodo}
+                    updateTodo={updateTodo}
+                    editTodo={editTodo}
+                />
+            </div>
+        );
+    };
+
+    const scrollHandler = (e: any) => {
+        const {clientHeight, scrollHeight, scrollTop} = e;
+        if (clientHeight + scrollTop !== scrollHeight || isFetching) return;
+        setIsFetching(true);
+    };
+
+    useEffect(() => {
+        if (!isFetching) return;
+        fetchMoreTodos();
+    }, [isFetching]);
+
+    async function fetchMoreTodos() {
+        const token = todos[todos.length - 1]._id;
+        const allTodos = await fetch(`http://localhost:3001/todos/scroll/${token}`);
+        const allTodosJson = await allTodos.json();
+        if (Array.isArray(allTodosJson.data)) {
+            setTodos([...todos, ...allTodosJson.data]);
+        }
+        setIsFetching(false);
+    }
+
+    const rowHeight = 50;
+    const height = 600;
+    const width = 600;
 
     return (
-        <List className="list-group">
+        <>
             <TodoListTitle/>
             <AddTodo
                 addTodo={addTodo}
             />
-            {todos.map( (todo: ITodo) => {
-                return (
-                    <Todo
-                        key={todo.id}
-                        todo={todo}
-                        switchTodo={switchTodo}
-                        deleteTodo={deleteTodo}
-                        updateTodo={updateTodo}
-                        editTodo={editTodo}
-                    />
-                )
-            })}
-        </List>
+            <VirtualizedList
+                rowCount={todos.length}
+                rowHeight={rowHeight}
+                width={width}
+                height={height}
+                rowRenderer={listRenderer}
+                onScroll={(e: any) => scrollHandler(e)}
+            />
+        </>
     )
 };
 

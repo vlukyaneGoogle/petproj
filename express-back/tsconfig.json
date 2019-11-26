@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "lib": ["es6"],
     "module": "commonjs",
     "strict": true,
     "baseUrl": "./",
@@ -11,15 +12,16 @@
     "emitDecoratorMetadata": true,
     "importHelpers": true,
     "noImplicitAny": false,
-    "types": [
-      "node"
-    ],
+//    "types": [
+//      "node"
+//    ],
     "typeRoots": [
       "node_modules/@types"
     ]
   },
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "node_modules/@types/mocha/index.d.ts"
   ]
 //  "exclude": [
 //    "./src/public/"

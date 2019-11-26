@@ -19,7 +19,8 @@ function getDb(type) {
         default: return MongoDB_1.MongoDB.init();
     }
 }
+exports.getDb = getDb;
 const dbType = process.env.DATABASE ? process.env.DATABASE : DBTypes.MONGO;
 const db = getDb(dbType);
-const server = App_1.App.init(db);
-exports.wssClients = SocketServer_1.SocketServer.init(server);
+exports.server = App_1.App.init(db);
+exports.wssClients = SocketServer_1.SocketServer.init(exports.server);

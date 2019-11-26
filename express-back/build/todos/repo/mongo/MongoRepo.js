@@ -6,10 +6,19 @@ class MongoRepo {
     constructor(db) {
         this.getAllTodos = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                return yield Todo_1.default.find();
+                return yield Todo_1.default.find().limit(50);
             }
             catch (err) {
-                console.log('ERR IN REPO: ', err);
+                return err;
+            }
+        });
+        this.getBatchOfTodos = (continuationToken) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield Todo_1.default.find({
+                    '_id': { $gt: continuationToken }
+                }).limit(50);
+            }
+            catch (err) {
                 return err;
             }
         });
@@ -20,7 +29,6 @@ class MongoRepo {
                 });
             }
             catch (err) {
-                console.log('ERR IN REPO: ', err);
                 return err;
             }
         });
@@ -30,7 +38,6 @@ class MongoRepo {
                 return yield newTodo.save();
             }
             catch (err) {
-                console.log('Error occurred while adding new todo in repo.', err);
                 return err;
             }
         });
@@ -41,14 +48,13 @@ class MongoRepo {
                 });
             }
             catch (err) {
-                console.log('Error occurred while deleting todo in repo', err);
                 return err;
             }
         });
         this.updateTodoById = (id, editedTodo) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 const updatedTodo = new Todo_1.default(editedTodo);
-                yield Todo_1.default.updateOne({
+                return yield Todo_1.default.updateOne({
                     "_id": id
                 }, {
                     "content": updatedTodo.content,
@@ -56,10 +62,10 @@ class MongoRepo {
                 });
             }
             catch (err) {
-                console.log('Error occurred while updating todo in repo', err);
                 return err;
             }
         });
+        this.name = 'mongo';
         this.db = db.db;
     }
 }

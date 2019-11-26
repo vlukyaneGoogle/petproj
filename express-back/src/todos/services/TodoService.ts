@@ -13,6 +13,10 @@ export class TodoService implements Service {
         return await this.repo.getAllTodos();
     };
 
+    getBatchOfTodos = async(continuationToken: string): Promise<ITodo[]> => {
+        return await this.repo.getBatchOfTodos(continuationToken);
+    }
+
     getTodoById = async (id: string): Promise<ITodo> => {
         return await this.repo.getTodoById(id);
     };

@@ -7,17 +7,15 @@ const TodoInfo: React.FC = (props: any) => {
 
     const [todo, setTodo] = useState<ITodo>();
     const todoId: string = props.match.params.todoId;
+    console.log()
     useEffect(() => {
        const fetchTodo = async () => {
            const rawTodo = await fetch(`http://localhost:3001/todos/${todoId}`);
            const todoInfo = await rawTodo.json();
-           console.log('I±M HERE: ', todoInfo);
            setTodo(todoInfo.data);
        };
        fetchTodo();
     }, []);
-
-
 
     return(
         <>

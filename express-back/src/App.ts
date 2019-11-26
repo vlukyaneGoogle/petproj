@@ -2,14 +2,12 @@ import {DB} from './todos/repo/Repo';
 import {TodoController} from './todos/controllers/TodoController';
 import {TodoService} from './todos/services/TodoService';
 import {RepoFactory} from './todos/repo/RepoFactory';
-import {SocketServer} from './websocket/SocketServer';
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const express = require ('express');
 const logger = require('morgan');
 const port = process.env.PORT || 3001;
-
 
 export class App {
 
