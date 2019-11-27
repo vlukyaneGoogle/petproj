@@ -6,6 +6,7 @@ const index_1 = require("../../index");
 const TodoService_1 = require("../../todos/services/TodoService");
 const TodoController_1 = require("../../todos/controllers/TodoController");
 const SocketService_1 = require("../../websocket/SocketService");
+const Todo_1 = tslib_1.__importDefault(require("../../todos/repo/mongo/models/Todo"));
 const expect = require('chai').expect;
 const assert = require('chai').assert;
 const mocks = require('node-mocks-http');
@@ -89,12 +90,16 @@ describe('Repo Testing: ', () => {
         });
         it('Should get todo by id', done => {
             const testId = addedTestTodos[0]._id;
-            mongoRepo.getTodoById(testId).then(todo => {
+            mongoRepo.getTodoById(testId)
+                .then(todo => {
                 expect(todo).to.have.property('_id');
                 expect(todo).to.have.property('content');
                 expect(todo).to.have.property('isCompleted');
                 expect(todo).to.have.property('isEditing');
                 done();
+            })
+                .catch(err => {
+                done(err);
             });
         });
         it('Should return error when wrong id for getTodoById', done => {
@@ -105,7 +110,9 @@ describe('Repo Testing: ', () => {
                     expect(err.name).to.include('CastError');
                     done();
                 })
-                    .catch((err) => done(err));
+                    .catch(err => {
+                    done(err);
+                });
             }
             catch (error) {
                 done(error);
@@ -124,11 +131,14 @@ describe('Repo Testing: ', () => {
                 expect(todo).to.have.property('isCompleted');
                 expect(todo).to.have.property('isEditing');
                 newTodo = todo;
-                mongoRepo.getAllTodos().then(result => {
-                    expect(result).to.be.an('array');
-                    expect(result.length - allTodos.length).to.be.equal(1);
+                mongoRepo.getTodoById(newTodo._id).then(result => {
+                    expect(result.content === newTodo.content).to.be.true;
+                    expect(result._id.toString() === newTodo._id.toString()).to.be.true;
                     done();
                 });
+            })
+                .catch(err => {
+                done(err);
             });
         });
         it('Should update todo by id', done => {
@@ -138,6 +148,9 @@ describe('Repo Testing: ', () => {
                 .then(result => {
                 expect(result.ok).to.be.equal(1);
                 done();
+            })
+                .catch(err => {
+                done(err);
             });
         });
         it('Should delete todo by id', done => {
@@ -145,11 +158,53 @@ describe('Repo Testing: ', () => {
                 .then(result => {
                 expect(result.ok).to.be.equal(1);
                 done();
+            })
+                .catch(err => {
+                done(err);
+            });
+        });
+        it('Should get batch of todos', done => {
+            const todo_id = addedTestTodos[0]._id;
+            Todo_1.default.find().limit(1)
+                .then(firstTodo => {
+                mongoRepo.getBatchOfTodos(firstTodo[0]._id)
+                    .then(todosBatchFirst => {
+                    expect(todosBatchFirst).to.be.an('array');
+                    expect(todosBatchFirst.length <= 50).to.be.true;
+                    const todo = todosBatchFirst[0];
+                    expect(todo).to.have.property('_id');
+                    expect(todo).to.have.property('content');
+                    expect(todo).to.have.property('isCompleted');
+                    expect(todo).to.have.property('isEditing');
+                    mongoRepo.getBatchOfTodos(todosBatchFirst[todosBatchFirst.length - 1]._id)
+                        .then(todosBatchSecond => {
+                        expect(todosBatchSecond).to.be.an('array');
+                        expect(todosBatchSecond.length <= 50).to.be.true;
+                        const todo = todosBatchSecond[0];
+                        expect(todo).to.have.property('_id');
+                        expect(todo).to.have.property('content');
+                        expect(todo).to.have.property('isCompleted');
+                        expect(todo).to.have.property('isEditing');
+                        const listOfIds = [...todosBatchFirst.map(todo => todo._id), ...todosBatchSecond.map(todo => todo._id)];
+                        const uqicIds = [...new Set(listOfIds)];
+                        expect(todosBatchFirst.length + todosBatchSecond.length === uqicIds.length).to.be.true;
+                        done();
+                    })
+                        .catch(err => {
+                        done(err);
+                    });
+                })
+                    .catch(err => {
+                    done(err);
+                });
+            })
+                .catch(err => {
+                done(err);
             });
         });
     });
     describe('Testing Service methods', () => {
-        it('Should return stubbed data', done => {
+        it('Should return stubbed all todos data', done => {
             const serviceStub = sinon.stub(todoService.repo, 'getAllTodos');
             serviceStub.returns(Promise.resolve(addedTestTodos));
             todoService.getAllTodos()
