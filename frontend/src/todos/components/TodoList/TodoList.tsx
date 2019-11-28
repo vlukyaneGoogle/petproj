@@ -15,8 +15,14 @@ export interface UpdateTodoData {
     id: string
 }
 
-const TodoList: React.FC = () => {
-    const {todos, setTodos} = useTodosEffects();
+interface IProps {
+    todos: ITodo[],
+    setTodos: any,
+    scroll: number,
+    setScroll: any
+}
+
+const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
     const [isFetching, setIsFetching] = useState(false);
 
     const switchTodo = async (id: string) => {
@@ -63,6 +69,7 @@ const TodoList: React.FC = () => {
 
     const scrollHandler = (e: any) => {
         const {clientHeight, scrollHeight, scrollTop} = e;
+        setScroll(scrollTop);
         if (clientHeight + scrollTop !== scrollHeight || isFetching) return;
         setIsFetching(true);
     };
@@ -97,6 +104,7 @@ const TodoList: React.FC = () => {
                 rowHeight={rowHeight}
                 width={width}
                 height={height}
+                scrollTop={scroll}
                 rowRenderer={listRenderer}
                 onScroll={(e: any) => scrollHandler(e)}
             />
