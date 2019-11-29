@@ -44,7 +44,6 @@ export class TodoController implements Controller {
 
     getBatchOfTodos = async (req: any, res: any): Promise<ITodo[]> => {
       try{
-          console.log('OPA ', req.params);
           const continuationToken = req.params.token;
           const batchOfTodos = await this.todoService.getBatchOfTodos(continuationToken);
           return utils.sendResponse(res, {

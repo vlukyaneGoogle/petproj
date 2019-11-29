@@ -11,8 +11,24 @@ export class SequelizeRepo implements Repo {
 
     getAllTodos = async (): Promise<ITodo[]> => {
         try {
-            return await this.db.Todo.findAll();
+            return await this.db.Todo.findAll({
+                limit:50
+            });
         } catch (err) {
+            return err;
+        }
+    };
+
+    getBatchOfTodos = async (continuationToken: string): Promise<ITodo[]> => {
+        try {
+            return await this.db.Todo.findAndCountAll({
+                id: {
+                    $gt: continuationToken
+                },
+                limit: 50
+            })
+        }
+        catch (err) {
             return err;
         }
     };
@@ -61,5 +77,4 @@ export class SequelizeRepo implements Repo {
             return err;
         }
     };
-    
 }

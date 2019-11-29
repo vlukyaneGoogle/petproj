@@ -14,6 +14,7 @@ const renderLoader = () => (
 
 const App: React.FC = () => {
     const {todos, setTodos} = useTodosEffects();
+    console.log('opa', todos);
     const [scroll, setScroll] = useState(0);
     return (
         <BrowserRouter>

@@ -34,8 +34,5 @@ class PostgresDB {
             Todo
         };
     }
-    static getName() {
-        return 'POSTGRES';
-    }
 }
 exports.PostgresDB = PostgresDB;

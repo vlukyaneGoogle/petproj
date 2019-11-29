@@ -1,6 +1,7 @@
 import {ITodo, QueryResult} from '../repo/types';
 import {Repo} from '../repo/Repo';
 import {Service} from './Service';
+import {copyFileSync} from 'fs';
 
 export class TodoService implements Service {
     repo: Repo;
@@ -15,7 +16,7 @@ export class TodoService implements Service {
 
     getBatchOfTodos = async(continuationToken: string): Promise<ITodo[]> => {
         return await this.repo.getBatchOfTodos(continuationToken);
-    }
+    };
 
     getTodoById = async (id: string): Promise<ITodo> => {
         return await this.repo.getTodoById(id);

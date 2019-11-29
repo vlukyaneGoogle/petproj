@@ -5,7 +5,22 @@ class SequelizeRepo {
     constructor(db) {
         this.getAllTodos = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.db.Todo.findAll();
+                return yield this.db.Todo.findAll({
+                    limit: 50
+                });
+            }
+            catch (err) {
+                return err;
+            }
+        });
+        this.getBatchOfTodos = (continuationToken) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.db.Todo.findAndCountAll({
+                    id: {
+                        $gt: continuationToken
+                    },
+                    limit: 50
+                });
             }
             catch (err) {
                 return err;

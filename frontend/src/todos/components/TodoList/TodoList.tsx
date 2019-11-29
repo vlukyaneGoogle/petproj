@@ -4,7 +4,6 @@ import {AddTodo} from "./components/AddTodo/AddTodo";
 import TodoListTitle from "./components/TodoListTitle/TodoListTitle";
 import {ITodo} from "../../common/types";
 import {TodoService} from '../../service/TodoService';
-import {useTodosEffects} from './components/useTodosEffects';
 import {SocketService} from '../../service/SocketService';
 import {List as VirtualizedList} from 'react-virtualized';
 
@@ -24,6 +23,7 @@ interface IProps {
 
 const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
     const [isFetching, setIsFetching] = useState(false);
+    const [listScroll, setListScroll] = useState(scroll);
 
     const switchTodo = async (id: string) => {
         await TodoService.switchTodo(id, todos);
@@ -61,15 +61,20 @@ const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
                     switchTodo={switchTodo}
                     deleteTodo={deleteTodo}
                     updateTodo={updateTodo}
+                    updateScroll={setGlobalScrollStatus}
                     editTodo={editTodo}
                 />
             </div>
         );
     };
 
+    const setGlobalScrollStatus = () => {
+      setScroll(listScroll);
+    };
+
     const scrollHandler = (e: any) => {
         const {clientHeight, scrollHeight, scrollTop} = e;
-        setScroll(scrollTop);
+        setListScroll(scrollTop);
         if (clientHeight + scrollTop !== scrollHeight || isFetching) return;
         setIsFetching(true);
     };
@@ -80,7 +85,7 @@ const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
     }, [isFetching]);
 
     async function fetchMoreTodos() {
-        const token = todos[todos.length - 1]._id;
+        const token = todos[todos.length - 1].id;
         const allTodos = await fetch(`http://localhost:3001/todos/scroll/${token}`);
         const allTodosJson = await allTodos.json();
         if (Array.isArray(allTodosJson.data)) {
@@ -104,7 +109,7 @@ const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
                 rowHeight={rowHeight}
                 width={width}
                 height={height}
-                scrollTop={scroll}
+                scrollTop={listScroll}
                 rowRenderer={listRenderer}
                 onScroll={(e: any) => scrollHandler(e)}
             />

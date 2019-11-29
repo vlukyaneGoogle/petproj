@@ -12,9 +12,10 @@ interface IProps {
     deleteTodo: (id: string) => void,
     editTodo: (id: string) => void,
     updateTodo: (id: string, content: string) => Promise<void>
+    updateScroll: () => any
 }
 
-export const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo, updateTodo }) =>{
+export const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo, updateTodo, updateScroll }) =>{
     const handleEditTodo = () => {
         editTodo(todo.id)
     };
@@ -30,8 +31,6 @@ export const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo
     const handleUpdateTodo = (content: string) => {
         updateTodo(todo.id, content);
     };
-
-
 
     return (
         <ListItem className = {`todo-item`}>
@@ -51,7 +50,7 @@ export const Todo: React.FC<IProps>  = ({ todo, switchTodo, deleteTodo, editTodo
                 updateTodo={handleUpdateTodo}
             />
             <Link to={`/todo/${todo.id}`}>
-                <Button>
+                <Button onClick={() => updateScroll()}>
                     <Info/>
                 </Button>
             </Link>

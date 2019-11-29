@@ -22,7 +22,7 @@ class TodoController {
         });
         this.getBatchOfTodos = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                console.log('OPA ', req.params);
+                console.log('OPA ', req.params.token);
                 const continuationToken = req.params.token;
                 const batchOfTodos = yield this.todoService.getBatchOfTodos(continuationToken);
                 return utils.sendResponse(res, {
