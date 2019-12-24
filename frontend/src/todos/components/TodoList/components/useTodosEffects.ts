@@ -2,16 +2,22 @@ import {useEffect, useState} from 'react';
 import {ITodo} from '../../../common/types';
 import {socket, UpdateTodoData} from '../TodoList';
 import {SocketService} from '../../../service/SocketService';
+import {useDispatch, useSelector} from 'react-redux';
+import {allActions} from '../../../actions';
 
 export const useTodosEffects = () => {
 
     const [todos, setTodos] = useState<ITodo[]>([]);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchData = async () => {
             const allTodos = await fetch(`http://localhost:3001/todos/`);
             const allTodosJson = await allTodos.json();
-            if (Array.isArray(allTodosJson.data)) setTodos(allTodosJson.data);
+            if (Array.isArray(allTodosJson.data)) {
+                setTodos(allTodosJson.data);
+                dispatch(allActions.todoActions.loadTodos(allTodosJson.data));
+            }
         };
         fetchData();
     }, []);

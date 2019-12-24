@@ -1,39 +1,38 @@
 import {ITodo} from '../common/types';
+import {sendRequest} from '../../utils/utils';
 
 export class TodoService{
 
     static async switchTodo(id: string, todos: ITodo[]): Promise<void> {
         const switchedTodo: ITodo = todos.filter((todo) => todo.id === id)[0];
         switchedTodo.isCompleted = !switchedTodo.isCompleted;
-        await fetch(`http://localhost:3001/todos/update/${id}`, {
-            method: 'PUT',
-            headers: {
+        await sendRequest(`todos/update/${id}`, 'PUT',
+            {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(switchedTodo),
-        });
+            JSON.stringify(switchedTodo),
+        );
     }
 
     static async addTodo(content: string): Promise<void> {
         const todoToAdd = {
             content: content
         };
-        await fetch("http://localhost:3001/todos/add", {
-            method: 'POST',
-            headers: {
+        await sendRequest('todos/add', 'POST',
+            {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(todoToAdd),
-        });
+            JSON.stringify(todoToAdd)
+        );
     }
 
     static async deleteTodo(id: string, todos: ITodo[]): Promise<void> {
-        await fetch(`http://localhost:3001/todos/delete/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+        await sendRequest(`todos/delete/${id}`,
+            'DELETE',
+            {
+                'Content-Type': 'application/json'
+            }
+        );
     }
 
     static editTodo(id: string, todos: ITodo[]): ITodo[] {
@@ -50,12 +49,12 @@ export class TodoService{
         const editedTodo: ITodo = todos.filter((todo) => todo.id === id)[0];
         editedTodo.isEditing = !editedTodo.isEditing;
         editedTodo.content = content;
-        await fetch(`http://localhost:3001/todos/update/${id}`, {
-            method: 'PUT',
-            headers: {
+        await sendRequest(`todos/update/${id}`,
+            'PUT',
+            {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(editedTodo),
-        });
+            JSON.stringify(editedTodo)
+        );
     }
 }

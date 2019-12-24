@@ -16,8 +16,10 @@ class SequelizeRepo {
         this.getBatchOfTodos = (continuationToken) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 return yield this.db.Todo.findAndCountAll({
-                    id: {
-                        $gt: continuationToken
+                    where: {
+                        id: {
+                            ['$gt']: continuationToken
+                        },
                     },
                     limit: 50
                 });

@@ -22,7 +22,6 @@ class TodoController {
         });
         this.getBatchOfTodos = (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                console.log('OPA ', req.params.token);
                 const continuationToken = req.params.token;
                 const batchOfTodos = yield this.todoService.getBatchOfTodos(continuationToken);
                 return utils.sendResponse(res, {
@@ -106,11 +105,11 @@ class TodoController {
     }
     initRoutes() {
         this.router.get('/', this.getAllTodos);
-        this.router.get('/scroll/:token', this.getBatchOfTodos);
+        this.router.get('/:token', this.getBatchOfTodos);
         this.router.post('/add', this.addNewTodo);
         this.router.delete('/delete/:id', this.deleteTodoById);
         this.router.put('/update/:id', this.updateTodoById);
-        this.router.get('/:id', this.getTodoById);
+        this.router.get('/info/:id', this.getTodoById);
     }
 }
 exports.TodoController = TodoController;

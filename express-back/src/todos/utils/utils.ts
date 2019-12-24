@@ -17,6 +17,6 @@ const sendResponse = (res, data, code = 200) => {
     return res.send(send_data);
 };
 
-module.exports =  {
+module.exports = {
     sendResponse
 };

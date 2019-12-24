@@ -22,8 +22,10 @@ export class SequelizeRepo implements Repo {
     getBatchOfTodos = async (continuationToken: string): Promise<ITodo[]> => {
         try {
             return await this.db.Todo.findAndCountAll({
-                id: {
-                    $gt: continuationToken
+                where: {
+                    id: {
+                        ['$gt']: continuationToken
+                    },
                 },
                 limit: 50
             })

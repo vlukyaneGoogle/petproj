@@ -6,6 +6,8 @@ import {ITodo} from "../../common/types";
 import {TodoService} from '../../service/TodoService';
 import {SocketService} from '../../service/SocketService';
 import {List as VirtualizedList} from 'react-virtualized';
+import {useDispatch} from 'react-redux';
+import {allActions} from '../../actions';
 
 export const socket = SocketService.init();
 
@@ -24,6 +26,7 @@ interface IProps {
 const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
     const [isFetching, setIsFetching] = useState(false);
     const [listScroll, setListScroll] = useState(scroll);
+    const dispatcher = useDispatch();
 
     const switchTodo = async (id: string) => {
         await TodoService.switchTodo(id, todos);
@@ -86,10 +89,11 @@ const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
 
     async function fetchMoreTodos() {
         const token = todos[todos.length - 1].id;
-        const allTodos = await fetch(`http://localhost:3001/todos/scroll/${token}`);
+        const allTodos = await fetch(`http://localhost:3001/todos/${token}`);
         const allTodosJson = await allTodos.json();
         if (Array.isArray(allTodosJson.data)) {
             setTodos([...todos, ...allTodosJson.data]);
+            dispatcher(allActions.todoActions.loadTodos(allTodosJson.data));
         }
         setIsFetching(false);
     }
