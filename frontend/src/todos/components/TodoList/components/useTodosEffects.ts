@@ -1,38 +1,39 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {ITodo} from '../../../common/types';
 import {socket, UpdateTodoData} from '../TodoList';
 import {SocketService} from '../../../service/SocketService';
+import {useDispatch, useSelector} from 'react-redux';
+import {allActions} from '../../../actions';
 
 export const useTodosEffects = () => {
 
-    const [todos, setTodos] = useState<ITodo[]>([]);
+    const todos: ITodo[] = useSelector((state: any) => {
+        return state.todos.list
+    });
+    const dispatcher = useDispatch();
 
     useEffect(() => {
-        const fetchData = async () => {
-            const allTodos = await fetch(`http://localhost:3001/todos/`);
-            const allTodosJson = await allTodos.json();
-            if (Array.isArray(allTodosJson.data)) setTodos(allTodosJson.data);
-        };
-        fetchData();
+        if (todos.length === 0) {
+            dispatcher(allActions.todo.fetch(dispatcher, ''));
+        }
     }, []);
 
     useEffect(() => {
-        socket.on('deleteTodoById', (id: string) =>  SocketService.deleteTodoById(id, todos, setTodos));
+        socket.on('deleteTodoById', (id: string) =>  SocketService.deleteTodoById(id, dispatcher));
         return () => socket.off('deleteTodoById');
     }, [todos]);
 
     useEffect(() => {
-        socket.on('addTodo', (todo: ITodo) => SocketService.addTodo(todo, todos, setTodos));
+        socket.on('addTodo', (todo: ITodo) => SocketService.addTodo(todo, dispatcher));
         return () => socket.off('addTodo');
     }, [todos]);
 
     useEffect(() => {
-        socket.on('updateTodoById', (data: UpdateTodoData) => SocketService.updateTodoById(data, todos, setTodos));
+        socket.on('updateTodoById', (data: UpdateTodoData) => SocketService.updateTodoById(data, dispatcher));
         return () => socket.off('updateTodoById');
     }, [todos]);
 
     return {
-        todos,
-        setTodos
+        todos
     }
 };

@@ -21,11 +21,11 @@ export class TodoController implements Controller {
 
     private initRoutes() {
         this.router.get('/', this.getAllTodos);
-        this.router.get('/scroll/:token', this.getBatchOfTodos);
+        this.router.get('/:token', this.getBatchOfTodos);
         this.router.post('/add', this.addNewTodo);
         this.router.delete('/delete/:id', this.deleteTodoById);
         this.router.put('/update/:id', this.updateTodoById);
-        this.router.get('/:id', this.getTodoById)
+        this.router.get('/info/:id', this.getTodoById)
     }
 
     getAllTodos = async (req, res): Promise<ITodo[]> => {
@@ -44,7 +44,6 @@ export class TodoController implements Controller {
 
     getBatchOfTodos = async (req: any, res: any): Promise<ITodo[]> => {
       try{
-          console.log('OPA ', req.params);
           const continuationToken = req.params.token;
           const batchOfTodos = await this.todoService.getBatchOfTodos(continuationToken);
           return utils.sendResponse(res, {

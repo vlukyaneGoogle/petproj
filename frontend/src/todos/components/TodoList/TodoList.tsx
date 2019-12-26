@@ -4,9 +4,11 @@ import {AddTodo} from "./components/AddTodo/AddTodo";
 import TodoListTitle from "./components/TodoListTitle/TodoListTitle";
 import {ITodo} from "../../common/types";
 import {TodoService} from '../../service/TodoService';
-import {useTodosEffects} from './components/useTodosEffects';
 import {SocketService} from '../../service/SocketService';
 import {List as VirtualizedList} from 'react-virtualized';
+import {useDispatch, useSelector} from 'react-redux';
+import {allActions} from '../../actions';
+import {useTodosEffects} from './components/useTodosEffects';
 
 export const socket = SocketService.init();
 
@@ -16,14 +18,15 @@ export interface UpdateTodoData {
 }
 
 interface IProps {
-    todos: ITodo[],
-    setTodos: any,
-    scroll: number,
-    setScroll: any
 }
 
-const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
+const TodoList: React.FC<IProps> = () => {
+    const scroll = useSelector((state: any) => state.scroll.scrollStatus);
+    const {todos} = useTodosEffects();
+    const dispatcher = useDispatch();
+
     const [isFetching, setIsFetching] = useState(false);
+    const [listScroll, setListScroll] = useState(scroll);
 
     const switchTodo = async (id: string) => {
         await TodoService.switchTodo(id, todos);
@@ -34,8 +37,7 @@ const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
     };
 
     const editTodo = (id: string) => {
-        const newTodos = TodoService.editTodo(id, todos);
-        setTodos(newTodos);
+        TodoService.editTodo(id, todos, dispatcher);
     };
 
     const addTodo = async (content: string) => {
@@ -61,15 +63,20 @@ const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
                     switchTodo={switchTodo}
                     deleteTodo={deleteTodo}
                     updateTodo={updateTodo}
+                    updateScroll={setGlobalScrollStatus}
                     editTodo={editTodo}
                 />
             </div>
         );
     };
 
+    const setGlobalScrollStatus = () => {
+      dispatcher(allActions.scroll.updateScroll(listScroll));
+    };
+
     const scrollHandler = (e: any) => {
         const {clientHeight, scrollHeight, scrollTop} = e;
-        setScroll(scrollTop);
+        setListScroll(scrollTop);
         if (clientHeight + scrollTop !== scrollHeight || isFetching) return;
         setIsFetching(true);
     };
@@ -80,12 +87,8 @@ const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
     }, [isFetching]);
 
     async function fetchMoreTodos() {
-        const token = todos[todos.length - 1]._id;
-        const allTodos = await fetch(`http://localhost:3001/todos/scroll/${token}`);
-        const allTodosJson = await allTodos.json();
-        if (Array.isArray(allTodosJson.data)) {
-            setTodos([...todos, ...allTodosJson.data]);
-        }
+        const token = todos[todos.length - 1].id;
+        dispatcher(allActions.todo.fetch(dispatcher, token));
         setIsFetching(false);
     }
 
@@ -104,7 +107,7 @@ const TodoList: React.FC<IProps> = ({todos, setTodos, scroll, setScroll}) => {
                 rowHeight={rowHeight}
                 width={width}
                 height={height}
-                scrollTop={scroll}
+                scrollTop={listScroll}
                 rowRenderer={listRenderer}
                 onScroll={(e: any) => scrollHandler(e)}
             />
