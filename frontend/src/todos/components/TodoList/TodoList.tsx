@@ -70,6 +70,7 @@ const TodoList: React.FC<IProps> = () => {
         );
     };
 
+    // smth
     const setGlobalScrollStatus = () => {
       dispatcher(allActions.scroll.updateScroll(listScroll));
     };
