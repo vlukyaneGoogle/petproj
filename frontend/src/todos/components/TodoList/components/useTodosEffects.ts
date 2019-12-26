@@ -3,7 +3,6 @@ import {ITodo} from '../../../common/types';
 import {socket, UpdateTodoData} from '../TodoList';
 import {SocketService} from '../../../service/SocketService';
 import {useDispatch, useSelector} from 'react-redux';
-import {allActions} from '../../../actions';
 
 export const useTodosEffects = () => {
 
@@ -11,12 +10,6 @@ export const useTodosEffects = () => {
         return state.todos.list
     });
     const dispatcher = useDispatch();
-
-    useEffect(() => {
-        if (todos.length === 0) {
-            dispatcher(allActions.todo.fetch(dispatcher, ''));
-        }
-    }, []);
 
     useEffect(() => {
         socket.on('deleteTodoById', (id: string) =>  SocketService.deleteTodoById(id, dispatcher));
@@ -33,7 +26,5 @@ export const useTodosEffects = () => {
         return () => socket.off('updateTodoById');
     }, [todos]);
 
-    return {
-        todos
-    }
+    return todos;
 };

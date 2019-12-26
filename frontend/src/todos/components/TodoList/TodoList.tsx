@@ -22,10 +22,10 @@ interface IProps {
 
 const TodoList: React.FC<IProps> = () => {
     const scroll = useSelector((state: any) => state.scroll.scrollStatus);
-    const {todos} = useTodosEffects();
+    const todos = useTodosEffects();
     const dispatcher = useDispatch();
 
-    const [isFetching, setIsFetching] = useState(false);
+    const [isFetching, setIsFetching] = useState(true);
     const [listScroll, setListScroll] = useState(scroll);
 
     const switchTodo = async (id: string) => {
@@ -87,7 +87,7 @@ const TodoList: React.FC<IProps> = () => {
     }, [isFetching]);
 
     async function fetchMoreTodos() {
-        const token = todos[todos.length - 1].id;
+        const token = todos.length > 0 ? todos[todos.length - 1].id : '';
         dispatcher(allActions.todo.fetch(dispatcher, token));
         setIsFetching(false);
     }
