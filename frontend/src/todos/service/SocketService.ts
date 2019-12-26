@@ -10,16 +10,16 @@ export class SocketService {
     }
 
     static deleteTodoById(id: string, dispatcher: any) {
-        dispatcher(allActions.todoActions.deleteTodo(id));
+        dispatcher(allActions.todo.eliminate(id));
     }
 
     static addTodo(todo: ITodo, dispatcher: any) {
-        dispatcher(allActions.todoActions.addTodo(todo));
+        dispatcher(allActions.todo.add(todo));
     }
 
     static updateTodoById(data: UpdateTodoData, dispatcher: any) {
         const {updatedTodo, id} = data;
         const {content, isEditing, isCompleted} = updatedTodo;
-        dispatcher(allActions.todoActions.updateTodo({content, isEditing, isCompleted, id}));
+        dispatcher(allActions.todo.update({content, isEditing, isCompleted, id}));
     }
 }

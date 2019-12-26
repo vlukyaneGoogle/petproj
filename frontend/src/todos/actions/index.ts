@@ -1,7 +1,7 @@
-import {todoActions} from './todoActions';
-import {scrollActions} from './scrollActions';
+import {todo} from './todo';
+import {scroll} from './scroll';
 
 export const allActions = {
-    todoActions,
-    scrollActions
+    todo: todo,
+    scroll: scroll
 };

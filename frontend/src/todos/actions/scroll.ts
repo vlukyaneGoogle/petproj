@@ -9,6 +9,6 @@ const scrollActionsNames = {
     UPDATE_SCROLL: 'UPDATE_SCROLL'
 };
 
-export const scrollActions = {
+export const scroll = {
     updateScroll
 };

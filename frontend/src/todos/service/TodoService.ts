@@ -37,7 +37,7 @@ export class TodoService{
     }
 
     static editTodo(id: string, todos: ITodo[], dispatcher: any) {
-        dispatcher(allActions.todoActions.editTodo(id));
+        dispatcher(allActions.todo.edit(id));
     }
 
     static async updateTodo(content: string, id: string, todos: ITodo[]): Promise<void> {

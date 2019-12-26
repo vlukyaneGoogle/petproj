@@ -2,46 +2,46 @@ import {allActions} from './index';
 import {ITodo} from '../common/types';
 import {sendRequest} from '../../utils/utils';
 
-const fetchTodos = (dispatcher: any, id?: string) => {
+const fetch = (dispatcher: any, id?: string) => {
     return (dispatcher: any) => {
         sendRequest(`todos/${id}`, 'GET')
             .then(res => res.json())
             .then(jsonTodos => {
                 const fetchedTodos = Array.isArray(jsonTodos.data) ? jsonTodos.data : [];
-                dispatcher(allActions.todoActions.saveTodos(fetchedTodos));
+                dispatcher(allActions.todo.save(fetchedTodos));
             })
     }
 };
 
-const addTodo = (newTodo: any) => {
+const add = (newTodo: any) => {
     return {
         type: todoActionsNames.ADD_TODO,
         payload: newTodo
     }
 };
 
-const saveTodos = (todos: ITodo[]) => {
+const save = (todos: ITodo[]) => {
     return {
         type: todoActionsNames.SAVE_TODOS,
         payload: todos
     }
 };
 
-const editTodo = (id: string) => {
+const edit = (id: string) => {
     return {
         type: todoActionsNames.EDIT_TODO,
         payload: id
     }
 };
 
-const updateTodo = (newTodo: any) => {
+const update = (newTodo: any) => {
     return {
         type: todoActionsNames.UPDATE_TODO,
         payload: newTodo
     }
 };
 
-const deleteTodo = (id: string) => {
+const eliminate = (id: string) => {
     return {
         type: todoActionsNames.DELETE_TODO,
         payload: id
@@ -60,11 +60,11 @@ const todoActionsNames = {
     FETCH_TODOS_FAIL: 'FETCH_TODOS_FAIL',
 };
 
-export const todoActions = {
-    addTodo,
-    editTodo,
-    updateTodo,
-    deleteTodo,
-    saveTodos,
-    fetchTodos
+export const todo = {
+    add,
+    edit,
+    update,
+    eliminate,
+    save,
+    fetch
 };

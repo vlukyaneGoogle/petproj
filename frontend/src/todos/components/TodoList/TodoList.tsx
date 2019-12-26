@@ -71,7 +71,7 @@ const TodoList: React.FC<IProps> = () => {
     };
 
     const setGlobalScrollStatus = () => {
-      dispatcher(allActions.scrollActions.updateScroll(listScroll));
+      dispatcher(allActions.scroll.updateScroll(listScroll));
     };
 
     const scrollHandler = (e: any) => {
@@ -88,7 +88,7 @@ const TodoList: React.FC<IProps> = () => {
 
     async function fetchMoreTodos() {
         const token = todos[todos.length - 1].id;
-        dispatcher(allActions.todoActions.fetchTodos(dispatcher, token));
+        dispatcher(allActions.todo.fetch(dispatcher, token));
         setIsFetching(false);
     }
 

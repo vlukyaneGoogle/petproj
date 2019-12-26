@@ -14,7 +14,7 @@ export const useTodosEffects = () => {
 
     useEffect(() => {
         if (todos.length === 0) {
-            dispatcher(allActions.todoActions.fetchTodos(dispatcher, ''));
+            dispatcher(allActions.todo.fetch(dispatcher, ''));
         }
     }, []);
 
