@@ -1,7 +1,15 @@
-const loadTodos = (todos: any) => {
-    return {
-        type: todoActionsNames.LOAD_TODOS,
-        payload: todos
+import {allActions} from './index';
+import {ITodo} from '../common/types';
+import {sendRequest} from '../../utils/utils';
+
+const fetchTodos = (dispatcher: any, id?: string) => {
+    return (dispatcher: any) => {
+        sendRequest(`todos/${id}`, 'GET')
+            .then(res => res.json())
+            .then(jsonTodos => {
+                const fetchedTodos = Array.isArray(jsonTodos.data) ? jsonTodos.data : [];
+                dispatcher(allActions.todoActions.saveTodos(fetchedTodos));
+            })
     }
 };
 
@@ -12,10 +20,17 @@ const addTodo = (newTodo: any) => {
     }
 };
 
-const toggleTodo = (newTodo: any) => {
+const saveTodos = (todos: ITodo[]) => {
     return {
-        type: todoActionsNames.TOGGLE_TODO,
-        payload: newTodo
+        type: todoActionsNames.SAVE_TODOS,
+        payload: todos
+    }
+};
+
+const editTodo = (id: string) => {
+    return {
+        type: todoActionsNames.EDIT_TODO,
+        payload: id
     }
 };
 
@@ -26,26 +41,30 @@ const updateTodo = (newTodo: any) => {
     }
 };
 
-const deleteTodo = (newTodo: any) => {
+const deleteTodo = (id: string) => {
     return {
         type: todoActionsNames.DELETE_TODO,
-        payload: newTodo.id
+        payload: id
     }
 };
 
 
 const todoActionsNames = {
     ADD_TODO: 'ADD_TODO',
-    TOGGLE_TODO: 'TOGGLE_TODO',
+    EDIT_TODO: 'EDIT_TODO',
     UPDATE_TODO: 'UPDATE_TODO',
     DELETE_TODO: 'DELETE_TODO',
-    LOAD_TODOS: 'LOAD_TODOS',
+    SAVE_TODOS: 'SAVE_TODOS',
+    FETCH_TODOS: 'FETCH_TODOS_START',
+    FETCH_TODOS_SUCCESS: 'FETCH_TODOS_SUCCESS',
+    FETCH_TODOS_FAIL: 'FETCH_TODOS_FAIL',
 };
 
 export const todoActions = {
     addTodo,
-    toggleTodo,
+    editTodo,
     updateTodo,
     deleteTodo,
-    loadTodos
+    saveTodos,
+    fetchTodos
 };

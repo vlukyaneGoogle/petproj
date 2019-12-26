@@ -1,5 +1,6 @@
 import {ITodo} from '../common/types';
 import {UpdateTodoData} from '../components/TodoList/TodoList';
+import {allActions} from '../actions';
 
 const io = require('socket.io-client');
 
@@ -8,26 +9,17 @@ export class SocketService {
         return io.connect('http://localhost:3001/');
     }
 
-    static deleteTodoById(id: string, todos: ITodo[], setTodos: any) {
-        setTodos(todos.filter(todo => todo.id !== id));
+    static deleteTodoById(id: string, dispatcher: any) {
+        dispatcher(allActions.todoActions.deleteTodo(id));
     }
 
-    static addTodo(todo: ITodo, todos: ITodo[], setTodos: any) {
-        setTodos([todo, ...todos]);
+    static addTodo(todo: ITodo, dispatcher: any) {
+        dispatcher(allActions.todoActions.addTodo(todo));
     }
 
-    static updateTodoById(data: UpdateTodoData, todos: ITodo[], setTodos: any) {
+    static updateTodoById(data: UpdateTodoData, dispatcher: any) {
         const {updatedTodo, id} = data;
         const {content, isEditing, isCompleted} = updatedTodo;
-        const newTodos: ITodo[] = todos.map((todo: ITodo): ITodo =>
-            (todo.id !== id)
-                ? todo
-                : {...todo,
-                    isCompleted,
-                    isEditing,
-                    content
-                }
-        );
-        setTodos(newTodos);
+        dispatcher(allActions.todoActions.updateTodo({content, isEditing, isCompleted, id}));
     }
 }
