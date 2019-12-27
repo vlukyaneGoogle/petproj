@@ -1,15 +1,14 @@
-import {allActions} from './index';
 import {ITodo} from '../common/types';
-import {sendRequest} from '../../utils/utils';
 
-const fetch = (dispatcher: any, id?: string) => {
-    return (dispatcher: any) => {
-        sendRequest(`todos/${id}`, 'GET')
-            .then(res => res.json())
-            .then(jsonTodos => {
-                const fetchedTodos = Array.isArray(jsonTodos.data) ? jsonTodos.data : [];
-                dispatcher(allActions.todo.save(fetchedTodos));
-            })
+const fetch = (id: string) => ({
+    type: todoActionsNames.FETCH_TODOS,
+    payload: id
+});
+
+const fetchFulfilled = (todos: ITodo[]) => {
+    return {
+        type: todoActionsNames.FETCH_TODOS_FULFILLED,
+        payload: todos
     }
 };
 
@@ -49,14 +48,14 @@ const eliminate = (id: string) => {
 };
 
 
-const todoActionsNames = {
+export const todoActionsNames = {
     ADD_TODO: 'ADD_TODO',
     EDIT_TODO: 'EDIT_TODO',
     UPDATE_TODO: 'UPDATE_TODO',
     DELETE_TODO: 'DELETE_TODO',
     SAVE_TODOS: 'SAVE_TODOS',
-    FETCH_TODOS: 'FETCH_TODOS_START',
-    FETCH_TODOS_SUCCESS: 'FETCH_TODOS_SUCCESS',
+    FETCH_TODOS: 'FETCH_TODOS',
+    FETCH_TODOS_FULFILLED: 'FETCH_TODOS_FULFILLED',
     FETCH_TODOS_FAIL: 'FETCH_TODOS_FAIL',
 };
 
@@ -66,5 +65,6 @@ export const todo = {
     update,
     eliminate,
     save,
-    fetch
+    fetch,
+    fetchFulfilled
 };

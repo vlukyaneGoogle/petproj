@@ -24,8 +24,9 @@ const TodoList: React.FC<IProps> = () => {
     const scroll = useSelector((state: any) => state.scroll.scrollStatus);
     const todos = useTodosEffects();
     const dispatcher = useDispatch();
+    const needToFirstLoadTodos = todos.length <= 0;
 
-    const [isFetching, setIsFetching] = useState(true);
+    const [isFetching, setIsFetching] = useState(needToFirstLoadTodos);
     const [listScroll, setListScroll] = useState(scroll);
 
     const switchTodo = async (id: string) => {
@@ -70,7 +71,6 @@ const TodoList: React.FC<IProps> = () => {
         );
     };
 
-    // smth
     const setGlobalScrollStatus = () => {
       dispatcher(allActions.scroll.updateScroll(listScroll));
     };
@@ -89,7 +89,7 @@ const TodoList: React.FC<IProps> = () => {
 
     async function fetchMoreTodos() {
         const token = todos.length > 0 ? todos[todos.length - 1].id : '';
-        dispatcher(allActions.todo.fetch(dispatcher, token));
+        dispatcher(allActions.todo.fetch(token));
         setIsFetching(false);
     }
 
