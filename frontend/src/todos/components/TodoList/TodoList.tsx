@@ -87,7 +87,7 @@ const TodoList: React.FC<IProps> = () => {
         fetchMoreTodos();
     }, [isFetching]);
 
-    async function fetchMoreTodos() {
+    function fetchMoreTodos() {
         const token = todos.length > 0 ? todos[todos.length - 1].id : '';
         dispatcher(allActions.todo.fetch(token));
         setIsFetching(false);
