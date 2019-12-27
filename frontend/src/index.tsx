@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import thunk from 'redux-thunk';
 import {createEpicMiddleware} from 'redux-observable';
 import {rootEpic} from './todos/epics/rootEpic';
 
