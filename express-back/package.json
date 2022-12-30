@@ -33,7 +33,7 @@
     "@types/node": "^12.11.1",
     "chai": "^4.2.0",
     "faker": "^4.1.0",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "mockgoose": "^8.0.4",
     "node-mocks-http": "^1.8.0",
     "sinon": "^7.5.0",
